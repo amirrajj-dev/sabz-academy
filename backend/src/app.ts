@@ -4,21 +4,22 @@ import dotenv from "dotenv";
 import morgan from "morgan";
 import helmet from "helmet";
 import cookieParser from "cookie-parser";
-import authRoutes from './routes/auth.route.ts'
-import usersRoutes from './routes/user.route.ts';
-import courseRoutes from './routes/course.route.ts';
-import menuRoutes from './routes/menu.route.ts';
-import categoryRoutes from './routes/category.route.ts';
-import articlesRoutes from './routes/article.route.ts';
-import commentsRoutes from './routes/comment.route.ts';
-import contactRoutes from './routes/contact.route.ts';
-import searchRoutes from './routes/search.route.ts';
-import notificationRoutes from './routes/notification.route.ts';
-import infosRoutes from './routes/info.route.ts';
-import offsRoutes from './routes/off.route.ts';
-import ordersRoutes from './routes/order.route.ts';
-import ticketsRoutes from './routes/ticket.route.ts';
-import prisma from "../utils/prisma.ts";
+import authRoutes from './routes/auth.route'
+import usersRoutes from './routes/user.route';
+import courseRoutes from './routes/course.route';
+import menuRoutes from './routes/menu.route';
+import categoryRoutes from './routes/category.route';
+import articlesRoutes from './routes/article.route';
+import commentsRoutes from './routes/comment.route';
+import contactRoutes from './routes/contact.route';
+import searchRoutes from './routes/search.route';
+import notificationRoutes from './routes/notification.route';
+import infosRoutes from './routes/info.route';
+import offsRoutes from './routes/off.route';
+import ordersRoutes from './routes/order.route';
+import ticketsRoutes from './routes/ticket.route';
+import prisma from "../utils/prisma";
+import { errorMiddleware } from './middlewares/errorMiddleware'
 
 dotenv.config();
 
@@ -48,6 +49,8 @@ app.use("/api/infos", infosRoutes);
 app.use("/api/offs", offsRoutes);
 app.use("/api/orders", ordersRoutes);
 app.use("/api/tickets", ticketsRoutes);
+
+app.use(errorMiddleware)
 
 const PORT = process.env.PORT || 5000;
 

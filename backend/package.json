@@ -1,6 +1,6 @@
 {
   "name": "sabzlearn-shop",
-  "module": "/src/app.tsx",
+  "module": "/src/app.ts",
   "type": "module",
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
