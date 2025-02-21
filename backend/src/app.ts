@@ -20,6 +20,17 @@ import ordersRoutes from './routes/order.route';
 import ticketsRoutes from './routes/ticket.route';
 import prisma from "../utils/prisma";
 import { errorMiddleware } from './middlewares/errorMiddleware'
+import fs from 'fs';
+import path from 'path';
+
+const __dirname = path.resolve()
+
+const uploadsDir = path.join(__dirname, 'uploads');
+
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
 
 dotenv.config();
 
