@@ -54,3 +54,40 @@ export const protectRoute = async (
     return res.status(401).json({ message: "Not authorized", success: false });
   }
 };
+
+export const protectRouteAdmin = async (req : Request , res : Response , next : NextFunction) => {
+  try {
+    const token = req.cookies["sabz-token"];
+    if (!token) {
+      return res.status(401).json({ message: "Not authorized, token missing", success: false });
+    }
+    
+    if (typeof process.env.JWT_SECRET!== "string") {
+      throw new Error("JWT_SECRET is not defined");
+    }
+    
+    const {userId}= jwt.verify(token, process.env.JWT_SECRET) as { userId: string };
+    if (!userId){
+      return res.status(401).json({ message: "Not authorized, invalid token", success: false });
+    }
+    
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { id: true, name: true, email: true, username: true, createdAt: true, role: true },
+    });
+    
+    if (!user) {
+      return res.status(401).json({ message: "Not authorized, user not found", success: false });
+    }
+    
+    if (user.role!== "ADMIN") {
+      return res.status(403).json({ message: "Not authorized, you are not an admin", success: false });
+    }
+    
+    req.user = user;
+    next();
+  } catch (error) {
+    console.error("Authentication error:", error);
+    return res.status(401).json({ message: "Not authorized", success: false });
+  }
+}
