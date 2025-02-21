@@ -22,6 +22,7 @@ model User {
   phone    String
   role     Role      @default(USER)
   courses  Course[]  @relation("UserToCourse")
+  comments Comment[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -49,6 +50,16 @@ model Course {
   creator     User?     @relation(fields: [creatorID], references: [id], name: "UserToCourse")
   comments    Comment[]
   sessions    Session[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  title   String
+  name    String
+  courses Course[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
