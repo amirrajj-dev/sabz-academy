@@ -230,7 +230,7 @@ export const getSingleCourse = async (
     if (!courseID) {
       return res.status(400).json({ success: false, message: 'Please provide course ID' });
     }
-    const course = await prisma.course.findUnique({ where: { id: courseID } });
+    const course = await prisma.course.findUnique({ where: { id: courseID } , include : {sessions : true} });
     if (!course) {
       return res.status(404).json({ success: false, message: 'Course not found' });
     }
@@ -239,11 +239,45 @@ export const getSingleCourse = async (
     next(error);
   }
 };
-export const createSession = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {};
+export const createSession = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const courseID = req.params.id;
+    const { title, time, free } = req.body;
+    const file = req.file;
+
+    if (!courseID || !title.trim() || !time.trim() || isNaN(Number(free))) {
+      return res.status(400).json({ success: false, message: 'Please fill all fields correctly' });
+    }
+
+    const course = await prisma.course.findUnique({ where: { id: courseID } });
+    if (!course) {
+      return res.status(404).json({ success: false, message: 'Course not found' });
+    }
+
+    if (!file || file.size === 0) {
+      return res.status(400).json({ success: false, message: 'Please upload a file' });
+    }
+
+    const videoUrl = await uploadToCloudinary(file);
+    
+    const newSession = await prisma.session.create({
+      data: {
+        title,
+        time,
+        free: parseInt(free),
+        video: videoUrl,
+        course: { connect: { id: courseID } },
+      }
+    });
+
+    res.status(201).json({ success: true, message: 'Session created successfully', session: newSession });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+};
+
+
 export const getAllSessions = async (
   req: Request,
   res: Response,
