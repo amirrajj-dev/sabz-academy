@@ -18,6 +18,7 @@ import infosRoutes from './routes/info.route.ts';
 import offsRoutes from './routes/off.route.ts';
 import ordersRoutes from './routes/order.route.ts';
 import ticketsRoutes from './routes/ticket.route.ts';
+import prisma from "../utils/prisma.ts";
 
 dotenv.config();
 
@@ -33,23 +34,29 @@ app.use(helmet({
 app.use(morgan('dev'))
 app.use(cookieParser())
 
-app.use("/auth", authRoutes);
-app.use("/users", usersRoutes);
-app.use("/courses", courseRoutes);
-app.use("/menus", menuRoutes);
-app.use("/category", categoryRoutes);
-app.use("/articles", articlesRoutes);
-app.use("/comments", commentsRoutes);
-app.use("/contact", contactRoutes);
-app.use("/search", searchRoutes);
-app.use("/notifications", notificationRoutes);
-app.use("/infos", infosRoutes);
-app.use("/offs", offsRoutes);
-app.use("/orders", ordersRoutes);
-app.use("/tickets", ticketsRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/users", usersRoutes);
+app.use("/api/courses", courseRoutes);
+app.use("/api/menus", menuRoutes);
+app.use("/api/category", categoryRoutes);
+app.use("/api/articles", articlesRoutes);
+app.use("/api/comments", commentsRoutes);
+app.use("/api/contact", contactRoutes);
+app.use("/api/search", searchRoutes);
+app.use("/api/notifications", notificationRoutes);
+app.use("/api/infos", infosRoutes);
+app.use("/api/offs", offsRoutes);
+app.use("/api/orders", ordersRoutes);
+app.use("/api/tickets", ticketsRoutes);
 
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+process.on("SIGINT" , async ()=>{
+  console.log("Server is shutting down...");
+  await prisma.$disconnect()
+  process.exit(0);
+})
