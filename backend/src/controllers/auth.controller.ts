@@ -128,3 +128,19 @@ export const signout = async (req: Request, res: Response , next : NextFunction)
     next(error)
   }
 };
+
+export const getMe = async (req: Request, res: Response , next : NextFunction)=>{
+  try {
+    const user = req.user
+    if (!user) {
+      return res.status(401).json({ message: "User not authenticated", success: false });
+    }
+    return res.status(200).json({
+      message: "User fetched successfully",
+      success: true,
+      user
+    })
+  } catch (error) {
+    next(error)
+  }
+}
