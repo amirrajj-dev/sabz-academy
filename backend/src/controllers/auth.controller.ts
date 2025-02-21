@@ -116,4 +116,15 @@ export const signin = async (req: Request, res: Response , next : NextFunction) 
   }
 };
 
-export const signout = async (req: Request, res: Response) => {};
+export const signout = async (req: Request, res: Response , next : NextFunction) => {
+  try {
+    const token = req.cookies["sabz-token"];
+    if (!token) {
+      return res.status(200).json({ message: "No token provided", success: false });
+    }
+    res.clearCookie("sabz-token", { path: "/" , maxAge : 0 });
+    return res.status(200).json({ message: "User logged out successfully", success: true });
+  } catch (error) {
+    next(error)
+  }
+};

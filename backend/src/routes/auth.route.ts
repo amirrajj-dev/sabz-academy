@@ -5,7 +5,7 @@ const router = express.Router()
 
 
 router.post('/signup', signup as express.RequestHandler);
-router.post('/sigin' , signin as express.RequestHandler);
-router.get('/signout' , signout)
+router.post('/signin' , signin as express.RequestHandler);
+router.get('/signout' , signout as express.RequestHandler);
 
 export default router;
