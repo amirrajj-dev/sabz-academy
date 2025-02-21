@@ -6,10 +6,12 @@ import {getAllCourses,
     getSingleCourse,
     createSession,
     getAllSessions} from '../controllers/course.controller'
+import { upload } from '../../utils/fileUpload'
+import { protectRouteAdmin } from '../middlewares/authMiddleware'
 const router = express.Router()
 
-router.get('/' , getAllCourses)
-router.post('/' , createCourse)
+router.get('/' , getAllCourses as express.RequestHandler)
+router.post('/' , protectRouteAdmin as express.RequestHandler ,  upload ,  createCourse as express.RequestHandler)
 router.delete('/:id' , deleteCourse)
 router.put('/:id' , updateCourse)
 router.get('/:id' , getSingleCourse)
