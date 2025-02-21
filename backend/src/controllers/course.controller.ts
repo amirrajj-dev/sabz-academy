@@ -282,4 +282,29 @@ export const getAllSessions = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {};
+) => {
+  try {
+    const courseID = req.params.id;
+    
+    if (!courseID) {
+      return res.status(400).json({ success: false, message: 'Please provide course ID' });
+    }
+    
+    const course = await prisma.course.findUnique({
+      where: { id: courseID },
+      include: { sessions: true }
+    });
+    
+    if (!course) {
+      return res.status(404).json({ success: false, message: 'Course not found' });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Sessions retrieved successfully',
+      data: course.sessions
+    });
+  } catch (error) {
+    next(error);
+  }
+};
