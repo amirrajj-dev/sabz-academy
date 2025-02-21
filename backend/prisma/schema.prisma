@@ -64,3 +64,23 @@ model Category {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Comment {
+  id            String  @id @default(auto()) @map("_id") @db.ObjectId
+  body          String
+  courseID      String  @db.ObjectId
+  creatorID     String  @db.ObjectId
+  answer        Int
+  score         Int
+  isAnswer      Int
+  mainCommentID String? @db.ObjectId
+
+  course  Course @relation(fields: [courseID], references: [id])
+  creator User   @relation(fields: [creatorID], references: [id])
+
+  replies       Comment[] @relation("CommentReplies")
+  parentComment Comment?  @relation("CommentReplies", fields: [mainCommentID], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
