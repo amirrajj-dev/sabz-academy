@@ -66,10 +66,10 @@ export const createCourse = async (
       data: {
         name,
         description,
-        price,
-        isComplete,
+        price : parseFloat(price),
+        isComplete : parseInt(isComplete),
         status,
-        discount,
+        discount : parseFloat(discount),
         creator: {
 
           connect: {
