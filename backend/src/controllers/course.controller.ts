@@ -36,10 +36,8 @@ export const createCourse = async (
       }
     let coverURL = "";
     if (file) {
-      const result = await cloudinary.uploader.upload(file.path, {
-        resource_type: "auto",
-      });
-      coverURL = result.secure_url;
+      const result = await uploadToCloudinary(file)
+      coverURL = result;
     }
 
     const user = req.user;
@@ -48,10 +46,10 @@ export const createCourse = async (
       data: {
         name,
         description,
-        price: price,
-        isComplete: isComplete,
+        price,
+        isComplete,
         status,
-        discount: discount,
+        discount,
         creator: {
 
           connect: {
@@ -70,6 +68,7 @@ export const createCourse = async (
 
     return res.status(201).json({
       success: true,
+      message : 'course created succesfully',
       data: newCourse,
     });
   } catch (error) {

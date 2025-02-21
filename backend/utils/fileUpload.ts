@@ -1,8 +1,7 @@
-import type { Response, Request, NextFunction } from 'express';
-import prisma from './prisma';
 import cloudinary from './cloudinary';
 import multer from 'multer';
 import path from 'path';
+import fs from 'fs'
 
 const __dirname = path.resolve()
 const storage = multer.diskStorage({
@@ -37,6 +36,10 @@ export const uploadToCloudinary = async (file: Express.Multer.File): Promise<str
       resource_type: 'auto', 
       public_id: `course_files/${Date.now()}_${file.filename}`,
     });
+    console.log(file.path);
+    fs.unlink(file.path, (err) => {
+      if (err) console.error('Failed to delete local file:', err);
+    })
     return result.secure_url;
   } catch (error) {
     console.error('Error in Cloudinary upload:', error);
