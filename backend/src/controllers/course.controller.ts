@@ -224,7 +224,21 @@ export const getSingleCourse = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {};
+) => {
+  try {
+    const courseID = req.params.id
+    if (!courseID) {
+      return res.status(400).json({ success: false, message: 'Please provide course ID' });
+    }
+    const course = await prisma.course.findUnique({ where: { id: courseID } });
+    if (!course) {
+      return res.status(404).json({ success: false, message: 'Course not found' });
+    }
+    return res.status(200).json({ success: true, data: course , message : 'course fetched completely' });
+  } catch (error) {
+    next(error);
+  }
+};
 export const createSession = async (
   req: Request,
   res: Response,
