@@ -74,6 +74,46 @@ export const signup = async (req: Request, res: Response , next : NextFunction) 
   }
 };
 
-export const signin = async (req: Request, res: Response) => {};
+export const signin = async (req: Request, res: Response , next : NextFunction) => {
+  try {
+    const { username, password } = req.body;
+    if (!username.trim() ||!password.trim()) {
+      return res
+       .status(400)
+       .json({ message: "Please fill all fields", success: false });
+    }
+    const user = await prisma.user.findFirst({
+      where : {
+        username
+      }
+    })
+    if (!user) {
+      return res
+       .status(404)
+       .json({ message: "User not found", success: false });
+    }
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res
+       .status(401)
+       .json({ message: "Invalid password", success: false });
+    }
+    if (typeof process.env.JWT_SECRET!== "string") return;
+    const token = await jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
+      expiresIn: "30d",
+    });
+    res.cookie("sabz-token", token, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
+      path: "/",
+      secure: process.env.NODE_ENV!== "development",
+      sameSite: "strict",
+    })
+    const { password: _, role: __, phone: ___, updatedAt : ____,...newUser } = user;
+    return res.status(200).json({ message: "User logged in successfully", success: true, user : newUser });
+  } catch (error) {
+    next(error)
+  }
+};
 
 export const signout = async (req: Request, res: Response) => {};
