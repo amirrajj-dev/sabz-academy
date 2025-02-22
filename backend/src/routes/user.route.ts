@@ -4,7 +4,7 @@ import { getAllUsers , banUser ,  changeUserRole , getUserCourses  , deleteUser 
 
 const router = express.Router()
 
-router.get('/' , getAllUsers as express.RequestHandler)
+router.get('/' , protectRouteAdmin as express.RequestHandler ,  getAllUsers as express.RequestHandler)
 router.put('/' , protectRoute as express.RequestHandler , updateUser as express.RequestHandler)
 router.delete('/:id' , protectRouteAdmin as express.RequestHandler , deleteUser as express.RequestHandler)
 router.put('/ban/:id' , protectRouteAdmin as express.RequestHandler , banUser as express.RequestHandler)
