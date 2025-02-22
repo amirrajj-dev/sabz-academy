@@ -1,6 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
 import prisma from "../../utils/prisma";
 import { uploadToCloudinary } from "../../utils/fileUpload";
+import { deleteCloudinaryFile } from "./course.controller";
 
 export const createArticle = async (
   req: Request,
@@ -153,17 +154,17 @@ export const saveDraft = async (
       });
     }
     const article = await prisma.article.create({
-        data: {
-          title,
-          description,
-          body,
-          cover: coverURL,
-          categoryID,
-          shortName,
-          creatorID: user.id,
-          publish: 0, // i control the articles being a draft article or not with this field :)
-        },
-    })
+      data: {
+        title,
+        description,
+        body,
+        cover: coverURL,
+        categoryID,
+        shortName,
+        creatorID: user.id,
+        publish: 0, // i control the articles being a draft article or not with this field :)
+      },
+    });
     res.status(201).json({
       success: true,
       message: "Article saved as draft successfully",
@@ -173,8 +174,85 @@ export const saveDraft = async (
     next(error);
   }
 };
-export const deleteArticle = (
+export const deleteArticle = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {};
+) => {
+  try {
+    const articleID = req.params.id;
+    if (!articleID) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Please provide article ID" });
+    }
+    const user = req.user;
+    if (!user) {
+      return res
+        .status(401)
+        .json({ success: false, message: "User not authenticated" });
+    }
+    const article = await prisma.article.findFirst({
+      where: { id: articleID },
+      include: { creator: true },
+    });
+    if (!article) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Article not found" });
+    }
+    if (article.creatorID?.toString() !== user.id.toString()) {
+      return res
+        .status(403)
+        .json({
+          success: false,
+          message: "You are not authorized to delete this article",
+        });
+    }
+    try {
+      await deleteCloudinaryFile(article.cover);
+    } catch (cloudinaryError) {
+      console.error("Cloudinary file deletion failed:", cloudinaryError);
+      return res.status(500).json({
+        success: false,
+        message: "Failed to delete Cloudinary file, but article was deleted",
+      });
+    }
+    //delete article from category 
+    const category = await prisma.category.findFirst({
+        where: { articles: { some: { id: articleID } } },
+    })
+    if (category) {
+        await prisma.category.update({
+            where: { id: category.id },
+            data: {
+                articles: {
+                    disconnect: { id: articleID },
+                },
+            },
+        });
+    }
+    //delete article from user
+    const userWhoCreatedThisArticle = await prisma.user.findFirst({
+        where: { id: article.creatorID },
+    })
+    if (userWhoCreatedThisArticle) {
+        await prisma.user.update({
+            where: { id: userWhoCreatedThisArticle.id },
+            data: {
+                articles: {
+                    disconnect: { id: articleID },
+                },
+            },
+        });
+    }
+    await prisma.article.delete({
+      where: { id: articleID },
+    });
+    res
+      .status(200)
+      .json({ success: true, message: "Article deleted successfully" });
+  } catch (error) {
+    next(error);
+  }
+};

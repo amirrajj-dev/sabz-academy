@@ -4,7 +4,7 @@ import { upload, uploadToCloudinary } from "../../utils/fileUpload";
 import cloudinary from "../../utils/cloudinary";
 
 
-const deleteCloudinaryFile = async (fileUrl: string | null) => {
+export const deleteCloudinaryFile = async (fileUrl: string | null) => {
   if (fileUrl) {
     try {
       const parts = fileUrl.split('/');
