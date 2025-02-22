@@ -146,7 +146,50 @@ export const banUser = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {};
+) => {
+  try {
+    const userID = req.params.id
+    if (!userID) {
+      return res.status(400).json({
+        message: "userId is required",
+        success: false,
+      });
+    }
+    const user = await prisma.user.findUnique({
+      where : {id : userID}
+    })
+    if (!user) {
+      return res.status(404).json({
+        message : 'user not found',
+        success : false
+      })
+    }
+    if (user.role === 'ADMIN'){
+      return res.status(400).json({
+        message : 'Admins cannot be banned',
+        success : false
+      })
+    }
+
+    if (user.isBanned) {
+      return res.status(400).json({
+        message: "User is already banned",
+        success: false,
+      });
+    }
+
+    await prisma.user.update({
+      where : {id : userID},
+      data : {isBanned : true}
+    })
+    return res.status(200).json({
+      message : "User banned successfully",
+      success : true
+    })
+  } catch (error) {
+   next(error) 
+  }
+};
 export const getUserCourses = async (
   req: Request,
   res: Response,
