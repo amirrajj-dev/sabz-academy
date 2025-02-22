@@ -220,4 +220,32 @@ export const acceptComment = async (req : Request , res : Response , next : Next
         next(error);
     }
 }
-export const rejectComment = async (req : Request , res : Response , next : NextFunction)=>{}
+export const rejectComment = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const commentID = req.params.id;
+        if (!commentID) {
+            return res.status(400).json({ message: "Please provide comment ID", success: false });
+        }
+
+        const user = req.user;
+        if (!user || user.role !== 'ADMIN') {
+            return res.status(403).json({ message: "You are not authorized to reject this comment", success: false });
+        }
+
+        const comment = await prisma.comment.findUnique({
+            where: { id: commentID },
+        });
+
+        if (!comment) {
+            return res.status(404).json({ message: "Comment not found", success: false });
+        }
+
+        await prisma.comment.delete({
+            where: { id: commentID },
+        });
+
+        return res.status(200).json({ message: "Comment rejected successfully", success: true });
+    } catch (error) {
+        next(error);
+    }
+};
