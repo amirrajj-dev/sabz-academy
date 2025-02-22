@@ -24,6 +24,7 @@ model User {
   role     Role      @default(USER)
   courses  Course[]  @relation("UserToCourse")
   comments Comment[]
+  articles Article[] @relation("UserArticles")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -57,11 +58,11 @@ model Course {
 }
 
 model Category {
-  id      String   @id @default(auto()) @map("_id") @db.ObjectId
-  title   String
-  name    String
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  name      String
+  articles  Article[] @relation("CategoryArticles")
   courses Course[]
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -109,4 +110,21 @@ model Menu {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+model Article {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  body        String
+  cover       String?
+  shortName   String
+  categoryID  String   @db.ObjectId
+  creatorID   String?  @db.ObjectId
+  publish     Int
+
+  category    Category @relation(fields: [categoryID], references: [id] , name: "CategoryArticles")
+  creator     User?    @relation(fields: [creatorID], references: [id] , name: "UserArticles")
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
