@@ -56,4 +56,45 @@ export const getAllMenues = async (req : Request , res : Response , next : NextF
         next(error)
     }
 }
-export const deleteMenues = async (req : Request , res : Response , next : NextFunction)=>{}
+export const deleteMenues = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const menuID = req.params.id;
+
+        if (!menuID) {
+            return res.status(400).json({
+                success: false,
+                message: "Menu ID is required",
+            });
+        }
+        const menu = await prisma.menu.findUnique({
+            where: { id: menuID },
+            include: {
+                children: true
+            },
+        });
+
+        if (!menu) {
+            return res.status(404).json({
+                success: false,
+                message: "Menu not found",
+            });
+        }
+        if (menu.children.length > 0) {
+            return res.status(400).json({
+                success: false,
+                message: "Cannot delete a menu with child menus. Please delete the children first.",
+            });
+        }
+
+        await prisma.menu.delete({
+            where: { id: menuID },
+        });
+
+        res.status(200).json({
+            success: true,
+            message: "Menu deleted successfully",
+        });
+    } catch (error) {
+        next(error);
+    }
+};
