@@ -190,5 +190,34 @@ export const answerComment = async (req: Request, res: Response, next: NextFunct
 };
 
 
-export const acceptComment = async (req : Request , res : Response , next : NextFunction)=>{}
+export const acceptComment = async (req : Request , res : Response , next : NextFunction)=>{
+    try {
+        const commentID = req.params.id
+        if (!commentID) {
+            return res.status(400).json({ message: "Please provide comment ID", success: false });
+        }
+        const user = req.user
+        if (!user) {
+            return res.status(401).json({ message: "User not authenticated", success: false });
+        }
+        const comment = await prisma.comment.findUnique({
+            where: { id: commentID },
+        })
+        if (!comment) {
+            return res.status(404).json({ message: "Comment not found", success: false });
+        }
+        // this is unecessaruy completely beacuse of the protect admin route middleware but i still wanna have it🤓☝🏼🦧
+        if (user.role !== 'ADMIN') {
+            return res.status(403).json({ message: "You are not authorized to accept this comment", success: false });
+        }
+        // Accept the comment
+        await prisma.comment.update({
+            where: { id: commentID },
+            data: { answer: 1 },
+        });
+        return res.status(200).json({ message: "Comment accepted successfully", success: true });
+    } catch (error) {
+        next(error);
+    }
+}
 export const rejectComment = async (req : Request , res : Response , next : NextFunction)=>{}
