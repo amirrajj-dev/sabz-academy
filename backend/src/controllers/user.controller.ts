@@ -225,4 +225,66 @@ export const changeUserRole = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {};
+) => {
+  try {
+    const userID = req.params.id;
+    const { role } = req.body;
+
+    if (!userID || !role) {
+      return res.status(400).json({
+        message: "userId and role are required",
+        success: false,
+      });
+    }
+
+    if (role !== "USER" && role !== "ADMIN") {
+      return res.status(400).json({
+        message: "Invalid role. Allowed roles: USER, ADMIN",
+        success: false,
+      });
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id: userID },
+    });
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+        success: false,
+      });
+    }
+
+    if (user.role === "ADMIN" && role === "USER") {
+      const adminCount = await prisma.user.count({
+        where: { role: "ADMIN" },
+      });
+
+      if (adminCount <= 1) {
+        return res.status(400).json({
+          message: "Cannot remove the last admin",
+          success: false,
+        });
+      }
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: { id: userID },
+      data: { role },
+      select: {
+        id: true,
+        username: true,
+        role: true,
+      },
+    });
+
+    return res.status(200).json({
+      message: `User role updated successfully to ${role}`,
+      success: true,
+      data: updatedUser,
+    });
+
+  } catch (error) {
+    next(error);
+  }
+};

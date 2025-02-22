@@ -9,6 +9,6 @@ router.put('/' , protectRoute as express.RequestHandler , updateUser as express.
 router.delete('/:id' , protectRouteAdmin as express.RequestHandler , deleteUser as express.RequestHandler)
 router.put('/ban/:id' , protectRouteAdmin as express.RequestHandler , banUser as express.RequestHandler)
 router.get('/courses' , protectRoute as express.RequestHandler , getUserCourses as express.RequestHandler)
-router.put('/role' , protectRouteAdmin as express.RequestHandler , changeUserRole as express.RequestHandler)
+router.put('/role/:id' , protectRouteAdmin as express.RequestHandler , changeUserRole as express.RequestHandler)
 
 export default router;
