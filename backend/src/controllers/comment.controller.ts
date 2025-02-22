@@ -128,6 +128,67 @@ export const deleteComment = async (req: Request, res: Response, next: NextFunct
     }
 };
 
-export const answerComment = async (req : Request , res : Response , next : NextFunction)=>{}
+export const answerComment = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const commentID = req.params.id;
+        const { body, courseID } = req.body;
+
+        if (!body || !courseID) {
+            return res.status(400).json({ message: "Please provide all required fields", success: false });
+        }
+        if (!commentID) {
+            return res.status(400).json({ message: "Please provide comment ID", success: false });
+        }
+
+        const user = req.user;
+        if (!user) {
+            return res.status(401).json({ message: "User not authenticated", success: false });
+        }
+
+        const isCourseExist = await prisma.course.findUnique({
+            where: { id: courseID },
+        });
+        if (!isCourseExist) {
+            return res.status(404).json({ message: "Course not found", success: false });
+        }
+
+        const originalComment = await prisma.comment.findUnique({
+            where: { id: commentID },
+        });
+
+        if (!originalComment) {
+            return res.status(404).json({ message: "Comment not found", success: false });
+        }
+
+        if (user.role !== 'ADMIN') {
+            return res.status(403).json({ message: "You are not authorized to answer this comment", success: false });
+        }
+
+        // Create a new comment as a reply
+        const replyComment = await prisma.comment.create({
+            data: {
+                body,
+                courseID,
+                creatorID: user.id,
+                mainCommentID: commentID, // Linking reply to the original comment
+                score: 0, // replis doesent have and need any score
+                answer: 1, // Mark this as an answer
+                isAnswer: 1,
+            },
+        });
+
+        await prisma.comment.update({
+            where: { id: commentID },
+            data: { isAnswer: 1 },
+        });
+
+        return res.status(201).json({ message: "Reply added successfully", success: true, replyComment });
+
+    } catch (error) {
+        next(error);
+    }
+};
+
+
 export const acceptComment = async (req : Request , res : Response , next : NextFunction)=>{}
 export const rejectComment = async (req : Request , res : Response , next : NextFunction)=>{}
