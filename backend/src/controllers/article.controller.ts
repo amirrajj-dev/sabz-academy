@@ -10,7 +10,7 @@ export const createArticle = async (
   try {
       const file = req.file;
       const { title, description, body, categoryID, shortName } = req.body;
-      
+
     const user = req.user;
     if (!user) {
       return res
@@ -80,11 +80,32 @@ export const createArticle = async (
     next(error);
   }
 };
-export const getAllArticles = (
+export const getAllArticles = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {};
+) => {
+    try {
+        const articles  = await prisma.article.findMany({
+            where: {
+                publish: 1,
+            },
+            include: {
+                category: true,
+                creator: true,
+            },
+            orderBy: {
+                createdAt: "desc",
+            },
+        })
+        res.status(200).json({
+            success: true,
+            data: articles,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
 export const saveDraft = (
   req: Request,
   res: Response,
