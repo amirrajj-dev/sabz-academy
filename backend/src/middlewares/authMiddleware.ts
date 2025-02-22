@@ -8,6 +8,7 @@ declare global {
       user: {
         id: string;
         name: string;
+        role : string;
         email: string;
         username: string;
         createdAt: Date;
@@ -39,7 +40,7 @@ export const protectRoute = async (
 
     const user = await prisma.user.findUnique({
       where: { id: decoded.userId },
-      select: { id: true, name: true, email: true, username: true, createdAt: true },
+      select: { id: true, name: true, role : true , email: true, username: true, createdAt: true },
     });
 
     if (!user) {

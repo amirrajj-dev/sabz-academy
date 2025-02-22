@@ -85,7 +85,49 @@ export const createComment = async (req: Request, res: Response, next: NextFunct
     }
 };
 
-export const deleteComment = async (req : Request , res : Response , next : NextFunction)=>{}
+export const deleteComment = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const commentID = req.params.id;
+        if (!commentID) {
+            return res.status(400).json({ message: "Please provide comment ID", success: false });
+        }
+
+        const user = req.user;
+        if (!user) {
+            return res.status(401).json({ message: "User not authenticated", success: false });
+        }
+
+        const comment = await prisma.comment.findUnique({
+            where: { id: commentID },
+            include: { replies: true } // Fetch replies (nested comments)
+        });
+
+        if (!comment) {
+            return res.status(404).json({ message: "Comment not found", success: false });
+        }
+
+        if (!(user.role === 'ADMIN' || comment.creatorID === user.id)) {
+            return res.status(403).json({ message: "You are not authorized to delete this comment", success: false });
+        }
+
+        // Delete all replies first to Prevent Orphaned Comments
+        if (comment.replies.length > 0) {
+            await prisma.comment.deleteMany({
+                where: { mainCommentID: commentID }
+            });
+        }
+        
+        await prisma.comment.delete({
+            where: { id: commentID }
+        });
+
+        return res.status(200).json({ message: "Comment deleted successfully", success: true });
+
+    } catch (error) {
+        next(error);
+    }
+};
+
 export const answerComment = async (req : Request , res : Response , next : NextFunction)=>{}
 export const acceptComment = async (req : Request , res : Response , next : NextFunction)=>{}
 export const rejectComment = async (req : Request , res : Response , next : NextFunction)=>{}
