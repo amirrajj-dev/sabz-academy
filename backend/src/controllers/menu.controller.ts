@@ -40,5 +40,20 @@ export const createMenu = async (req: Request, res: Response, next: NextFunction
         next(error);
     }
 };
-export const getAllMenues = async (req : Request , res : Response , next : NextFunction)=>{}
+export const getAllMenues = async (req : Request , res : Response , next : NextFunction)=>{
+    try {
+        const menues = await prisma.menu.findMany({
+            include : {
+                children : true
+            }
+        })
+        res.status(200).json({
+            success: true,
+            data: menues,
+            message : "Menues fetched succesfully"
+        });
+    } catch (error) {
+        next(error)
+    }
+}
 export const deleteMenues = async (req : Request , res : Response , next : NextFunction)=>{}
