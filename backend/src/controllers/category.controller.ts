@@ -90,7 +90,7 @@ export const deleteCategory = async (req: Request, res: Response, next: NextFunc
         await prisma.course.deleteMany({
           where: { categoryID: categoryID },
         });
-        
+
         await prisma.category.delete({
           where: { id: categoryID },
         });
@@ -106,4 +106,40 @@ export const deleteCategory = async (req: Request, res: Response, next: NextFunc
     }
   };
   
-export const updateCategory = async (req : Request , res : Response , next : NextFunction)=>{}
+export const updateCategory = async (req : Request , res : Response , next : NextFunction)=>{
+    try {
+        const categoryId = req.params.id
+        const { title, name } = req.body;
+        if (!categoryId) {
+            return res.status(400).json({
+                message: "Please provide category ID",
+                success: false,
+            });
+        }
+        if (!title || !name){
+            return res.status(400).json({
+                message: "Please provide title and name",
+            })
+        }
+        const category = await prisma.category.findUnique({
+            where: { id: categoryId },
+        });
+        if (!category) {
+            return res.status(404).json({
+                message: "Category not found",
+                success: false,
+            });
+        }
+        await prisma.category.update({
+            where: { id: categoryId },
+            data: { title, name }
+        })
+        return res.status(200).json({
+            success: true,
+            message: "Category updated successfully",
+            data: category,
+        })
+    } catch (error) {
+       next(error) 
+    }
+}
