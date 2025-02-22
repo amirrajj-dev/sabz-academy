@@ -194,7 +194,33 @@ export const getUserCourses = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {};
+) => {
+  try {
+    const user = req.user;
+    if (!user) {
+      return res.status(401).json({ message: "User not authenticated", success: false });
+    }
+
+    const userWithCourses = await prisma.user.findUnique({
+      where: { id: user.id },
+      include: { courses: { orderBy: { updatedAt: "desc" } } },
+    });
+
+    if (!userWithCourses) {
+      return res.status(404).json({ message: "User not found", success: false });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Courses retrieved successfully",
+      data: userWithCourses.courses || []
+    });
+  } catch (error) {
+    console.error("Error fetching user courses:", error);
+    next(error);
+  }
+};
+
 export const changeUserRole = async (
   req: Request,
   res: Response,
