@@ -1,5 +1,7 @@
 @import "tailwindcss";
-
+@plugin "daisyui" {
+  themes: light --default, dark --prefersdark, cupcake , coffee , abyss , night , dim;
+}
 @theme {
   --color-main-background: #111827;
   --color-main-color: #242a38;
