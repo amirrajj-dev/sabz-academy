@@ -13,4 +13,40 @@
   --color-main-yellow: #f59e0b;
   --color-main-red: #e74c3c;
   --color-border-color: #323349;
+  --font-dana-regular: "dana-regular";
+  --font-dana-bold: "dana-bold";
+  --font-dana-demi: "dana-demi";
+  --font-dana-extra-bold: "dana-extra-bold";
+  --font-dana-extra-light: "dana-extra-light";
+  --font-dana-medium: "dana-medium";
+  --font-dana-light: "dana-light";
+}
+
+@font-face {
+  font-family: "dana-regular";
+  src: url("/fonts/Dana-FaNum-Regular.ttf");
+}
+@font-face {
+  font-family: "dana-bold";
+  src: url("/fonts/Dana-FaNum-Bold.ttf");
+}
+@font-face {
+  font-family: "dana-demi";
+  src: url("/fonts/Dana-FaNum-DemiBold.ttf");
+}
+@font-face {
+  font-family: "dana-extra-bold";
+  src: url("/fonts/Dana-FaNum-ExtraBold.ttf");
+}
+@font-face {
+  font-family: "dana-extra-light";
+  src: url("/fonts/Dana-FaNum-ExtraLight.ttf");
+}
+@font-face {
+  font-family: "dana-medium";
+  src: url("/fonts/Dana-FaNum-Medium.ttf");
+}
+@font-face {
+  font-family: "dana-light";
+  src: url("/fonts/Dana-FaNum-Light.ttf");
 }
