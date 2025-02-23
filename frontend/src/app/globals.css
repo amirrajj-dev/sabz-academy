@@ -50,3 +50,20 @@
   font-family: "dana-light";
   src: url("/fonts/Dana-FaNum-Light.ttf");
 }
+
+body {
+  direction: rtl !important;
+  text-align: right;
+  margin: 0;
+  padding: 0;
+}
+
+html::-webkit-scrollbar {
+  width: 8px;
+}
+html::-webkit-scrollbar-thumb {
+  background-color: #64748b;
+}
+html::-webkit-scrollbar-track {
+  background-color: #242a38;
+}
