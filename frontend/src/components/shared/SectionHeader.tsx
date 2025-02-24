@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
+import clsx from 'clsx'; // Import clsx for dynamic class management
 
 interface SectionHeaderProps {
     title: string;
@@ -22,7 +23,10 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full gap-4 p-4">
             <div className="flex flex-col gap-3">
                 <h2 
-                    className={`text-2xl sm:text-3xl font-bold flex items-center gap-2 before:content-[''] before:size-4 before:rounded-sm before:${squareColor}`}
+                    className={clsx(
+                        "text-2xl sm:text-3xl font-bold flex items-center gap-2", 
+                        `before:content-[''] before:size-4 before:rounded-sm ${squareColor ? `before:${squareColor}` : 'before:bg-red-500'}`
+                    )}
                 >
                     {title}
                 </h2>
