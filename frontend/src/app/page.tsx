@@ -1,5 +1,6 @@
 import Landing from '@/components/ui/Landing'
 import LastCourses from '@/components/ui/LastCourses'
+import NewestCourses from '@/components/ui/NewestCourses'
 import PopularCourses from '@/components/ui/PopularCourses'
 import RoadMaps from '@/components/ui/RoadMaps'
 import Services from '@/components/ui/Services'
@@ -13,6 +14,7 @@ const page = () => {
     <RoadMaps/>
     <PopularCourses/>
     <Services/>
+    <NewestCourses/>
    </div>
 
   )
