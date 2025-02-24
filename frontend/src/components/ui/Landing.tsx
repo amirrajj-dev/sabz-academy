@@ -40,7 +40,7 @@ const Landing = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.5 }}
-          className="font-dana-medium text-xl lg:text-2xl max-w-[420px] leading-9 h-[60px] flex items-center justify-center"
+          className="font-dana-medium text-xl lg:text-2xl max-w-[420px] leading-9 h-[60px] flex items-center"
         >
           <Typewriter
             options={{
