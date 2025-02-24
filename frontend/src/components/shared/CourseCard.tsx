@@ -25,7 +25,7 @@ const CourseCard = ({ course }) => {
       </Link>
       <div className="card-body p-4"> 
         <h2 className="card-title text-xl font-semibold text-base-content">{course.name}</h2>
-        <p className="text-xs text-base-content line-clamp-2 mt-2">{course.description}</p> {/* Reduced text size */}
+        <p className="text-xs text-base-content line-clamp-2 mt-2">{course.description}</p> 
 
         {course.discount > 0 && (
           <div className="badge badge-sm badge-error absolute top-3 left-0 -rotate-30 text-base-content mt-2">
@@ -40,15 +40,21 @@ const CourseCard = ({ course }) => {
           </div>
 
           <div className="flex flex-col relative items-end space-y-1">
-            <span
-              className={`text-sm font-semibold ${course.discount > 0 ? "line-through text-base-content" : ""}`}
-            >
-              {course.price.toLocaleString()} تومان
-            </span>
-            {course.discount > 0 && (
-              <span className="text-sm font-semibold absolute text-nowrap -top-4 text-accent">
-                {((course.price * (100 - course.discount)) / 100).toLocaleString()} تومان
-              </span>
+            {course.discount === 100 ? (
+              <span className="text-sm font-semibold text-success">رایگان!</span>
+            ) : (
+              <>
+                <span
+                  className={`text-sm font-semibold ${course.discount > 0 ? "line-through text-base-content" : ""}`}
+                >
+                  {course.price.toLocaleString()} تومان
+                </span>
+                {course.discount > 0 && (
+                  <span className="text-sm font-semibold absolute text-nowrap -top-4 text-success">
+                    {((course.price * (100 - course.discount)) / 100).toLocaleString()} تومان
+                  </span>
+                )}
+              </>
             )}
           </div>
         </div>

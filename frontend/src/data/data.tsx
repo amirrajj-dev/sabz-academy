@@ -150,7 +150,7 @@ export const courses = [
       "https://sabzlearn.ir/wp-content/uploads/2023/12/ezgif.com-jpg-to-webp-converted-30-1-768x432.webp",
     price: 400000,
     creator: "خانم شریفی",
-    discount: 25,
+    discount: 100,
     score: 4.5,
     userCounts: 1800,
   },
