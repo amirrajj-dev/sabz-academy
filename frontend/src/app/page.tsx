@@ -2,6 +2,7 @@ import Landing from '@/components/ui/Landing'
 import LastCourses from '@/components/ui/LastCourses'
 import PopularCourses from '@/components/ui/PopularCourses'
 import RoadMaps from '@/components/ui/RoadMaps'
+import Services from '@/components/ui/Services'
 import React from 'react'
 
 const page = () => {
@@ -11,6 +12,7 @@ const page = () => {
     <LastCourses/>
     <RoadMaps/>
     <PopularCourses/>
+    <Services/>
    </div>
 
   )
