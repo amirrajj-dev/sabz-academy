@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FaPlay } from "react-icons/fa";
 import { motion } from "framer-motion";
 import Typewriter from "typewriter-effect";
@@ -19,6 +19,12 @@ const Landing = () => {
     }, 5000);
     return () => clearInterval(interval);
   }, []);
+
+  const handleGoToTheRoadMaps = () => {
+    const roadMap = document.querySelector('#roadmaps') as HTMLDivElement;
+    roadMap.scrollIntoView({ behavior: "smooth" });
+  }
+  
 
   return (
     <motion.div
@@ -58,7 +64,7 @@ const Landing = () => {
           transition={{ duration: 0.8, delay: 0.3 }}
           className="flex flex-col sm:flex-row items-center gap-4 lg:gap-8"
         >
-          <button className="btn btn-primary btn-lg w-full sm:w-auto">
+          <button onClick={handleGoToTheRoadMaps} className="btn btn-primary btn-lg w-full sm:w-auto">
             از این مسیرها شروع کن
           </button>
           <div className="flex items-center gap-3">
