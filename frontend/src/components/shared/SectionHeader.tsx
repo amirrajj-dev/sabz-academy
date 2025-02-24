@@ -21,20 +21,17 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
     return (
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full gap-4 p-4">
             <div className="flex flex-col gap-3">
-                {/* Title with Square */}
                 <h2 
                     className={`text-2xl sm:text-3xl font-bold flex items-center gap-2 before:content-[''] before:size-4 before:rounded-sm before:${squareColor}`}
                 >
                     {title}
                 </h2>
 
-                {/* Description */}
                 <h5 className="text-gray-500 text-base sm:text-lg max-w-xl">{desc}</h5>
             </div>
 
-            {/* Link Button (Moves Below on Small Screens) */}
             {haveLink && (
-                <Link href={linkUrl}>
+                <Link href={linkUrl} className='self-end'>
                     <button className="btn btn-success btn-lg btn-soft transition-transform transform hover:scale-105 w-full sm:w-auto">
                         {linkText}
                     </button>
