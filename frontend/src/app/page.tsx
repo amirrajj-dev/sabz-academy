@@ -1,4 +1,5 @@
 import Landing from '@/components/ui/Landing'
+import LastArticles from '@/components/ui/LastArticles'
 import LastCourses from '@/components/ui/LastCourses'
 import NewestCourses from '@/components/ui/NewestCourses'
 import PopularCourses from '@/components/ui/PopularCourses'
@@ -15,6 +16,7 @@ const page = () => {
     <PopularCourses/>
     <Services/>
     <NewestCourses/>
+    <LastArticles/>
    </div>
 
   )

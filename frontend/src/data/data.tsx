@@ -220,28 +220,67 @@ export const services = [
     id: 1,
     title: "تضمین کاملترین محتوا",
     desc: "بزار خیالت راحت کنم توی دوره هامون به ریز ترین موارد پرداختیم بعداز دیدن این دوره نیاز به هیچ آموزش دیگه ای نداری.",
-    icon: <IoBookOutline/>,
-    color : "bg-primary"
+    icon: <IoBookOutline />,
+    color: "bg-primary",
   },
   {
     id: 2,
     title: "پشتیبانی دائمی",
     desc: "هرجا سوالی داشتی به مشکل خوردی بچه های تیم آمادن که مشکلت رو حل کنن تلاشمون اینه بدون نگرانی دوره رو کامل کنی.",
-    icon: <LiaComments/>,
-    color : "bg-warning"
+    icon: <LiaComments />,
+    color: "bg-warning",
   },
   {
     id: 3,
     title: "پروژه محور در راستای بازار کار",
     desc: "کل تمرکز ما رو این هستش بعداز تموم شدن دوره شخص بتونه با اعتماد به نفس کامل پروژه بزنه واقدام کنه برای کسب درآمد.",
-    icon: <IoBarChartOutline/>,
-    color : "bg-success"
+    icon: <IoBarChartOutline />,
+    color: "bg-success",
   },
   {
     id: 4,
     title: "سراغ حرفه ای ها رفتیم",
     desc: "به جرعت میتونم بگم سخت گیرترین شرایط جذب مدرس داریم چون برامون مهمه محتوا خیلی ساده و روان بیان بشه که توی یادگیری به مشکل نخورید.",
-    icon: <LuClipboardCheck/> ,
-    color : "bg-error"
+    icon: <LuClipboardCheck />,
+    color: "bg-error",
+  },
+];
+
+export const articles = [
+  {
+    id : 1 ,
+    title: "آزمون آیلتس چیست و چه کاربردی دارد؟",
+    description:
+      "آیلتس (IELTS) که مخفف “International English Language Testing System” است، یکی از معتبرترین آزمون‌های بین‌المللی برای",
+    cover: "https://sabzlearn.ir/wp-content/uploads/2025/02/en-768x403.jpg",
+    creator: "شهرام خندقی",
+    createdAt: "05/12/1403",
+  },
+  {
+    id : 2 ,
+    title: "آزمون آیلتس چیست و چه کاربردی دارد؟",
+    description:
+      "آیلتس (IELTS) که مخفف “International English Language Testing System” است، یکی از معتبرترین آزمون‌های بین‌المللی برای",
+    cover: "https://sabzlearn.ir/wp-content/uploads/2025/02/en-768x403.jpg",
+    creator: "شهرام خندقی",
+    createdAt: "05/12/1403",
+  },
+  {
+    id : 3 ,
+    title: "آزمون آیلتس چیست و چه کاربردی دارد؟",
+    description:
+      "آیلتس (IELTS) که مخفف “International English Language Testing System” است، یکی از معتبرترین آزمون‌های بین‌المللی برای",
+    cover: "https://sabzlearn.ir/wp-content/uploads/2025/02/en-768x403.jpg",
+    creator: "شهرام خندقی",
+    createdAt: "05/12/1403",
+  },
+  {
+    id : 4 ,
+    title: "آزمون آیلتس چیست و چه کاربردی دارد؟",
+    description:
+      "آیلتس (IELTS) که مخفف “International English Language Testing System” است، یکی از معتبرترین آزمون‌های بین‌المللی برای",
+    cover: "https://sabzlearn.ir/wp-content/uploads/2025/02/en-768x403.jpg",
+    creator: "شهرام خندقی",
+    createdAt: "05/12/1403",
   },
 ];
