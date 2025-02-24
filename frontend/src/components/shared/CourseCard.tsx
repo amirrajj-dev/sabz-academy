@@ -8,7 +8,7 @@ import Link from "next/link";
 const CourseCard = ({ course }) => {
   return (
     <motion.div
-      className="card w-full bg-base-200 shadow-lg rounded-2xl hover:shadow-xl transition-shadow duration-300 border border-gray-700"
+      className="card w-full relative bg-base-200 shadow-lg rounded-2xl hover:shadow-xl transition-all duration-300 border hover:scale-105 border-gray-700"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
@@ -28,7 +28,7 @@ const CourseCard = ({ course }) => {
         <p className="text-xs text-base-content line-clamp-2 mt-2">{course.description}</p> {/* Reduced text size */}
 
         {course.discount > 0 && (
-          <div className="badge badge-secondary text-base-content mt-2">
+          <div className="badge badge-sm badge-error absolute top-3 left-0 -rotate-30 text-base-content mt-2">
             {course.discount}% تخفیف
           </div>
         )}
@@ -39,14 +39,14 @@ const CourseCard = ({ course }) => {
             <span className="translate-y-0.5">{course.score}</span>
           </div>
 
-          <div className="flex flex-col items-end space-y-1">
+          <div className="flex flex-col relative items-end space-y-1">
             <span
               className={`text-sm font-semibold ${course.discount > 0 ? "line-through text-base-content" : ""}`}
             >
               {course.price.toLocaleString()} تومان
             </span>
             {course.discount > 0 && (
-              <span className="text-sm font-semibold text-pretty text-accent">
+              <span className="text-sm font-semibold absolute text-nowrap -top-4 text-accent">
                 {((course.price * (100 - course.discount)) / 100).toLocaleString()} تومان
               </span>
             )}
