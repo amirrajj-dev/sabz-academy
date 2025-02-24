@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import "./globals.css";
 import Navbar from "@/components/shared/navbar/Navbar";
 import Footer from "@/components/shared/footer/Footer";
 
@@ -11,16 +10,16 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default function HomeLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-theme="dark" className="font-dana-regular">
-      <body>
-        {children}
-      </body>
-    </html>
+    <div>
+      <Navbar />
+      {children}
+      <Footer />
+    </div>
   );
 }
