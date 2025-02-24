@@ -107,5 +107,45 @@ export const courses = [
     discount: 25,
     score: 4.5,
     userCounts: 1800
+  },
+  {
+    name: "دوره تخصصی یادگیری ماشین",
+    description: "این دوره برای علاقه‌مندان به یادگیری ماشین طراحی شده است و تکنیک‌های پیشرفته را آموزش می‌دهد.",
+    cover: "https://sabzlearn.ir/wp-content/uploads/2024/04/IMAGE-1403-02-20-17_59_09_11zon-768x432.webp",
+    price: 800000,
+    creator: "آقای احمدی",
+    discount: 10,
+    score: 4.9,
+    userCounts: 1000
+  },
+  {
+    name: "آموزش گرافیک رایانه‌ای",
+    description: "در این دوره، شما یاد می‌گیرید چگونه طراحی‌های گرافیکی زیبا و حرفه‌ای بسازید.",
+    cover: "https://sabzlearn.ir/wp-content/uploads/2023/12/ezgif.com-jpg-to-webp-converted-30-1-768x432.webp",
+    price: 400000,
+    creator: "خانم شریفی",
+    discount: 25,
+    score: 4.5,
+    userCounts: 1800
+  },
+  {
+    name: "دوره تخصصی یادگیری ماشین",
+    description: "این دوره برای علاقه‌مندان به یادگیری ماشین طراحی شده است و تکنیک‌های پیشرفته را آموزش می‌دهد.",
+    cover: "https://sabzlearn.ir/wp-content/uploads/2024/04/IMAGE-1403-02-20-17_59_09_11zon-768x432.webp",
+    price: 800000,
+    creator: "آقای احمدی",
+    discount: 10,
+    score: 4.9,
+    userCounts: 1000
+  },
+  {
+    name: "آموزش گرافیک رایانه‌ای",
+    description: "در این دوره، شما یاد می‌گیرید چگونه طراحی‌های گرافیکی زیبا و حرفه‌ای بسازید.",
+    cover: "https://sabzlearn.ir/wp-content/uploads/2023/12/ezgif.com-jpg-to-webp-converted-30-1-768x432.webp",
+    price: 400000,
+    creator: "خانم شریفی",
+    discount: 25,
+    score: 4.5,
+    userCounts: 1800
   }
 ];  
