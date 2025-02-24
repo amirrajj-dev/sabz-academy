@@ -1,11 +1,11 @@
+import Landing from '@/components/ui/Landing'
 import React from 'react'
 
 const page = () => {
   return (
-   <>
-    <div className='bg-accent text-accent-content p-4 m-4 rounded-md font-dan'>سلام من امیرحسینم</div>
-    
-   </>
+   <div className='container mx-auto max-w-7xl mt-20'>
+    <Landing/>
+   </div>
 
   )
 }
