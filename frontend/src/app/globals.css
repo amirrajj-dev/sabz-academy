@@ -12,48 +12,74 @@
   --font-dana-light: "dana-light";
 }
 
-@font-face {
-  font-family: "dana-regular";
-  src: url("/fonts/Dana-FaNum-Regular.ttf");
-}
-@font-face {
-  font-family: "dana-bold";
-  src: url("/fonts/Dana-FaNum-Bold.ttf");
-}
-@font-face {
-  font-family: "dana-demi";
-  src: url("/fonts/Dana-FaNum-DemiBold.ttf");
-}
-@font-face {
-  font-family: "dana-extra-bold";
-  src: url("/fonts/Dana-FaNum-ExtraBold.ttf");
-}
-@font-face {
-  font-family: "dana-extra-light";
-  src: url("/fonts/Dana-FaNum-ExtraLight.ttf");
-}
-@font-face {
-  font-family: "dana-medium";
-  src: url("/fonts/Dana-FaNum-Medium.ttf");
-}
-@font-face {
-  font-family: "dana-light";
-  src: url("/fonts/Dana-FaNum-Light.ttf");
+@layer base {
+
+  @font-face {
+    font-family: "dana-regular";
+    src: url("/fonts/Dana-FaNum-Regular.ttf");
+  }
+  @font-face {
+    font-family: "dana-bold";
+    src: url("/fonts/Dana-FaNum-Bold.ttf");
+  }
+  @font-face {
+    font-family: "dana-demi";
+    src: url("/fonts/Dana-FaNum-DemiBold.ttf");
+  }
+  @font-face {
+    font-family: "dana-extra-bold";
+    src: url("/fonts/Dana-FaNum-ExtraBold.ttf");
+  }
+  @font-face {
+    font-family: "dana-extra-light";
+    src: url("/fonts/Dana-FaNum-ExtraLight.ttf");
+  }
+  @font-face {
+    font-family: "dana-medium";
+    src: url("/fonts/Dana-FaNum-Medium.ttf");
+  }
+  @font-face {
+    font-family: "dana-light";
+    src: url("/fonts/Dana-FaNum-Light.ttf");
+  }
+  
+  body {
+    direction: rtl !important;
+    text-align: right;
+    margin: 0;
+    padding: 0;
+  }
+  
+  html::-webkit-scrollbar {
+    width: 8px;
+  }
+  html::-webkit-scrollbar-thumb {
+    background-color: #64748b;
+  }
+  html::-webkit-scrollbar-track {
+    background-color: #242a38;
+  }
+
+  .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused){
+    background-color: #15191e !important;
 }
 
-body {
-  direction: rtl !important;
-  text-align: right;
-  margin: 0;
-  padding: 0;
+.ck.ck-editor__main>.ck-editor__editable:not(.ck-blurred){
+    background-color: #15191e !important;
+}
+.ck.ck-editor {
+    position: relative;
+    margin-top: 1.5rem !important;
 }
 
-html::-webkit-scrollbar {
-  width: 8px;
+.ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) {
+    border-color: none !important;
+    height: 200px !important;
 }
-html::-webkit-scrollbar-thumb {
-  background-color: #64748b;
+.ck.ck-editor__main>.ck-editor__editable:not(.ck-blurred){
+    height: 200px !important;
 }
-html::-webkit-scrollbar-track {
-  background-color: #242a38;
+.ck.ck-editor__editable.ck-focused:not(.ck-editor__nested-editable){
+  border : none !important
+}
 }
