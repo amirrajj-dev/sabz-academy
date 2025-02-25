@@ -2,6 +2,7 @@ import React from "react";
 import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
 import AddCategoryModal from "../modals/AddCategoryModal";
 import EditCategoryModal from "../modals/EditCategoryModal";
+import DeleteCategoryModal from "../modals/DeleteCategoryModal";
 
 const CategoriesPage = () => {
   const categories = [
@@ -50,9 +51,7 @@ const CategoriesPage = () => {
                  <EditCategoryModal />
                 </td>
                 <td className="p-4">
-                  <button className="btn btn-error btn-sm hover:scale-110 transition-transform">
-                    <FaTrash />
-                  </button>
+                  <DeleteCategoryModal/>
                 </td>
               </tr>
             ))}
