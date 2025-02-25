@@ -304,7 +304,7 @@ export const adminPannelCardInfo = [
   {id : 6 , title : "جلسات" , count : "20" , icon : <RiGraduationCapFill/> , bgColor : 'bg-amber-500' , link : "sessions"},
   {id : 7 , title : "منو ها" , count : "3" , icon : <IoMenu/> , bgColor : 'bg-pink-500' , link : "menues"} ,
   {id : 8 , title : "کامنت ه" , count : "20" , icon : <FaComments/> , bgColor : 'bg-blue-500' , link : "comments"},
-  {id : 9 , title : "دوره ها" , count : "3" , icon : <IoMdFolder/> , bgColor : 'bg-info' , link : "courses"},
+  {id : 9 , title : "دوره ها" , count : "3" , icon : <IoMdFolder/> , bgColor : 'bg-slate-500' , link : "courses"},
   {id : 10 , title : "تخفیف ها" , count : "6" , icon : <MdDiscount/> , bgColor : 'bg-warning' , link : "discounts"},
   {id : 11 , title : "تیکت ها" , count : "4" , icon : <FaTicketAlt/> , bgColor : 'bg-violet-500' , link : "tickets"},
   {id : 12 , title : "برگزاری کمپین" , count : "7" , icon : <MdCampaign/> , bgColor : 'bg-lime-500' , link : "campaigan"}
