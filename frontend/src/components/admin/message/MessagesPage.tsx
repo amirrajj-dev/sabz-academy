@@ -1,8 +1,8 @@
 import React from "react";
 import { FaEye, FaTrash, FaReply } from "react-icons/fa";
 import SeeMessageModal from "../../modals/messages/SeeMessageModal";
-import DeleteMessageModal from "../../modals/messages/DeleteMessageModal";
 import ReplyMessageModal from "../../modals/messages/ReplyMessageModal";
+import DeleteModal from "@/components/modals/shared/DeleteModal";
 
 const MessagesPage = () => {
   const messages = [
@@ -41,7 +41,7 @@ const MessagesPage = () => {
                  <SeeMessageModal/>
                 </td>
                 <td className="p-4">
-                  <DeleteMessageModal/>
+                  <DeleteModal title="حذف پیغام" message="آیا از حذف پیغام اطمینان دارید ؟" messageDesc="این اقدام قابل بازگشت نیست !" deleteBtnText="حذف پیغام"/>
                 </td>
                 <td className="p-4">
                 <ReplyMessageModal/>

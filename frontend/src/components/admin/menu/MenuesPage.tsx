@@ -3,6 +3,7 @@ import React from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import AddMenuModal from "@/components/modals/menu/AddMenuModal";
 import EditMenuModal from "@/components/modals/menu/EditMenuModal";
+import DeleteModal from "@/components/modals/shared/DeleteModal";
 const MenuesPage = () => {
   const menus = [
     { id: 1, title: "صفحه اصلی", link: "/" },
@@ -47,12 +48,7 @@ const MenuesPage = () => {
                  <EditMenuModal/>
                 </td>
                 <td>
-                  <button
-                    className="btn btn-sm btn-error"
-                    onClick={() => handleDelete(menu.id)}
-                  >
-                    <FaTrash />
-                  </button>
+                <DeleteModal title="حذف منو 📄" message="آیا از حذف منو اطمینان دارید ؟" messageDesc="این اقدام قابل بازگشت نیست !" deleteBtnText="حذف منو"/>
                 </td>
               </tr>
             ))}

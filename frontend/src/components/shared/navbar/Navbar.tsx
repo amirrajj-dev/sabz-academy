@@ -10,9 +10,10 @@ import ThemeMenu from "./ThemeMenu";
 import CoursesMenu from "./CourseMenu";
 import { motion } from "framer-motion";
 
+
 const Navbar = () => {
   const [theme, setTheme] = useState("light");
-  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+  const [innerWidth, setInnerWidth] = useState<number>(0);
   const [cartOpen, setCartOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [themeMenuOpen, setThemeMenuOpen] = useState(false);

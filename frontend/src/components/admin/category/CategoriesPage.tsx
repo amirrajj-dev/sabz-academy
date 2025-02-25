@@ -2,7 +2,7 @@ import React from "react";
 import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
 import AddCategoryModal from "../..//modals/category/AddCategoryModal";
 import EditCategoryModal from "../../modals/category/EditCategoryModal";
-import DeleteCategoryModal from "../../modals/category/DeleteCategoryModal";
+import DeleteModal from "@/components/modals/shared/DeleteModal";
 
 const CategoriesPage = () => {
   const categories = [
@@ -51,7 +51,7 @@ const CategoriesPage = () => {
                  <EditCategoryModal />
                 </td>
                 <td className="p-4">
-                  <DeleteCategoryModal/>
+                  <DeleteModal title="حذف دسته بندی 📂" message="آیا از حذف این دسته بندی اطمینان دارید" deleteBtnText="حذف دسته بندی" messageDesc="این اقدام قابل بازگشت نیست !"  />
                 </td>
               </tr>
             ))}

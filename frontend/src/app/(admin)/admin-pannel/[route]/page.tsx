@@ -13,8 +13,7 @@ import TicketsPage from "@/components/admin/ticket/TicketsPage";
 import DiscountsPage from "@/components/admin/discount/DiscountsPage";
 
 const Page = async ({ params }: { params: { route: string } }) => {
-  const route = (await params).route.toLowerCase();
-
+  const route = (await params).route.toLocaleLowerCase()
   const validRoutes = [
     "users",
     "categories",
@@ -30,6 +29,7 @@ const Page = async ({ params }: { params: { route: string } }) => {
   ];
 
   if (!validRoutes.includes(route)) {
+    console.log('erewrwwe');
     notFound();
   }
 

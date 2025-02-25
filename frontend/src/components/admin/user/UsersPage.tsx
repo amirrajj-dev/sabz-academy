@@ -4,9 +4,9 @@ import { FaEdit, FaTrash, FaPlus, FaBan, FaUserShield } from "react-icons/fa";
 import { motion } from "framer-motion";
 import AddUserModal from "../../modals/user/AdduserModal";
 import EditUserModal from "../../modals/user/EditUerModal";
-import DeleteUserModal from "../../modals/user/DeleteUserModal";
 import BanUserModal from "../../modals/user/BanUserModal";
 import ChangeRoleModal from "../../modals/user/ChangeRoleModal";
+import DeleteModal from "@/components/modals/shared/DeleteModal";
 
 const UsersPage = () => {
   const [users, setUsers] = useState([
@@ -55,7 +55,7 @@ const UsersPage = () => {
                   <EditUserModal/>
                 </td>
                 <td className="p-4">
-                 <DeleteUserModal/>
+                 <DeleteModal title="حذف کاربر 👤" message="آیا از حذف کاربر اطمینان دارید ؟" messageDesc="این اقدام قابل بازگشت نیست !" deleteBtnText="حذف کاربر"  />
                 </td>
                 <td className="p-4">
                   <ChangeRoleModal/>

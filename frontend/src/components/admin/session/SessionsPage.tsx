@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import AddSessionModal from '../../modals/session/AddSessionModal';
+import DeleteModal from '@/components/modals/shared/DeleteModal';
 
 const SessionsPage = () => {
   const [sessions, setSessions] = useState([
@@ -44,14 +45,7 @@ const SessionsPage = () => {
                 <td className="p-4">{session.duration}</td>
                 <td className="p-4">{session.course}</td>
                 <td className="p-4">
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="btn btn-error btn-sm"
-                    onClick={() => handleDeleteSession(session.id)}
-                  >
-                    <FaTrash />
-                  </motion.button>
+                  <DeleteModal message='آیا از حذف این جلسه اطمینان دارید ؟' messageDesc='این اقدام قابل بازگشت نیست !' title='حذف جلسه 📚' deleteBtnText='حذف جلسه' deleteId={''} onDelete={(id)=>{}} />
                 </td>
               </tr>
             ))}

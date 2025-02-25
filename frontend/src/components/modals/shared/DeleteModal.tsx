@@ -3,14 +3,21 @@ import React, { useState } from "react";
 import { FaTimes, FaTrash } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 
-const DeleteUserModal = ({ user, onDelete }) => {
+interface DeleteModalProps {
+    title : string
+    message : string
+    messageDesc  : string
+    deleteId : string
+    onDelete : (id : string) => void
+    deleteBtnText : string
+}
+
+
+const DeleteModal = ({ message , messageDesc , onDelete , title , deleteId , deleteBtnText } : DeleteModalProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleDeleteUser = () => {
-    if (user) {
-      onDelete(user.id);
-      setIsOpen(false);
-    }
+  const handleDelete = () => {
+    onDelete(deleteId)
   };
 
   return (
@@ -41,24 +48,24 @@ const DeleteUserModal = ({ user, onDelete }) => {
             >
               <div className="flex justify-between items-center border-b pb-3">
                 <h2 className="text-xl font-bold text-base-content">
-                  ❗ حذف کاربر
+                  {title}
                 </h2>
                 <motion.button
                   whileHover={{ scale: 1.2 }}
                   whileTap={{ scale: 0.9 }}
-                  className="text-base-content hover:text-error transition"
+                  className="text-base-content cursor-pointer hover:text-error transition"
                   onClick={() => setIsOpen(false)}
                 >
                   <FaTimes className="text-lg" />
                 </motion.button>
               </div>
 
-              <div className="mt-4 flex flex-col">
+              <div className="mt-4 flex flex-col items-start">
                 <p className="text-lg text-base-content">
-                  آیا از حذف این کاربر اطمینان دارید؟
+                  {message}
                 </p>
                 <p className="text-sm text-gray-500 mt-2">
-                  این اقدام قابل بازگشت نیست!
+                  {messageDesc}
                 </p>
               </div>
 
@@ -74,10 +81,10 @@ const DeleteUserModal = ({ user, onDelete }) => {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="btn btn-danger"
-                  onClick={handleDeleteUser}
+                  className="btn btn-error"
+                  onClick={handleDelete}
                 >
-                  حذف کاربر
+                  {deleteBtnText}
                 </motion.button>
               </div>
             </motion.div>
@@ -88,4 +95,4 @@ const DeleteUserModal = ({ user, onDelete }) => {
   );
 };
 
-export default DeleteUserModal;
+export default DeleteModal;
