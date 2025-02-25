@@ -1,20 +1,19 @@
 import React from "react";
 import { notFound } from "next/navigation";
-import UsersPage from "@/components/admin/UsersPage";
-import CategoriesPage from "@/components/admin/CategoriesPage";
-import SessionsPage from "@/components/admin/SessionsPage";
-import ArticlesPage from "@/components/admin/ArticlesPage";
-import MessagesPage from "@/components/admin/MessagesPage";
-import CoursesPage from "@/components/admin/CoursesPage";
-import CommentsPage from "@/components/admin/CommentsPage";
-import MenuesPage from "@/components/admin/MenuesPage";
-import CampaigansPage from "@/components/admin/CampaigansPage";
-import TicketsPage from "@/components/admin/TicketsPage";
-import DiscountsPage from "@/components/admin/DiscountsPage";
+import UsersPage from "@/components/admin/user/UsersPage";
+import CategoriesPage from "@/components/admin/category/CategoriesPage";
+import SessionsPage from "@/components/admin/session/SessionsPage";
+import ArticlesPage from "@/components/admin/article/ArticlesPage";
+import MessagesPage from "@/components/admin/message/MessagesPage";
+import CoursesPage from "@/components/admin/course/CoursesPage";
+import CommentsPage from "@/components/admin/comment/CommentsPage";
+import MenuesPage from "@/components/admin/menu/MenuesPage";
+import CampaigansPage from "@/components/admin/campaigan/CampaigansPage";
+import TicketsPage from "@/components/admin/ticket/TicketsPage";
+import DiscountsPage from "@/components/admin/discount/DiscountsPage";
 
 const Page = async ({ params }: { params: { route: string } }) => {
-  const route = params.route.toLowerCase();
-  console.log(route);
+  const route = (await params).route.toLowerCase();
 
   const validRoutes = [
     "users",

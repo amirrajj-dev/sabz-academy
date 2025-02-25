@@ -2,11 +2,11 @@
 import React, { useState } from "react";
 import { FaEdit, FaTrash, FaPlus, FaBan, FaUserShield } from "react-icons/fa";
 import { motion } from "framer-motion";
-import AddUserModal from "../modals/user/AdduserModal";
-import EditUserModal from "../modals/user/EditUerModal";
-import DeleteUserModal from "../modals/user/DeleteUserModal";
-import BanUserModal from "../modals/user/BanUserModal";
-import ChangeRoleModal from "../modals/user/ChangeRoleModal";
+import AddUserModal from "../../modals/user/AdduserModal";
+import EditUserModal from "../../modals/user/EditUerModal";
+import DeleteUserModal from "../../modals/user/DeleteUserModal";
+import BanUserModal from "../../modals/user/BanUserModal";
+import ChangeRoleModal from "../../modals/user/ChangeRoleModal";
 
 const UsersPage = () => {
   const [users, setUsers] = useState([

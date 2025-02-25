@@ -1,8 +1,8 @@
 import React from "react";
 import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
-import AddCategoryModal from "../modals/category/AddCategoryModal";
-import EditCategoryModal from "../modals/category/EditCategoryModal";
-import DeleteCategoryModal from "../modals/category/DeleteCategoryModal";
+import AddCategoryModal from "../..//modals/category/AddCategoryModal";
+import EditCategoryModal from "../../modals/category/EditCategoryModal";
+import DeleteCategoryModal from "../../modals/category/DeleteCategoryModal";
 
 const CategoriesPage = () => {
   const categories = [
