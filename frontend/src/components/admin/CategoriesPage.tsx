@@ -1,6 +1,7 @@
 import React from "react";
 import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
 import AddCategoryModal from "../modals/AddCategoryModal";
+import EditCategoryModal from "../modals/EditCategoryModal";
 
 const CategoriesPage = () => {
   const categories = [
@@ -46,9 +47,7 @@ const CategoriesPage = () => {
                   </span>
                 </td>
                 <td className="p-4">
-                  <button className="btn btn-warning btn-sm hover:scale-110 transition-transform">
-                    <FaEdit />
-                  </button>
+                 <EditCategoryModal />
                 </td>
                 <td className="p-4">
                   <button className="btn btn-error btn-sm hover:scale-110 transition-transform">
