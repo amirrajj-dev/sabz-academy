@@ -296,16 +296,16 @@ export const articles = [
 
 
 export const adminPannelCardInfo = [
-  {id : 1 , title : "خانه"  , count : "صفحه اصلی" , icon : <FaHome/> , bgColor : 'bg-indigo-500'},
-  {id : 2 , title : "دسته بندی ها"  , count : "4" , icon : <MdCategory/> , bgColor : 'bg-emerald-500'},
-  {id : 3 , title : "کاربران" , count : "20" , icon : <FaUsers/> , bgColor : 'bg-zinc-500'},
-  {id : 4 , title : "پیغام ها" , count : "10" , icon : <MdMessage/> , bgColor : 'bg-rose-500'},
-  {id : 5 , title : "مقاله ها"  , count : "5" , icon : <MdArticle/> , bgColor : 'bg-cyan-500'},
-  {id : 6 , title : "جلسات" , count : "20" , icon : <RiGraduationCapFill/> , bgColor : 'bg-amber-500'},
-  {id : 7 , title : "منو ها" , count : "3" , icon : <IoMenu/> , bgColor : 'bg-pink-500'} ,
-  {id : 8 , title : "کامنت ه" , count : "20" , icon : <FaComments/> , bgColor : 'bg-blue-500'},
-  {id : 9 , title : "دوره ها" , count : "3" , icon : <IoMdFolder/> , bgColor : 'bg-info'},
-  {id : 10 , title : "تخفیف ها" , count : "6" , icon : <MdDiscount/> , bgColor : 'bg-warning'},
-  {id : 11 , title : "تیکت ها" , count : "4" , icon : <FaTicketAlt/> , bgColor : 'bg-violet-500'},
-  {id : 12 , title : "برگزاری کمپین" , count : "7" , icon : <MdCampaign/> , bgColor : 'bg-lime-500'}
+  {id : 1 , title : "خانه"  , count : "صفحه اصلی" , icon : <FaHome/> , bgColor : 'bg-indigo-500' , link : "/"},
+  {id : 2 , title : "دسته بندی ها"  , count : "4" , icon : <MdCategory/> , bgColor : 'bg-emerald-500' , link : "categories"},
+  {id : 3 , title : "کاربران" , count : "20" , icon : <FaUsers/> , bgColor : 'bg-zinc-500' , link : "users"},
+  {id : 4 , title : "پیغام ها" , count : "10" , icon : <MdMessage/> , bgColor : 'bg-rose-500' , link : "messages"},
+  {id : 5 , title : "مقاله ها"  , count : "5" , icon : <MdArticle/> , bgColor : 'bg-cyan-500' , link : "articles"},
+  {id : 6 , title : "جلسات" , count : "20" , icon : <RiGraduationCapFill/> , bgColor : 'bg-amber-500' , link : "sessions"},
+  {id : 7 , title : "منو ها" , count : "3" , icon : <IoMenu/> , bgColor : 'bg-pink-500' , link : "menues"} ,
+  {id : 8 , title : "کامنت ه" , count : "20" , icon : <FaComments/> , bgColor : 'bg-blue-500' , link : "comments"},
+  {id : 9 , title : "دوره ها" , count : "3" , icon : <IoMdFolder/> , bgColor : 'bg-info' , link : "courses"},
+  {id : 10 , title : "تخفیف ها" , count : "6" , icon : <MdDiscount/> , bgColor : 'bg-warning' , link : "discounts"},
+  {id : 11 , title : "تیکت ها" , count : "4" , icon : <FaTicketAlt/> , bgColor : 'bg-violet-500' , link : "tickets"},
+  {id : 12 , title : "برگزاری کمپین" , count : "7" , icon : <MdCampaign/> , bgColor : 'bg-lime-500' , link : "campaigan"}
 ]

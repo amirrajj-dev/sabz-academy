@@ -20,7 +20,7 @@ export default function RootLayout({
       <h2 className="font-bold  text-3xl">amirrajj عزیز؛ خوش اومدی 🙌</h2>
       <div className="grid grid-cols-4 gap-4 mt-14">
         {adminPannelCardInfo.map(item=>(
-            <AdminPannelCard key={item.id} bgColor={item.bgColor} count={item.count} icon={item.icon} linkUrl={'/'} title={item.title}  />
+            <AdminPannelCard key={item.id} bgColor={item.bgColor} count={item.count} icon={item.icon} linkUrl={item.link} title={item.title}  />
         ))}
       </div>
       {children}

@@ -63,7 +63,7 @@ const Page = async ({ params }: { params: { route: string } }) => {
     }
   };
 
-  return <div>{renderComponent()}</div>;
+  return <div className="mt-20">{renderComponent()}</div>;
 };
 
 export default Page;
