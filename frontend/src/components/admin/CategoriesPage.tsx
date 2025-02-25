@@ -1,5 +1,6 @@
 import React from "react";
 import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
+import AddCategoryModal from "../modals/AddCategoryModal";
 
 const CategoriesPage = () => {
   const categories = [
@@ -13,9 +14,7 @@ const CategoriesPage = () => {
 
       <div className="flex flex-col gap-4 sm:flex-row sm:gap-0 justify-between items-center mb-6">
         <h1 className="text-3xl font-extrabold text-base-content">📂 دسته‌بندی‌ها</h1>
-        <button className="btn btn-success flex items-center gap-2 shadow-md hover:scale-105 transition-transform">
-          <FaPlus className="text-lg" /> اضافه کردن دسته‌بندی جدید
-        </button>
+       <AddCategoryModal/>
       </div>
 
       <div className="shadow-lg rounded-xl overflow-x-auto">
