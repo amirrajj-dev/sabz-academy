@@ -1,6 +1,6 @@
 import React from "react";
 import { FaEye, FaTrash, FaReply } from "react-icons/fa";
-import SeeMessageModal from "../modals/messages/ViewMessageModal";
+import SeeMessageModal from "../modals/messages/SeeMessageModal";
 import DeleteMessageModal from "../modals/messages/DeleteMessageModal";
 import ReplyMessageModal from "../modals/messages/ReplyMessageModal";
 
