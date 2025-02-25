@@ -13,7 +13,7 @@ import { motion } from "framer-motion";
 
 const Navbar = () => {
   const [theme, setTheme] = useState("light");
-  const [innerWidth, setInnerWidth] = useState<number>(0);
+  const [innerWidth, setInnerWidth] = useState<number>(window.innerWidth);
   const [cartOpen, setCartOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [themeMenuOpen, setThemeMenuOpen] = useState(false);
