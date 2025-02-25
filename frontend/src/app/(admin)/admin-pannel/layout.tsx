@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <div className="max-w-4xl p-6 mx-auto">
       <h2 className="font-bold  text-3xl">amirrajj عزیز؛ خوش اومدی 🙌</h2>
-      <div className="grid grid-cols-4 gap-4 mt-14">
+      <div className="grid sm:grid-cols-3 md:grid-cols-4 gap-4 mt-14">
         {adminPannelCardInfo.map(item=>(
             <AdminPannelCard key={item.id} bgColor={item.bgColor} count={item.count} icon={item.icon} linkUrl={item.link} title={item.title}  />
         ))}
