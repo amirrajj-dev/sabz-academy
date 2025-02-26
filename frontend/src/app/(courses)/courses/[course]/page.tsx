@@ -1,6 +1,6 @@
-import BreadCrumb from '@/components/course/BreadCrumb'
-import CourseDetails from '@/components/course/CourseDetails'
-import CourseHeader from '@/components/course/CourseHeader'
+import BreadCrumb from '@/components/course/breadCrumb/BreadCrumb'
+import CourseDetails from '@/components/course/courseDetails/CourseDetails'
+import CourseHeader from '@/components/course/courseHeader/CourseHeader'
 import React from 'react'
 interface MainCourseProps {
     params : Promise<{course : string}>
