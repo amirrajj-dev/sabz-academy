@@ -1,4 +1,5 @@
 import BreadCrumb from '@/components/course/breadCrumb/BreadCrumb'
+import CourseDescription from '@/components/course/courseDescription/CourseDescription'
 import CourseDetails from '@/components/course/courseDetails/CourseDetails'
 import CourseHeader from '@/components/course/courseHeader/CourseHeader'
 import React from 'react'
@@ -14,6 +15,7 @@ const MainCourse : React.FC<MainCourseProps> = async ({params}) => {
       <BreadCrumb courseTitle='آموزش کاربردی ESlint' courseCategory='ارتقای  مهارت ها' courseCategoryLink='/' />
       <CourseHeader/>
       <CourseDetails/>
+      <CourseDescription/>
     </div>
   )
 }
