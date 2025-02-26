@@ -4,9 +4,9 @@ import { FaEdit, FaTrash, FaPlus, FaBan, FaUserShield } from "react-icons/fa";
 import { motion } from "framer-motion";
 import AddUserModal from "../../modals/user/AdduserModal";
 import EditUserModal from "../../modals/user/EditUerModal";
-import BanUserModal from "../../modals/user/BanUserModal";
 import ChangeRoleModal from "../../modals/user/ChangeRoleModal";
 import DeleteModal from "@/components/modals/shared/DeleteModal";
+import BanModal from "@/components/modals/shared/BanModal";
 
 const UsersPage = () => {
   const [users, setUsers] = useState([
@@ -61,7 +61,7 @@ const UsersPage = () => {
                   <ChangeRoleModal/>
                 </td>
                 <td className="p-4">
-                 <BanUserModal/>
+                 <BanModal/>
                 </td>
               </tr>
             ))}

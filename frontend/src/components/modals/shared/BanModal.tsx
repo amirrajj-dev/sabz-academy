@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { FaBan, FaTimes } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 
-const BanUserModal = ({ user, onBan }) => {
+const BanModal = ({ user, onBan }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleBanUser = () => {
@@ -18,7 +18,7 @@ const BanUserModal = ({ user, onBan }) => {
       <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className="btn btn-error flex items-center gap-2 shadow-md transition-transform"
+        className="btn btn-error btn-soft flex items-center gap-2 shadow-md transition-transform"
         onClick={() => setIsOpen(true)}
       >
         <FaBan/>
@@ -83,4 +83,4 @@ const BanUserModal = ({ user, onBan }) => {
   );
 };
 
-export default BanUserModal;
+export default BanModal;

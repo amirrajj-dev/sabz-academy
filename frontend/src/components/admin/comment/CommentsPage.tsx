@@ -3,6 +3,9 @@ import React from "react";
 import { motion } from "framer-motion";
 import { FaStar, FaTrash, FaCheck, FaEye, FaReply, FaBan, FaEdit } from "react-icons/fa";
 import DeleteModal from "@/components/modals/shared/DeleteModal";
+import SeeCommentModal from "@/components/modals/comment/SeeCommentModal";
+import ReplyCommentModal from "@/components/modals/comment/ReplyComment";
+import BanModal from "@/components/modals/shared/BanModal";
 
 interface Comment {
   id: number;
@@ -53,14 +56,10 @@ const CommentsTable = () => {
                 ))}
               </td>
               <td className="p-4">
-                <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="btn btn-info btn-sm">
-                  <FaEye />
-                </motion.button>
+                <SeeCommentModal/>
               </td>
               <td className="p-4">
-                <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="btn btn-warning btn-sm">
-                  <FaReply />
-                </motion.button>
+                <ReplyCommentModal/>
               </td>
               <td className="p-4">
                 <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="btn btn-primary btn-sm">
@@ -71,9 +70,7 @@ const CommentsTable = () => {
               <DeleteModal title="حذف کامنت" message="آیا از حذف کامنت اطمینان دارید ؟" messageDesc="این اقدام قابل بازگشت نیست !" deleteBtnText="حذف کامنت"/>
               </td>
               <td className="p-4">
-                <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="btn btn-dark btn-sm">
-                  <FaBan />
-                </motion.button>
+               <BanModal/>
               </td>
               <td className="p-4">
                 <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="btn btn-success btn-sm">
