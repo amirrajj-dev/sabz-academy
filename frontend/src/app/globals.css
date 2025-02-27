@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @plugin "daisyui" {
-  themes: light --default, dark --prefersdark, cupcake , coffee , abyss , night , dim;
+  themes: light --default, dark --prefersdark, cupcake, coffee, abyss, night,
+    dim;
 }
 @theme {
   --font-dana-regular: "dana-regular";
@@ -13,7 +14,6 @@
 }
 
 @layer base {
-
   @font-face {
     font-family: "dana-regular";
     src: url("/fonts/Dana-FaNum-Regular.ttf");
@@ -42,14 +42,14 @@
     font-family: "dana-light";
     src: url("/fonts/Dana-FaNum-Light.ttf");
   }
-  
+
   body {
     direction: rtl !important;
     text-align: right;
     margin: 0;
     padding: 0;
   }
-  
+
   html::-webkit-scrollbar {
     width: 8px;
   }
@@ -60,26 +60,34 @@
     background-color: #242a38;
   }
 
-  .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused){
+  .ck.ck-editor__main > .ck-editor__editable:not(.ck-focused) {
     background-color: #15191e !important;
-}
+  }
 
-.ck.ck-editor__main>.ck-editor__editable:not(.ck-blurred){
+  .ck.ck-editor__main > .ck-editor__editable:not(.ck-blurred) {
     background-color: #15191e !important;
-}
-.ck.ck-editor {
+  }
+  .ck.ck-editor {
     position: relative;
     margin-top: 1.5rem !important;
-}
+  }
 
-.ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) {
+  .ck.ck-editor__main > .ck-editor__editable:not(.ck-focused) {
     border-color: none !important;
     height: 200px !important;
-}
-.ck.ck-editor__main>.ck-editor__editable:not(.ck-blurred){
+  }
+  .ck.ck-editor__main > .ck-editor__editable:not(.ck-blurred) {
     height: 200px !important;
-}
-.ck.ck-editor__editable.ck-focused:not(.ck-editor__nested-editable){
-  border : none !important
-}
+  }
+  .ck.ck-editor__editable.ck-focused:not(.ck-editor__nested-editable) {
+    border: none !important;
+  }
+
+  .Toastify__toast-theme--light, .Toastify__toast-theme--colored.Toastify__toast--default{
+    @apply !font-dana-regular !p-6 !bg-base-300 !text-base-content
+  }
+  .Toastify__close-button , .Toastify__close-button--light{
+    @apply !text-base-content
+  }
+
 }
