@@ -2,6 +2,19 @@ import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import prisma from "../../utils/prisma";
 
+interface ICourse {
+  id: string;
+  name: string;
+  description: string;
+  cover?: string;
+  support?: string;
+  shortName: string;
+  price: number;
+  isComplete: number;
+  status: string;
+  createdAt: Date;
+}
+
 declare global {
   namespace Express {
     export interface Request {
@@ -11,6 +24,8 @@ declare global {
         role : string;
         email: string;
         username: string;
+        courses : any[];
+        phone : string
         createdAt: Date;
       };
     }
@@ -40,7 +55,7 @@ export const protectRoute = async (
 
     const user = await prisma.user.findUnique({
       where: { id: decoded.userId },
-      select: { id: true, name: true, role : true , email: true, username: true, createdAt: true },
+      select: { id: true, name: true, role : true , email: true, username: true, createdAt: true , phone : true , courses : true },
     });
 
     if (!user) {
@@ -74,7 +89,7 @@ export const protectRouteAdmin = async (req : Request , res : Response , next : 
     
     const user = await prisma.user.findUnique({
       where: { id: userId },
-      select: { id: true, name: true, email: true, username: true, createdAt: true, role: true },
+      select: { id: true, name: true, email: true, username: true, createdAt: true, role: true , phone: true , courses: true },
     });
     
     if (!user) {
