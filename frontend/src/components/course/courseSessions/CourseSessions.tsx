@@ -51,7 +51,7 @@ const CourseSessions = () => {
           >
             <FaGraduationCap className="text-primary -translate-y-1" />
           </motion.div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-dana-demi text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-400">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-dana-demi text-primary">
           سرفصل ها
           </h2>
         </div>

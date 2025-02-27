@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/shared/navbar/Navbar";
 import Footer from "@/components/shared/footer/Footer";
+import { ToastContainer } from "react-toastify";
 
 export const metadata: Metadata = {
   title: "سبزلرن | SabzLearn",
@@ -20,6 +21,7 @@ export default function RootLayout({
     <html suppressHydrationWarning lang="en" data-theme="dark" className="font-dana-regular">
       <body>
         {children}
+        <ToastContainer/>
       </body>
     </html>
   );

@@ -19,7 +19,7 @@ const CourseDesc = () => {
   `;
 
   return (
-    <div className="flex flex-1 bg-base-300 p-4 rounded-lg">
+    <div className="flex flex-1 bg-base-300 shadow-lg p-4 rounded-lg">
       <div className="flex flex-1 p-6  flex-col gap-4">
         <div className="flex items-center gap-4 mb-6">
           <motion.div
@@ -29,7 +29,7 @@ const CourseDesc = () => {
           >
             <IoDocumentText className="text-warning" />
           </motion.div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-dana-demi text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-dana-demi text-warning">
             توضیحات
           </h2>
         </div>

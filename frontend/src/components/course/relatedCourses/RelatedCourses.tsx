@@ -31,7 +31,7 @@ const relatedCourses = [
 
 const RelatedCourses = () => {
   return (
-    <div className="mt-10 p-6 bg-base-300 shadow-lg rounded-2xl">
+    <div className="mt-10 p-6 bg-base-300 shadow-lg rounded-2xl hidden sm:block">
       <div className="flex items-center gap-4 mb-6">
           <motion.div
             whileHover={{ scale: 1.1, rotate: 10 }}
@@ -40,7 +40,7 @@ const RelatedCourses = () => {
           >
             <FaLayerGroup className="text-error" />
           </motion.div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-dana-demi text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-rose-500">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-dana-demi text-error">
             دوره های مرتبط
           </h2>
         </div>
@@ -58,11 +58,11 @@ const RelatedCourses = () => {
                 alt={course.courseName}
                 className="object-cover rounded-md"
               />
-              <h3 className="text-md font-semibold text-gray-900 dark:text-white">
+              <h3 className="text-md font-semibold text-base-content">
                 {course.courseName}
               </h3>
             </div>
-            <Link href={course.courseUrl} className="flex items-center text-success text-xl gap-2">
+            <Link href={course.courseUrl} className="flex items-center text-error text-xl gap-2">
             <span className="text-sm">مشاهده</span>
                 <IoArrowBackCircleSharp/>
             </Link>
