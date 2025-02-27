@@ -9,6 +9,7 @@ import CartMenu from "./CartMenu";
 import ThemeMenu from "./ThemeMenu";
 import CoursesMenu from "./CourseMenu";
 import { motion } from "framer-motion";
+import { useAuthStore } from "@/store/auth.store";
 
 
 const Navbar = () => {
@@ -17,17 +18,16 @@ const Navbar = () => {
   const [cartOpen, setCartOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [themeMenuOpen, setThemeMenuOpen] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
   const [currentOption, setCurrentOption] = useState<null | number>(null);
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
   const [cartItems, setCartItems] = useState([]);
-  const isAuthenticated = true
-
+  const {user , getMe , isAuthenticated} = useAuthStore()
   useEffect(() => {
     document.documentElement.setAttribute(
       "data-theme",
       localStorage.getItem("theme") as string
     );
+    getMe()
     const handleResize = () => setInnerWidth(window.innerWidth);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
@@ -118,10 +118,11 @@ const Navbar = () => {
             />
             {isAuthenticated ? (
               <UserMenu
-                isAdmin={isAdmin}
+                isAdmin={user?.role === 'ADMIN' ? true : false}
                 menuOpen={menuOpen}
                 setMenuOpen={setMenuOpen}
                 userMenuItems={userMenuItems}
+                username={user?.username as string}
               />
             ) : (
               <Link href="/" className="btn btn-primary text-primary-content font-medium">

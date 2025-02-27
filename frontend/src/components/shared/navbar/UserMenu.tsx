@@ -1,17 +1,20 @@
 import Link from "next/link";
 import { FaUser } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 
 const UserMenu = ({
   menuOpen,
   setMenuOpen,
   userMenuItems,
   isAdmin,
+  username,
 }: {
   menuOpen: boolean;
   setMenuOpen: (value: boolean) => void;
   userMenuItems: any[];
   isAdmin: boolean;
+  username: string;
 }) => {
   return (
     <div className="relative">
@@ -33,16 +36,33 @@ const UserMenu = ({
             transition={{ duration: 0.3, ease: "easeOut" }}
             className="absolute left-0 mt-2 w-52 bg-base-300 shadow-xl rounded-xl z-10 menu menu-sm border border-gray-700"
           >
+            <li
+            >
+              <div className="flex gap-4">
+                <Image
+                  width={40}
+                  height={40}
+                  alt="user logo"
+                  className="rounded-full"
+                  src={
+                    "https://secure.gravatar.com/avatar/3f58c412b0a58283b996679c819684d0?s=96&d=mm&r=g"
+                  }
+                />
+                <div className="flex flex-col">
+                  <span>{username}</span>
+                  <span>موجودی : 0</span>
+                </div>
+              </div>
+            </li>
+            <div className="divider divide-base-content py-0  my-0"></div>
             {userMenuItems.map((item, index) => {
               if (item.showFor === "admin" && !isAdmin) return null;
               if (item.label === "divider") {
                 return (
-                  <motion.li
+                  <li
                     key={index}
-                    className="border-t border-gray-600 my-2"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.2 }}
+                    className="divider divide-base-content h-px my-0"
+
                   />
                 );
               }
@@ -53,12 +73,10 @@ const UserMenu = ({
                   transition={{ duration: 0.2 }}
                 >
                   <Link
-                    href="/"
+                    href={item.href}
                     className="flex items-center gap-3 px-4 py-3 text-base-content hover:bg-primary hover:text-primary-content rounded-lg transition duration-300 ease-in-out"
                   >
-                    {item.icon && (
-                      <span className="text-lg">{item.icon}</span>
-                    )}
+                    {item.icon && <span className="text-lg">{item.icon}</span>}
                     <span className="font-medium">{item.label}</span>
                   </Link>
                 </motion.li>

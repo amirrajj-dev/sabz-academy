@@ -18,7 +18,6 @@ const MobileDrawer = ({
   themeItems: any[];
 }) => {
     const [themeDropDownToggle, setThemeDropdownToggle] = useState(false);
-    const isAuthenticated = false;
     const [theme , setTheme] = useState('light')
   
     const toggleDrawer = () => {
@@ -53,7 +52,7 @@ const MobileDrawer = ({
     };
 
   return (
-    <div className={`${drawerOpen ? "absolute min-h-screen" : ""} inset-0 bg-black/50`}>
+    <div className={`${drawerOpen ? "absolute min-h-screen" : ""} z-50 inset-0 bg-black/50`}>
       <motion.div
         ref={menuRef}
         className="fixed top-0 right-0 w-68 sm:w-80 h-full bg-base-100 shadow-xl rounded-tl-lg overflow-y-auto"
