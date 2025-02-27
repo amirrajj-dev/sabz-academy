@@ -40,6 +40,7 @@ export const signup = async (req: Request, res: Response , next : NextFunction) 
         .status(400)
         .json({ message: "user already exists", success: false });
     }
+    const users = await prisma.user.findMany()
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await prisma.user.create({
       data: {
@@ -48,6 +49,7 @@ export const signup = async (req: Request, res: Response , next : NextFunction) 
         password: hashedPassword,
         name: name.trim(),
         phone: phone.trim(),
+        role : users.length > 0 ? 'USER' : 'ADMIN'
       },
     });
     if (!user) {
