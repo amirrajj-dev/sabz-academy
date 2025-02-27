@@ -25,11 +25,11 @@ const CourseDesc = () => {
           <motion.div
             whileHover={{ scale: 1.1, rotate: 10 }}
             whileTap={{ scale: 0.95 }}
-            className="text-warning text-5xl"
+            className="text-warning text-2xl sm:text-3xl md:text-5xl"
           >
             <IoDocumentText className="text-warning" />
           </motion.div>
-          <h2 className="text-4xl font-dana-demi text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-dana-demi text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">
             توضیحات
           </h2>
         </div>

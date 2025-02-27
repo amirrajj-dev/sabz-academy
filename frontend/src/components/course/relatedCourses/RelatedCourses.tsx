@@ -36,11 +36,11 @@ const RelatedCourses = () => {
           <motion.div
             whileHover={{ scale: 1.1, rotate: 10 }}
             whileTap={{ scale: 0.95 }}
-            className="text-warning text-5xl"
+            className="text-warning text-2xl sm:text-3xl md:text-5xl"
           >
             <FaLayerGroup className="text-error" />
           </motion.div>
-          <h2 className="text-4xl font-dana-demi text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-rose-500">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-dana-demi text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-rose-500">
             دوره های مرتبط
           </h2>
         </div>

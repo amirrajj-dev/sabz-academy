@@ -47,11 +47,11 @@ const CourseSessions = () => {
           <motion.div
             whileHover={{ scale: 1.1, rotate: 10 }}
             whileTap={{ scale: 0.95 }}
-            className="text-warning text-5xl"
+            className="text-warning text-2xl sm:text-3xl md:text-5xl"
           >
             <FaGraduationCap className="text-primary -translate-y-1" />
           </motion.div>
-          <h2 className="text-4xl font-dana-demi text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-400">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-dana-demi text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-400">
           سرفصل ها
           </h2>
         </div>
