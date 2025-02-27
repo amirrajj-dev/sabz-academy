@@ -19,6 +19,7 @@ const CourseDesc = () => {
   `;
 
   return (
+    <div className="flex flex-1 bg-base-300 p-4 rounded-lg">
       <div className="flex flex-1 p-6  flex-col gap-4">
         <div className="flex items-center gap-4 mb-6">
           <motion.div
@@ -57,6 +58,7 @@ const CourseDesc = () => {
           {isExpanded ? "مشاهده کمتر" : "مشاهده بیشتر"}
         </button>
       </div>
+    </div>
   );
 };
 

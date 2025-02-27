@@ -41,8 +41,8 @@ const CourseSessions = () => {
   };
 
   return (
-    <div className="mt-10 flex flex-col md:flex-row gap-6">
-      <div className="w-full md:w-2/3 space-y-4 p-6 bg-base-300 shadow-lg rounded-2xl">
+    <div className="mt-10  gap-6">
+      <div className="w-full space-y-4 p-6 bg-base-300 shadow-lg rounded-2xl">
         <div className="flex items-center gap-4 mb-6">
           <motion.div
             whileHover={{ scale: 1.1, rotate: 10 }}
