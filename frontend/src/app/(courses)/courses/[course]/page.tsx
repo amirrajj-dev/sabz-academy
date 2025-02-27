@@ -1,6 +1,5 @@
 import BreadCrumb from "@/components/course/breadCrumb/BreadCrumb";
 import CourseDesc from "@/components/course/courseDescription/CourseDesc";
-import CourseDescription from "@/components/course/courseDescription/CourseDescription";
 import CourseLink from "@/components/course/courseDescription/CourseLink";
 import CourseMaster from "@/components/course/courseDescription/CourseMaster";
 import CourseDetails from "@/components/course/courseDetails/CourseDetails";
