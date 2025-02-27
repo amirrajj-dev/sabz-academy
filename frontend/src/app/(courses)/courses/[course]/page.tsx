@@ -2,6 +2,7 @@ import BreadCrumb from '@/components/course/breadCrumb/BreadCrumb'
 import CourseDescription from '@/components/course/courseDescription/CourseDescription'
 import CourseDetails from '@/components/course/courseDetails/CourseDetails'
 import CourseHeader from '@/components/course/courseHeader/CourseHeader'
+import CourseSessions from '@/components/course/courseSessions/CourseSessions'
 import React from 'react'
 interface MainCourseProps {
     params : Promise<{course : string}>
@@ -16,6 +17,7 @@ const MainCourse : React.FC<MainCourseProps> = async ({params}) => {
       <CourseHeader/>
       <CourseDetails/>
       <CourseDescription/>
+      <CourseSessions/>
     </div>
   )
 }
