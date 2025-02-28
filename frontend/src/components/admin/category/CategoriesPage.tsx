@@ -5,6 +5,8 @@ import AddCategoryModal from "../../modals/category/AddCategoryModal";
 import EditCategoryModal from "../../modals/category/EditCategoryModal";
 import DeleteModal from "@/components/modals/shared/DeleteModal";
 import { useCategoriesStore } from "@/store/category.store";
+import { toastOptions } from "@/helpers/toastOptions";
+import { toast } from "react-toastify";
 
 const CategoriesPage = () => {
   const { isLoading, fetchCategories, categories } = useCategoriesStore();
@@ -12,6 +14,18 @@ const CategoriesPage = () => {
   useEffect(() => {
     fetchCategories();
   }, []);
+
+  const {deleteCategory} = useCategoriesStore()
+
+  const handleDeleteCategory = async (categoryId : string)=>{
+    if (!categoryId) return
+    const res  = await deleteCategory(categoryId)
+    if (res.success) {
+      toast.success("دسته‌بندی با موفقیت حذف شد", toastOptions);
+    }else{
+      toast.error("خطا در حذف دسته بندی", toastOptions);
+    }
+  }
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
@@ -72,9 +86,11 @@ const CategoriesPage = () => {
                   <td className="p-4">
                     <DeleteModal
                       title="حذف دسته بندی 📂"
-                      message="آیا از حذف این دسته بندی اطمینان دارید"
+                      message="آیا از حذف این دسته بندی اطمینان دارید ؟"
                       deleteBtnText="حذف دسته بندی"
                       messageDesc="این اقدام قابل بازگشت نیست !"
+                      deleteId={category.id}
+                      onDelete={handleDeleteCategory}
                     />
                   </td>
                 </tr>
