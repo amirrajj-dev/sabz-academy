@@ -39,6 +39,7 @@ model Course {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   description String
+  body        String
   cover       String?
   support     String?
   shortName   String

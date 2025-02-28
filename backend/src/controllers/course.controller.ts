@@ -29,7 +29,12 @@ export const getAllCourses = async (
   next: NextFunction
 ) => {
   try {
-    const courses = await prisma.course.findMany();
+    const courses = await prisma.course.findMany({
+      include : {
+        category : {select : {name : true}},
+        creator : {select : {name : true}}
+      }
+    });
     return res.status(200).json({
       success: true,
       data: courses,
@@ -47,8 +52,8 @@ export const createCourse = async (
   try {
     console.log(req.body);
     const file = req.file
-      const { name, description, price, isComplete, status, discount, categoryID, shortName } = req.body;
-      if (!name.trim() || !description.trim() || isNaN(Number(price)) || isNaN(Number(isComplete)) || !status.trim() || isNaN(Number(discount)) || !categoryID.trim() || !shortName){
+      const { name, description, price, isComplete, status, discount, categoryID, shortName , body } = req.body;
+      if (!name.trim() ||  !description.trim() || !body.trim() || isNaN(Number(price)) || isNaN(Number(isComplete)) || !status.trim() || isNaN(Number(discount)) || !categoryID.trim() || !shortName){
         return res.status(400).json({
           success: false,
           message : "pleae fill all the fields",
@@ -69,6 +74,7 @@ export const createCourse = async (
         price : parseFloat(price),
         isComplete : parseInt(isComplete),
         status,
+        body,
         discount : parseFloat(discount),
         creator: {
 
