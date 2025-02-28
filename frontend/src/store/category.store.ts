@@ -5,13 +5,13 @@ interface CategoriesStore {
     categories: ICategory[];
     fetchCategories: () => Promise<{message : string , success : boolean}>;
     setCategories: (categories: ICategory[]) => void;
-    addCategory: (category: ICategory) => Promise<void>;
+    addCategory: (category: Pick<ICategory , 'name' | 'title'>) => Promise<{message : string , success : boolean}>;
     updateCategory: (category: ICategory) => Promise<void>;
     deleteCategory: (categoryId: string) => Promise<void>;
     isLoading: boolean;
 }
 
-export const useCategoriesStore = create<CategoriesStore>((set) => ({
+export const useCategoriesStore = create<CategoriesStore>((set , get) => ({
     isLoading : false,
     fetchCategories : async () => {
         try {
@@ -33,9 +33,33 @@ export const useCategoriesStore = create<CategoriesStore>((set) => ({
             }
         }
     },
-    addCategory(category) {
-        
+    addCategory: async (category) => {
+        try {
+            set({ isLoading: true });
+    
+            const { name, title } = category;
+            if (!name.trim() || !title.trim()) {
+                throw new Error("Please fill all fields");
+            }
+    
+            const res = await axiosnInstance.post("/category", category);
+            if (res.data.success) {
+                set({ categories: [...get().categories, res.data.data], isLoading: false });
+                return { success: true, message: "Category added successfully" };
+            } else {
+                throw new Error("Failed to add category");
+            }
+        } catch (error: any) {
+            set({ isLoading: false });
+            return {
+                success: false,
+                message: error.response?.data?.message || error.message || "An error occurred",
+            };
+        }finally{
+            set({isLoading : false})
+        }
     },
+    
     deleteCategory(categoryId) {
         
     },

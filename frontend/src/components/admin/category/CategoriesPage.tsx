@@ -7,11 +7,6 @@ import DeleteModal from "@/components/modals/shared/DeleteModal";
 import { useCategoriesStore } from "@/store/category.store";
 
 const CategoriesPage = () => {
-  const categoriess = [
-    { id: 1, title: "تکنولوژی", link: "technology" },
-    { id: 2, title: "ورزش", link: "sports" },
-    { id: 3, title: "سلامت", link: "health" },
-  ];
 
   const {isLoading , fetchCategories , categories} = useCategoriesStore()
   useEffect(() => {
@@ -40,18 +35,18 @@ const CategoriesPage = () => {
           </thead>
 
           <tbody>
-            {categoriess.map((category, index) => (
+            {categories?.map((category, index) => (
               <tr
                 key={category.id}
                 className={`border-b hover:bg-base-300 transition ${
                   index % 2 === 0 ? "bg-base-200" : "bg-base-100"
                 }`}
               >
-                <td className="p-4 font-medium text-base-content">{category.id}</td>
-                <td className="p-4 font-semibold text-base-content">{category.title}</td>
+                <td className="p-4 font-medium text-base-content">{index + 1}</td>
+                <td className="p-4 font-semibold text-base-content">{category.name}</td>
                 <td className="p-4">
                   <span className="text-primary hover:underline">
-                    {category.link}
+                    {category.title}
                   </span>
                 </td>
                 <td className="p-4">

@@ -2,24 +2,35 @@
 import React, { useState } from "react";
 import { FaPlus, FaTimes } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
+import { useCategoriesStore } from "@/store/category.store";
+import { toast } from "react-toastify";
+import { toastOptions } from "@/helpers/toastOptions";
 
 const AddCategoryModal = () => {
   const [title, setTitle] = useState("");
   const [link, setLink] = useState("");
-  const [error, setError] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const {addCategory} = useCategoriesStore()
 
-  const handleAddCategory = () => {
+  const handleAddCategory = async () => {
     if (!title || !link) {
-      setError("لطفاً تمام فیلدها را پر کنید.");
       return;
     }
-    console.log("New Category:", { title, link });
     setTitle("");
     setLink("");
-    setError("");
     setIsOpen(false);
-  };
+    const res = await addCategory({name : title , title : link})
+    console.log(res);
+    if (res.success){
+      toast.success('دسته بندی جدید با موفقیت اضافه شد' , toastOptions)
+      return
+    }
+    if (res.message === 'Category already exists'){
+      toast.error('دسته بندی با این عنوان وجود دارد' , toastOptions)
+      return
+    }
+      toast.error('خظا در اضافه کردن دسته بندی جدید' , toastOptions)
+    }
 
   return (
     <>
@@ -89,8 +100,6 @@ const AddCategoryModal = () => {
                   />
                 </div>
 
-
-                {error && <p className="text-red-500 text-sm">{error}</p>}
               </div>
 
               <div className="flex justify-end gap-3 mt-6">
