@@ -208,14 +208,14 @@ export const updateCourse = async (req: Request, res: Response, next: NextFuncti
     const updatedCourse = await prisma.course.update({
       where: { id: courseID },
       data: {
-        name,
-        description,
-        price : parseFloat(String(newPrice)),
-        isComplete : parseInt(isComplete),
-        status,
-        discount : parseFloat(discount),
-        cover: coverURL,
-        shortName,
+        name : name || course.name,
+        description : description || course.description,
+        price : parseFloat(String(newPrice)) || price || course.price,
+        isComplete : parseInt(isComplete) || course.isComplete,
+        status : status || course.status,
+        discount : parseFloat(discount) || course.discount,
+        cover: coverURL || course.cover,
+        shortName : shortName || course.shortName,
       },
     });
 
