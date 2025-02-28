@@ -25,7 +25,7 @@ const articles : Article[] = [];
       </div>
 
     <CourseForm/>
-    <CourseTable courses={articles} />
+    <CourseTable />
 
      
     </div>
