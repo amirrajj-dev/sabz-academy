@@ -6,13 +6,32 @@ import ChangeRoleModal from "../../modals/user/ChangeRoleModal";
 import DeleteModal from "@/components/modals/shared/DeleteModal";
 import BanModal from "@/components/modals/shared/BanModal";
 import { useUserStore } from "@/store/user.store";
+import { toast } from "react-toastify";
+import { toastOptions } from "@/helpers/toastOptions";
 
 const UsersPage = () => {
 
-  const {users , fetchUsers} = useUserStore()
+  const {users , fetchUsers , deleteUser , banUser} = useUserStore()
   useEffect(() => {
     fetchUsers()
   }, [])
+  const handleDelete = async (id: string) => {
+    const res = await deleteUser(id)
+    if (res.success) {
+      toast.success('کاربر با موفقیت حذف شد' , toastOptions)
+    }else{
+      toast.error('خطا در حذف کاربر' , toastOptions)
+    }
+  };
+  const handleBan = async (id: string) => {
+    const res = await banUser(id)
+    console.log(res);
+    if (res.success) {
+      res.message === "User unbanned successfully" ? toast.success('کاربر با موفقیت از بن خارج شد' , toastOptions) : toast.success('کاربر با موفقیت بن شد' , toastOptions)
+    }else{
+      toast.error('خطا در بن کاربر' , toastOptions)
+    }
+  }
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
@@ -49,13 +68,13 @@ const UsersPage = () => {
                 <td className="p-4 font-medium text-base-content">{user.email}</td>
                 <td className="p-4 font-medium text-base-content">{user.role}</td>
                 <td className="p-4">
-                 <DeleteModal title="حذف کاربر 👤" message="آیا از حذف کاربر اطمینان دارید ؟" messageDesc="این اقدام قابل بازگشت نیست !" deleteBtnText="حذف کاربر"  />
+                 <DeleteModal onDelete={handleDelete} deleteId={user.id} title="حذف کاربر 👤" message="آیا از حذف کاربر اطمینان دارید ؟" messageDesc="این اقدام قابل بازگشت نیست !" deleteBtnText="حذف کاربر"  />
                 </td>
                 <td className="p-4">
                   <ChangeRoleModal user={user} />
                 </td>
                 <td className="p-4">
-                 <BanModal/>
+                 <BanModal  onBan={handleBan} user={user}   />
                 </td>
               </tr>
             ))}

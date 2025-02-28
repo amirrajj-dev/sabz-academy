@@ -1,11 +1,12 @@
 'use client'
 import React, { useState } from "react";
-import { FaBan, FaTimes } from "react-icons/fa";
+import { FaBan, FaCheck, FaTimes } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
+import { IUser } from "@/interfaces/types";
 
-const BanModal = ({ user, onBan }) => {
+const BanModal = ({ user, onBan } : {user : IUser ,onBan : (id : string)=>void}) => {
   const [isOpen, setIsOpen] = useState(false);
-
+console.log(user);
   const handleBanUser = () => {
     if (user) {
       onBan(user.id);
@@ -15,7 +16,17 @@ const BanModal = ({ user, onBan }) => {
 
   return (
     <>
-      <motion.button
+      {user.isBanned ? (
+        <motion.button
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        className="btn btn-success btn-soft flex items-center gap-2 shadow-md transition-transform"
+        onClick={() => setIsOpen(true)}
+      >
+        <FaCheck/>
+      </motion.button>
+      ) : (
+        <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         className="btn btn-error btn-soft flex items-center gap-2 shadow-md transition-transform"
@@ -23,6 +34,7 @@ const BanModal = ({ user, onBan }) => {
       >
         <FaBan/>
       </motion.button>
+      )}
 
       <AnimatePresence>
         {isOpen && (
@@ -54,7 +66,9 @@ const BanModal = ({ user, onBan }) => {
               </div>
 
               <div className="mt-4 text-center">
-                <p className="text-lg text-base-content">آیا از بن کردن این کاربر اطمینان دارید؟</p>
+                <p className="text-lg text-base-content">
+                  {user.isBanned ? "آیا از بیرون آوردن کاربر از حالت بن اطمینان دارید؟" : "آیا از بن کردن این کاربر اطمینان دارید؟"}
+                </p>
               </div>
 
               <div className="flex justify-end gap-3 mt-6">
@@ -72,7 +86,7 @@ const BanModal = ({ user, onBan }) => {
                   className="btn btn-warning"
                   onClick={handleBanUser}
                 >
-                  بن کردن کاربر
+                  {user.isBanned ? "بیرون آوردن" : "بن کردن"}
                 </motion.button>
               </div>
             </motion.div>

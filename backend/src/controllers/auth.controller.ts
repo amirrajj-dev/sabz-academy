@@ -97,6 +97,11 @@ export const signin = async (req: Request, res: Response , next : NextFunction) 
        .status(404)
        .json({ message: "User not found", success: false });
     }
+    if (user.isBanned){
+      return res
+       .status(403)
+       .json({ message: "User is banned", success: false });
+    }
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return res

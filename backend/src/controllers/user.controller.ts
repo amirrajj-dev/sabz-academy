@@ -173,10 +173,15 @@ export const banUser = async (
     }
 
     if (user.isBanned) {
-      return res.status(400).json({
-        message: "User is already banned",
-        success: false,
-      });
+      //un ban user
+      await prisma.user.update({
+        where : {id : userID},
+        data : {isBanned : false}
+      })
+      return res.status(200).json({
+        message : "User unbanned successfully",
+        success : true
+      })
     }
 
     await prisma.user.update({
