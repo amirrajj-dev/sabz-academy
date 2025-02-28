@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaEdit, FaTrash, FaPlus, FaBan, FaUserShield } from "react-icons/fa";
 import { motion } from "framer-motion";
 import AddUserModal from "../../modals/user/AdduserModal";
@@ -7,13 +7,14 @@ import EditUserModal from "../../modals/user/EditUerModal";
 import ChangeRoleModal from "../../modals/user/ChangeRoleModal";
 import DeleteModal from "@/components/modals/shared/DeleteModal";
 import BanModal from "@/components/modals/shared/BanModal";
+import { useUserStore } from "@/store/user.store";
 
 const UsersPage = () => {
-  const [users, setUsers] = useState([
-    { id: 1, fullName: "علی احمدی", username: "ali_ahmadi", email: "ali@example.com", role: "Admin" },
-    { id: 2, fullName: "مریم رضایی", username: "maryam_razi", email: "maryam@example.com", role: "User" },
-    { id: 3, fullName: "رضا صالحی", username: "reza_s", email: "reza@example.com", role: "Moderator" },
-  ]);
+
+  const {users , fetchUsers} = useUserStore()
+  useEffect(() => {
+    fetchUsers()
+  }, [])
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
@@ -46,8 +47,8 @@ const UsersPage = () => {
                   index % 2 === 0 ? "bg-base-200" : "bg-base-100"
                 }`}
               >
-                <td className="p-4 font-medium text-base-content">{user.id}</td>
-                <td className="p-4 font-semibold text-base-content">{user.fullName}</td>
+                <td className="p-4 font-medium text-base-content">{index + 1}</td>
+                <td className="p-4 font-semibold text-base-content">{user.name}</td>
                 <td className="p-4 font-semibold text-base-content">{user.username}</td>
                 <td className="p-4 font-medium text-base-content">{user.email}</td>
                 <td className="p-4 font-medium text-base-content">{user.role}</td>

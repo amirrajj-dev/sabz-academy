@@ -17,6 +17,7 @@ export const getAllUsers = async (
         role: true,
         createdAt: true,
         phone: true,
+        isBanned : true
       },
     });
     return res.status(200).json({
