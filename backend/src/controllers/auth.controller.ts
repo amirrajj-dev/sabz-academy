@@ -78,15 +78,18 @@ export const signup = async (req: Request, res: Response , next : NextFunction) 
 
 export const signin = async (req: Request, res: Response , next : NextFunction) => {
   try {
-    const { username, password } = req.body;
-    if (!username.trim() ||!password.trim()) {
+    const { email, password } = req.body;
+    if (!email.trim() ||!password.trim()) {
       return res
        .status(400)
        .json({ message: "Please fill all fields", success: false });
     }
+    if (!emailReg.test(email)) {
+      return res.status(400).json({ message: "Invalid email", success: false });
+    }
     const user = await prisma.user.findFirst({
       where : {
-        username
+        email
       }
     })
     if (!user) {
