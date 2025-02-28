@@ -50,7 +50,6 @@ export const createCourse = async (
   next: NextFunction
 ) => {
   try {
-    console.log(req.body);
     const file = req.file
       const { name, description, price, isComplete, status, discount, categoryID, shortName , body } = req.body;
       if (!name.trim() ||  !description.trim() || !body.trim() || isNaN(Number(price)) || isNaN(Number(isComplete)) || !status.trim() || isNaN(Number(discount)) || !categoryID.trim() || !shortName){
@@ -172,7 +171,6 @@ export const updateCourse = async (req: Request, res: Response, next: NextFuncti
     }
 
     const { name, description, price, isComplete, status, discount, shortName } = req.body;
-console.log(req.body);
     if (!name.trim() || !description.trim() || isNaN(Number(price)) || isNaN(Number(isComplete)) || !status.trim() || isNaN(Number(discount)) || !shortName.trim()) {
       return res.status(400).json({ success: false, message: 'Please fill all the fields correctly' });
     }

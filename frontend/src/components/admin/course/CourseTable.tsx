@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect } from "react";
-import { Article } from "./ArticlesPage";
 import { motion } from "framer-motion";
 import { FaTrash } from "react-icons/fa";
 import { useCourseStore } from "@/store/course.store";
@@ -39,11 +38,11 @@ const CourseTable = () => {
               <td className="p-4 font-semibold text-base-content">
                 {course.name}
               </td>
-              <td className="p-4">امیرحسین</td>
-              <td className="p-4">امیرحسین</td>
+              <td className="p-4">{course.creator?.name}</td>
+              <td className="p-4">{course.category?.name}</td>
               <td className="p-4">{course.shortName}</td>
               <td className="p-4">
-                {course.price > 0 ? course.price : "رایگان"}
+                {course.price > 0 ? Math.ceil(+course.price).toLocaleString() : "رایگان"}
               </td>
               <td className="p-4">{course.status}</td>
               <td className="p-4">
