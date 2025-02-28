@@ -17,6 +17,7 @@ export interface ICourse {
   id: string;
   name: string;
   description: string;
+  body : string;
   cover?: string;
   support?: string;
   shortName: string;
