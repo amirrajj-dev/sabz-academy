@@ -10,10 +10,13 @@ import CourseCard from "../shared/CourseCard";
 import { Swiper as SwiperType } from "swiper";
 import PrevBtn from "./PrevBtn";
 import NextBtn from "./NextbBtn";
+import { useCourseStore } from "@/store/course.store";
+import CourseCardSkeleton from "../skeletons/CourseCardSkeleton";
 
 const NewestCourses = () => {
   const swiperRef = useRef<SwiperType | null>(null);
-
+  const {courses , isLoading} = useCourseStore()
+  const newestCourses = courses.slice(0,8)
   return (
     <div className="mt-20 relative">
       <SectionHeader
@@ -46,11 +49,17 @@ const NewestCourses = () => {
             1280: { slidesPerView: 4 }
           }}
         >
-          {courses.map((course, index) => (
+          {isLoading ? Array(6).fill(null).map((_, index) => (
             <SwiperSlide key={index}>
-              <CourseCard course={course} />
+              <CourseCardSkeleton key={index + 1} />
             </SwiperSlide>
-          ))}
+          )) : (
+            newestCourses.map((course, index) => (
+              <SwiperSlide key={index}>
+                <CourseCard course={course} />
+              </SwiperSlide>
+            ))
+          )}
         </Swiper>
       </div>
     </div>

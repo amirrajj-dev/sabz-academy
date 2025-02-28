@@ -1,11 +1,14 @@
+'use client'
 import React from 'react'
 import SectionHeader from '../shared/SectionHeader';
 import CourseCardSkeleton from '../skeletons/CourseCardSkeleton';
 import { courses } from '@/data/data';
 import CourseCard from '../shared/CourseCard';
+import { useCourseStore } from '@/store/course.store';
 
 const PopularCourses = () => {
-    const isLoading = false
+  const {courses , fetchCourses , isLoading} = useCourseStore()
+  const popularCourses = courses.slice(0,8)
     return (
         <div className="mt-20">
           <SectionHeader
@@ -18,12 +21,12 @@ const PopularCourses = () => {
           />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 px-4 mt-8">
             {isLoading ? (
-              Array(4).fill(1).map(item=>(
-                <CourseCardSkeleton />
+              Array(4).fill(1).map((_ , index)=>(
+                <CourseCardSkeleton key={index + 1} />
               ))
             ) : (
-              courses.map((course, index) => (
-                <CourseCard key={index} course={course} />
+              popularCourses.map((course, index) => (
+                <CourseCard key={course.id} course={course} />
               ))
             )}
           </div>

@@ -1,11 +1,20 @@
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
 import SectionHeader from "../shared/SectionHeader";
-import { courses } from "@/data/data";
 import CourseCard from "../shared/CourseCard";
 import CourseCardSkeleton from "../skeletons/CourseCardSkeleton";
+import { useCourseStore } from "@/store/course.store";
+import { ICourse } from "@/interfaces/types";
 
 const LastCourses = () => {
-  const isLoading = false;
+  const { fetchCourses, courses, isLoading } = useCourseStore();
+
+  useEffect(() => {
+    fetchCourses();
+  }, []);
+
+  const lastCourses: ICourse[] = courses.slice(0, 4)
+
   return (
     <div className="mt-20">
       <SectionHeader
@@ -16,16 +25,21 @@ const LastCourses = () => {
         linkText="مشاهده همه دوره ها"
         linkUrl="/"
       />
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 px-4 mt-8">
-        {isLoading ? (
-          Array(4).fill(1).map(item=>(
-            <CourseCardSkeleton />
-          ))
-        ) : (
-          courses.map((course, index) => (
-            <CourseCard key={index} course={course} />
-          ))
-        )}
+        {isLoading
+          ? Array(4)
+              .fill(null)
+              .map((_, index) => (
+                <CourseCardSkeleton key={index} />
+              ))
+          : lastCourses.length > 0 ? (
+              lastCourses.map((course) => (
+                <CourseCard key={course.id} course={course} />
+              ))
+            ) : (
+              <p className="col-span-4 text-center text-lg text-gray-500">هیچ دوره‌ای یافت نشد 😔</p>
+            )}
       </div>
     </div>
   );
