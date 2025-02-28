@@ -4,19 +4,36 @@ import axiosnInstance from "@/configs/axios";
 
 interface UserStore {
     users : IUser[];
-    addUser : (user : IUser) => void;
     deleteUser : (id : string) => void;
     banUser : (id : string) => void;
     fetchUsers : ()=>void
     isLoading : boolean
 }
 
-export const useUserStore = create<UserStore>((set) => ({
+export const useUserStore = create<UserStore>((set , get) => ({
     users: [],
     isLoading: false,
-    addUser: (user) => {
-    },
-    deleteUser: (id) => {
+    deleteUser: async (id) => {
+        try {
+            if (!id){
+                throw new Error('id is required');
+            }
+            const res = await axiosnInstance.delete(`/users/${id}`)
+            if (res.data.success){
+                set({ users: get().users.filter((u) => u.id !== id) });
+                return {
+                    success : res.data.success,
+                    message : res.data.message
+                }
+            }else{
+                throw new Error('failed to delete user')
+            }
+        } catch (error : any) {
+            return{
+                success : false,
+                message : error.message || error.response.data.message
+            }
+        }
     },
     banUser: (id) => {
 
