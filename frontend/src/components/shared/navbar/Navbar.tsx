@@ -124,7 +124,7 @@ const Navbar = () => {
                 username={user?.username as string}
               />
             ) : (
-              <Link href="/" className="btn btn-primary text-primary-content font-medium">
+              <Link href="/signin" className="btn btn-primary text-primary-content font-medium">
                 ورود | عضویت
               </Link>
             )}
