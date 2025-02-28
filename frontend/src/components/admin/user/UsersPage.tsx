@@ -32,7 +32,6 @@ const UsersPage = () => {
               <th className="p-4 whitespace-nowrap">نام کاربری</th>
               <th className="p-4 whitespace-nowrap">ایمیل</th>
               <th className="p-4 whitespace-nowrap">نقش</th>
-              <th className="p-4 whitespace-nowrap">ویرایش</th>
               <th className="p-4 whitespace-nowrap">حذف</th>
               <th className="p-4 whitespace-nowrap">تغییر نقش</th>
               <th className="p-4 whitespace-nowrap">بن</th>
@@ -52,9 +51,6 @@ const UsersPage = () => {
                 <td className="p-4 font-semibold text-base-content">{user.username}</td>
                 <td className="p-4 font-medium text-base-content">{user.email}</td>
                 <td className="p-4 font-medium text-base-content">{user.role}</td>
-                <td className="p-4">
-                  <EditUserModal/>
-                </td>
                 <td className="p-4">
                  <DeleteModal title="حذف کاربر 👤" message="آیا از حذف کاربر اطمینان دارید ؟" messageDesc="این اقدام قابل بازگشت نیست !" deleteBtnText="حذف کاربر"  />
                 </td>

@@ -6,7 +6,6 @@ interface UserStore {
     users : IUser[];
     addUser : (user : IUser) => void;
     deleteUser : (id : string) => void;
-    updateUser : (user : IUser) => void;
     banUser : (id : string) => void;
     fetchUsers : ()=>void
     isLoading : boolean
@@ -18,9 +17,6 @@ export const useUserStore = create<UserStore>((set) => ({
     addUser: (user) => {
     },
     deleteUser: (id) => {
-    },
-    updateUser: (user) => {
-
     },
     banUser: (id) => {
 
