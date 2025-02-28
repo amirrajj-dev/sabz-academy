@@ -53,7 +53,22 @@ export const useAuthStore = create<AuthStore>((set) => ({
         }
     },
     login: (user) => {},
-    logout: () => {},
+    logout: async () => {
+        try {
+            set({ isLoading: true });
+            const res = await axiosnInstance.get('/auth/signout')
+            console.log(res);
+            set({ user: null, isAuthenticated: false, error: null, isLoading: false });
+            return {
+                success : res.data.success,
+                message : res.data.message
+            }
+        } catch (error : any) {
+            set({ error: error.response.data.message });
+        }finally{
+            set({ isLoading: false });
+        }
+    },
     setUser: (user) => {},
     getMe: async () => {
         try {

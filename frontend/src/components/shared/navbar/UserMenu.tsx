@@ -1,21 +1,27 @@
+"use client";
 import Link from "next/link";
 import { FaUser } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { userMenuItems } from "@/data/data";
+import { useAuthStore } from "@/store/auth.store";
 
 const UserMenu = ({
   menuOpen,
   setMenuOpen,
-  userMenuItems,
-  isAdmin,
   username,
 }: {
   menuOpen: boolean;
   setMenuOpen: (value: boolean) => void;
-  userMenuItems: any[];
-  isAdmin: boolean;
   username: string;
 }) => {
+  const { logout, isLoading, user } = useAuthStore();
+  const handleLogOut = () => {
+    const isSure = confirm("آیا از خروج اطمینان دارید ؟");
+    if (isSure) {
+      logout();
+    }
+  };
   return (
     <div className="relative">
       <motion.button
@@ -36,8 +42,7 @@ const UserMenu = ({
             transition={{ duration: 0.3, ease: "easeOut" }}
             className="absolute left-0 mt-2 w-52 bg-base-300 shadow-xl rounded-xl z-10 menu menu-sm border border-gray-700"
           >
-            <li
-            >
+            <li>
               <div className="flex gap-4">
                 <Image
                   width={40}
@@ -56,14 +61,33 @@ const UserMenu = ({
             </li>
             <div className="divider divide-base-content py-0  my-0"></div>
             {userMenuItems.map((item, index) => {
-              if (item.showFor === "admin" && !isAdmin) return null;
+              if (item.showFor === "admin" && user?.role !== "ADMIN")
+                return null;
               if (item.label === "divider") {
                 return (
                   <li
                     key={index}
                     className="divider divide-base-content h-px my-0"
-
                   />
+                );
+              }
+              if (item.label === "خروج") {
+                return (
+                  <motion.li
+                  key={Math.random()}
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <button
+                      onClick={() => handleLogOut()}
+                      className="flex items-center gap-3 px-4 py-3 text-base-content hover:bg-primary hover:text-primary-content rounded-lg transition duration-300 ease-in-out"
+                    >
+                      {item.icon && (
+                        <span className="text-lg">{item.icon}</span>
+                      )}
+                      <span className="font-medium">{item.label}</span>
+                    </button>
+                  </motion.li>
                 );
               }
               return (

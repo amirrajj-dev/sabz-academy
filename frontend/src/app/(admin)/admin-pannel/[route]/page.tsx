@@ -29,7 +29,6 @@ const Page = async ({ params }: { params: { route: string } }) => {
   ];
 
   if (!validRoutes.includes(route)) {
-    console.log('erewrwwe');
     notFound();
   }
 

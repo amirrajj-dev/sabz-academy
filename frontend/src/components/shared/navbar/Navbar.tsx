@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import MobileNavbar from "./MobileNavbar";
-import { menuItems, themeItems, userMenuItems } from "@/data/data";
+import { menuItems, themeItems } from "@/data/data";
 import UserMenu from "./UserMenu";
 import CartMenu from "./CartMenu";
 import ThemeMenu from "./ThemeMenu";
@@ -21,7 +21,7 @@ const Navbar = () => {
   const [currentOption, setCurrentOption] = useState<null | number>(null);
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
   const [cartItems, setCartItems] = useState([]);
-  const {user , getMe , isAuthenticated} = useAuthStore()
+  const {user , isLoading , getMe , isAuthenticated} = useAuthStore()
   useEffect(() => {
     document.documentElement.setAttribute(
       "data-theme",
@@ -121,7 +121,6 @@ const Navbar = () => {
                 isAdmin={user?.role === 'ADMIN' ? true : false}
                 menuOpen={menuOpen}
                 setMenuOpen={setMenuOpen}
-                userMenuItems={userMenuItems}
                 username={user?.username as string}
               />
             ) : (
