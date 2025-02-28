@@ -7,8 +7,9 @@ import DeleteModal from "@/components/modals/shared/DeleteModal";
 import { toast } from "react-toastify";
 import { toastOptions } from "@/helpers/toastOptions";
 import EditCourseModal from "@/components/modals/course/EditCourseModal";
+import { ICourse } from "@/interfaces/types";
 const CourseTable = () => {
-  const { courses, fetchCourses , deleteCourse } = useCourseStore();
+  const { courses, fetchCourses , deleteCourse , editCourse } = useCourseStore();
   useEffect(() => {
     fetchCourses();
   }, []);
@@ -23,6 +24,16 @@ const CourseTable = () => {
       toast.success('دوره با موفقیت حذف شد', toastOptions)
     }else{
       toast.error('خطا در حذف دوره', toastOptions)
+    }
+  }
+
+  const handleEditCourse = async (id : string , data : Partial<ICourse>)=>{
+    const res = await editCourse(id , data)
+    if (res.success){
+      toast.success('دوره با موفقیت ویرایش شد', toastOptions)
+      fetchCourses()
+    }else{
+      toast.error('خطا در ویرایش دوره', toastOptions)
     }
   }
 
@@ -65,7 +76,7 @@ const CourseTable = () => {
                 <DeleteModal deleteId={course.id} onDelete={handleDeleteCourse} message="آیا از حذف این دوره اطمینان دارید ؟"  title="حذف دوره 🚀" deleteBtnText="حذف دوره" messageDesc="این اقدام قابل بازگشت نیست !"/>
               </td>
               <td className="p-4">
-               <EditCourseModal courseData={course}/>
+               <EditCourseModal onSave={(id , data)=>handleEditCourse(id , data)} editId={course.id} courseData={course}/>
               </td>
             </tr>
           ))}

@@ -4,7 +4,7 @@ import { FaEdit, FaTimes } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import { ICourse } from "@/interfaces/types";
 
-const EditCourseModal = ({ courseData, onSave } : {courseData : Partial<ICourse> , onSave : (course : Partial<ICourse>)=>void}) => {
+const EditCourseModal = ({ courseData, onSave , editId } : {courseData : Partial<ICourse> , onSave : (id : string , course : Partial<ICourse>)=>void , editId : string}) => {
   const [title, setTitle] = useState(courseData?.name || "");
   const [link, setLink] = useState(courseData?.shortName || "");
   const [price, setPrice] = useState(courseData?.price || "");
@@ -13,7 +13,7 @@ const EditCourseModal = ({ courseData, onSave } : {courseData : Partial<ICourse>
 
   const handleSave = () => {
     if (!title || !link || !price || !description) return;
-    onSave({ ...courseData, name : title, shortName : link, price : parseInt(price as string), description });
+    onSave(editId , { ...courseData, name : title, shortName : link, price : parseInt(price as string), description });
     setIsOpen(false);
   };
 

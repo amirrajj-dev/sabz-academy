@@ -11,7 +11,7 @@ interface CourseStore {
     file: File
   ) => Promise<{ message: string; success: boolean }>;
   deleteCourse: (id: string) => Promise<{ message: string; success: boolean }>;
-  editCourse: (id: string) => void;
+  editCourse: (id: string , data : Partial<ICourse>) => Promise<{ message: string; success: boolean }>;
   isLoading: boolean;
 }
 
@@ -117,5 +117,30 @@ export const useCourseStore = create<CourseStore>((set, get) => ({
       }
     }
   },
-  editCourse(id) {},
+  editCourse : async (id , data) => {
+    console.log(data);
+    try {
+    set({isLoading : true})
+    if (!id){
+      throw new Error("No course id provided");
+    }
+    const {name , shortName , description , price} = data
+    if (!name?.trim() && shortName?.trim() && description?.trim() && !price){
+      throw new Error("Please fill all fields");
+    }
+    const res = await axiosnInstance.put(`/courses/${id}`, data);
+    console.log(res);
+    if (res.data.success) {
+      set({isLoading : false , courses : get().courses.map(course=>course.id === id ? {...course , data} : course)})
+      return { message: res.data.message, success: true };
+    }else{
+      throw new Error(res.data.message || "Failed to edit course");
+    }
+    } catch (error : any) {
+      return{
+        message: error.response?.data?.message || error.message,
+        success: false,
+      }
+    }
+  },
 }));
