@@ -6,7 +6,7 @@ interface CategoriesStore {
     fetchCategories: () => Promise<{message : string , success : boolean}>;
     setCategories: (categories: ICategory[]) => void;
     addCategory: (category: Pick<ICategory , 'name' | 'title'>) => Promise<{message : string , success : boolean}>;
-    updateCategory: (category: ICategory) => Promise<void>;
+    updateCategory: (category: Pick<ICategory , "name" | 'title' | 'id'>) => Promise<{message : string , success : boolean}>;
     deleteCategory: (categoryId: string) => Promise<void>;
     isLoading: boolean;
 }
@@ -66,7 +66,28 @@ export const useCategoriesStore = create<CategoriesStore>((set , get) => ({
     setCategories(categories) {
         
     },
-    updateCategory(category) {
-        
+    updateCategory : async (category) => {
+        try {
+            set({isLoading : true})
+            const {name , title} = category
+            if (!name.trim() || !title.trim()){
+                throw new Error("Please fill all fields")
+            }
+            const res = await axiosnInstance.put(`/category/${category.id}`, category)
+            if (res.data.success){
+                const updatedCategories = get().categories.map((c) =>
+                    c.id === category.id? {...c, name, title} : c
+                );
+                set({ categories: updatedCategories, isLoading: false });
+                return { success: true, message: "Category updated successfully" };
+            }else{
+                throw new Error("Failed to update category")
+            }
+        } catch (error : any) {
+            return {
+                success : false,
+                message : error.message || error.response.data.message
+            }
+        } 
     },
 }))

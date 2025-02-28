@@ -67,7 +67,7 @@ const CategoriesPage = () => {
                     <span className="text-primary hover:underline">{category.title}</span>
                   </td>
                   <td className="p-4">
-                    <EditCategoryModal />
+                    <EditCategoryModal category={category} />
                   </td>
                   <td className="p-4">
                     <DeleteModal
