@@ -4,12 +4,27 @@ import { motion } from "framer-motion";
 import { FaTrash } from "react-icons/fa";
 import { useCourseStore } from "@/store/course.store";
 import DeleteModal from "@/components/modals/shared/DeleteModal";
+import { toast } from "react-toastify";
+import { toastOptions } from "@/helpers/toastOptions";
 const CourseTable = () => {
-  const { courses, fetchCourses } = useCourseStore();
+  const { courses, fetchCourses , deleteCourse } = useCourseStore();
   useEffect(() => {
     fetchCourses();
   }, []);
-  console.log(courses);
+
+  const handleDeleteCourse = async (id : string)=>{
+    if (!id){
+      toast.error('شناسه دوره را وارد کنید', toastOptions)
+      return
+    }
+    const res = await deleteCourse(id)
+    if (res.success){
+      toast.success('دوره با موفقیت حذف شد', toastOptions)
+    }else{
+      toast.error('خطا در حذف دوره', toastOptions)
+    }
+  }
+
   return (
     <div className="shadow-lg rounded-xl overflow-x-auto">
       <table className="table bg-base-300 w-full text-center">
@@ -46,7 +61,7 @@ const CourseTable = () => {
               </td>
               <td className="p-4">{course.status}</td>
               <td className="p-4">
-                <DeleteModal message="آیا از حذف این دوره اطمینان دارید ؟"  title="حذف دوره 🚀" deleteBtnText="حذف دوره" messageDesc="این اقدام قابل بازگشت نیست !"/>
+                <DeleteModal deleteId={course.id} onDelete={handleDeleteCourse} message="آیا از حذف این دوره اطمینان دارید ؟"  title="حذف دوره 🚀" deleteBtnText="حذف دوره" messageDesc="این اقدام قابل بازگشت نیست !"/>
               </td>
               <td className="p-4">
                 <motion.button

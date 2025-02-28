@@ -10,7 +10,7 @@ interface CourseStore {
     course: Partial<ICourse>,
     file: File
   ) => Promise<{ message: string; success: boolean }>;
-  deleteCourse: (id: string) => void;
+  deleteCourse: (id: string) => Promise<{ message: string; success: boolean }>;
   editCourse: (id: string) => void;
   isLoading: boolean;
 }
@@ -83,7 +83,6 @@ export const useCourseStore = create<CourseStore>((set, get) => ({
       const res = await axiosnInstance.post("/courses", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-console.log(res);
       if (res.data.success) {
         set({ courses: [...get().courses, res.data.data] });
         return { message: res.data.message, success: true };
@@ -98,6 +97,25 @@ console.log(res);
     }
   },
 
-  deleteCourse(id) {},
+  deleteCourse : async (id) => {
+    try {
+      set({isLoading : true})
+      if (!id){
+        throw new Error("No course id provided");
+      }
+      const res = await axiosnInstance.delete(`/courses/${id}`);
+      if (res.data.success) {
+        set({ courses: get().courses.filter(c => c.id !== id) , isLoading : false });
+        return { message: res.data.message, success: true };
+      }else{
+        throw new Error(res.data.message || "Failed to delete course");
+      }
+    } catch (error : any) {
+      return {
+        message: error.response?.data?.message || error.message,
+        success: false,
+      }
+    }
+  },
   editCourse(id) {},
 }));
