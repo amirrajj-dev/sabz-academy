@@ -1,15 +1,22 @@
-import React from "react";
+'use client'
+import React, { useEffect } from "react";
 import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
 import AddCategoryModal from "../..//modals/category/AddCategoryModal";
 import EditCategoryModal from "../../modals/category/EditCategoryModal";
 import DeleteModal from "@/components/modals/shared/DeleteModal";
+import { useCategoriesStore } from "@/store/category.store";
 
 const CategoriesPage = () => {
-  const categories = [
+  const categoriess = [
     { id: 1, title: "تکنولوژی", link: "technology" },
     { id: 2, title: "ورزش", link: "sports" },
     { id: 3, title: "سلامت", link: "health" },
   ];
+
+  const {isLoading , fetchCategories , categories} = useCategoriesStore()
+  useEffect(() => {
+    fetchCategories()
+  }, [])
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
@@ -33,7 +40,7 @@ const CategoriesPage = () => {
           </thead>
 
           <tbody>
-            {categories.map((category, index) => (
+            {categoriess.map((category, index) => (
               <tr
                 key={category.id}
                 className={`border-b hover:bg-base-300 transition ${
