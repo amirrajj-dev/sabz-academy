@@ -15,7 +15,7 @@ const UserMenu = ({
   setMenuOpen: (value: boolean) => void;
   username: string;
 }) => {
-  const { logout, isLoading, user } = useAuthStore();
+  const { logout, user } = useAuthStore();
   const handleLogOut = () => {
     const isSure = confirm("آیا از خروج اطمینان دارید ؟");
     if (isSure) {

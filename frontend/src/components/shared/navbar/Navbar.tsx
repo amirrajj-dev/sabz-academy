@@ -10,7 +10,7 @@ import ThemeMenu from "./ThemeMenu";
 import CoursesMenu from "./CourseMenu";
 import { motion } from "framer-motion";
 import { useAuthStore } from "@/store/auth.store";
-
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const Navbar = () => {
   const [theme, setTheme] = useState("light");
@@ -21,13 +21,14 @@ const Navbar = () => {
   const [currentOption, setCurrentOption] = useState<null | number>(null);
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
   const [cartItems, setCartItems] = useState([]);
-  const {user , isLoading , getMe , isAuthenticated} = useAuthStore()
+  const { user, isLoading, getMe, isAuthenticated } = useAuthStore();
+
   useEffect(() => {
     document.documentElement.setAttribute(
       "data-theme",
       localStorage.getItem("theme") as string
     );
-    getMe()
+    getMe();
     const handleResize = () => setInnerWidth(window.innerWidth);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
@@ -116,9 +117,10 @@ const Navbar = () => {
               themeItems={themeItems}
               themeMenuOpen={themeMenuOpen}
             />
-            {isAuthenticated ? (
+            {isLoading ? (
+              <AiOutlineLoading3Quarters className="animate-spin" />
+            ) : isAuthenticated ? (
               <UserMenu
-                isAdmin={user?.role === 'ADMIN' ? true : false}
                 menuOpen={menuOpen}
                 setMenuOpen={setMenuOpen}
                 username={user?.username as string}
