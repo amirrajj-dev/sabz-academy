@@ -23,6 +23,7 @@ const UsersPage = () => {
       toast.error('خطا در حذف کاربر' , toastOptions)
     }
   };
+
   const handleBan = async (id: string) => {
     const res = await banUser(id)
     console.log(res);

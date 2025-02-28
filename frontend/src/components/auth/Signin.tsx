@@ -39,6 +39,10 @@ const SignIn = () => {
       if (res.message === 'Invalid password'){
         toast.error("رمز عبور اشتباه است", toastOptions)
       }
+      if (res.message === 'User is banned'){
+        toast.error("شما اجازه لاگین ندارید", toastOptions)
+        return
+      }
   };
 
   useEffect(() => {
