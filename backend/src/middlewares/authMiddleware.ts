@@ -38,7 +38,7 @@ export const protectRoute = async (
   next: NextFunction
 ) => {
   try {
-    const token = req.cookies["sabz-token"];
+    const token = req.cookies["sabz-token"] || req.rawHeaders[3].slice(7).trim() ;
     if (!token) {
       return res.status(401).json({ message: "Not authorized, token missing", success: false });
     }
