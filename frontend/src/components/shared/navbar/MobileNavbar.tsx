@@ -1,10 +1,10 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import CartButton from "./CartButton";
-import Logo from "./Logo";
-import HamburgerMenu from "./HamburgerMenu";
-import MobileDrawer from "./MobileDrawer";
+import CartButton from "./ui/CartButton";
+import Logo from "./ui/Logo";
+import HamburgerMenu from "./ui/HamburgerMenu";
+import MobileDrawer from "./ui/MobileDrawer";
 import { mobileMenuItems, themeItems } from "@/data/data";
 
 const MobileNavbar = () => {
