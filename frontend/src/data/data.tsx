@@ -44,7 +44,10 @@ export const themeItems = [
   { label: "جنگلی", value: "abyss" },
   { label: "فنجون قهوه", value: "cupcake" },
   { label: "شب", value: "night" },
-  { label: "کم نور", value: "dim" },
+  { label: "هالووین", value: "halloween" },
+  { label: "آبی", value: "aqua" },
+  { label: "رترو", value: "retro" },
+  { label: "سینتویو", value: "synthwave" },
 ];
 
 export const menuItems = [
