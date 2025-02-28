@@ -3,20 +3,30 @@ import React, { useState } from "react";
 import { FaTimes } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import {PiUserSwitchFill} from 'react-icons/pi'
+import { IUser } from "@/interfaces/types";
+import { useUserStore } from "@/store/user.store";
+import { toast } from "react-toastify";
+import { toastOptions } from "@/helpers/toastOptions";
 
-const ChangeRoleModal = ({ user, onChangeRole }) => {
+const ChangeRoleModal = ({ user } : {user : IUser}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [newRole, setNewRole] = useState(user?.role || "");
+  const {changeRole} = useUserStore()
   
-  const roles = ["Admin", "Editor", "Viewer"];
+  const roles = ["ADMIN", "USER"];
   
-  const handleChangeRole = () => {
+  const handleChangeRole = async () => {
     if (!newRole) {
       alert("لطفاً نقش جدید را انتخاب کنید");
       return;
     }
-    onChangeRole(user.id, newRole);
     setIsOpen(false);
+    const res = await changeRole(newRole , user.id)
+    if(res.success) {
+      toast.success("نقش کاربر با موفقیت تغییر یافت", toastOptions)
+    }else{
+      toast.error("خطا در تغییر نقش کاربر", toastOptions)
+    }
   };
 
   return (

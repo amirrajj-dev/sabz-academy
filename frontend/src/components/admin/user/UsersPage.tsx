@@ -2,8 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { FaEdit, FaTrash, FaPlus, FaBan, FaUserShield } from "react-icons/fa";
 import { motion } from "framer-motion";
-import AddUserModal from "../../modals/user/AdduserModal";
-import EditUserModal from "../../modals/user/EditUerModal";
 import ChangeRoleModal from "../../modals/user/ChangeRoleModal";
 import DeleteModal from "@/components/modals/shared/DeleteModal";
 import BanModal from "@/components/modals/shared/BanModal";
@@ -54,7 +52,7 @@ const UsersPage = () => {
                  <DeleteModal title="حذف کاربر 👤" message="آیا از حذف کاربر اطمینان دارید ؟" messageDesc="این اقدام قابل بازگشت نیست !" deleteBtnText="حذف کاربر"  />
                 </td>
                 <td className="p-4">
-                  <ChangeRoleModal/>
+                  <ChangeRoleModal user={user} />
                 </td>
                 <td className="p-4">
                  <BanModal/>

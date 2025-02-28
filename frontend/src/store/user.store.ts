@@ -6,6 +6,7 @@ interface UserStore {
     users : IUser[];
     deleteUser : (id : string) => void;
     banUser : (id : string) => void;
+    changeRole : (role : 'ADMIN' | 'USER' , id : string)=>Promise<{message  : string , success : boolean}>
     fetchUsers : ()=>void
     isLoading : boolean
 }
@@ -37,6 +38,27 @@ export const useUserStore = create<UserStore>((set , get) => ({
     },
     banUser: (id) => {
 
+    },
+    changeRole : async (role , id)=>{
+try {
+    set({isLoading : true})
+    const res = await axiosnInstance.put(`/users/role/${id}`, { role })
+    if (res.data.success){
+        set({ isLoading : false , users: get().users.map((u) => u.id == id ? {...u , ...res.data.data} : u)});
+        return {
+            success : res.data.success,
+            message : res.data.message
+        }
+    }else{
+        throw new Error('failed to change user role')
+    }
+} catch (error : any) {
+    set({ isLoading : false})
+    return{
+        success : false,
+        message : error.message || error.response.data.message
+    }
+}
     },
     fetchUsers: async () => {
         try {
