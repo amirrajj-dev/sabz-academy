@@ -6,6 +6,7 @@ import { useCourseStore } from "@/store/course.store";
 import DeleteModal from "@/components/modals/shared/DeleteModal";
 import { toast } from "react-toastify";
 import { toastOptions } from "@/helpers/toastOptions";
+import EditCourseModal from "@/components/modals/course/EditCourseModal";
 const CourseTable = () => {
   const { courses, fetchCourses , deleteCourse } = useCourseStore();
   useEffect(() => {
@@ -64,13 +65,7 @@ const CourseTable = () => {
                 <DeleteModal deleteId={course.id} onDelete={handleDeleteCourse} message="آیا از حذف این دوره اطمینان دارید ؟"  title="حذف دوره 🚀" deleteBtnText="حذف دوره" messageDesc="این اقدام قابل بازگشت نیست !"/>
               </td>
               <td className="p-4">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="btn btn-primary btn-sm"
-                >
-                  ویرایش
-                </motion.button>
+               <EditCourseModal courseData={course}/>
               </td>
             </tr>
           ))}
