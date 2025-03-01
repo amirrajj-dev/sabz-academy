@@ -4,6 +4,7 @@ import axiosnInstance from "@/configs/axios";
 
 interface CourseStore {
   courses: ICourse[];
+  mainCourse: ICourse | null;
   fetchCourses: () => Promise<{ message: string; success: boolean }>;
   setCourses: (courses: ICourse[]) => void;
   addCourse: (
@@ -12,11 +13,13 @@ interface CourseStore {
   ) => Promise<{ message: string; success: boolean }>;
   deleteCourse: (id: string) => Promise<{ message: string; success: boolean }>;
   editCourse: (id: string , data : Partial<ICourse>) => Promise<{ message: string; success: boolean }>;
+  getSingleCourse : (id : string)=>Promise<{message : string , success : boolean}>
   isLoading: boolean;
 }
 
 export const useCourseStore = create<CourseStore>((set, get) => ({
   courses: [],
+  mainCourse: null,
   isLoading: false,
   fetchCourses: async () => {
     try {
@@ -143,4 +146,24 @@ export const useCourseStore = create<CourseStore>((set, get) => ({
       }
     }
   },
+  getSingleCourse : async (id : string)=>{
+    try {
+      set({isLoading : true})
+      if (!id){
+        throw new Error("No course id provided");
+      }
+      const res = await axiosnInstance.get(`/courses/${id}`);
+      if (res.data.success) {
+        set({ mainCourse: res.data.data, isLoading: false });
+        return { message: res.data.message, success: true };
+      }else{
+        throw new Error(res.data.message || "Failed to fetch course");
+      }
+    } catch (error : any) {
+      return {
+        message: error.response?.data?.message || error.message,
+        success: false,
+      }
+    }
+  }
 }));
