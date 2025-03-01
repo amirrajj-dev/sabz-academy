@@ -5,22 +5,22 @@ import CourseLink from "./CourseLink";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { IoDocumentText } from "react-icons/io5";
+import { useCourseStore } from "@/store/course.store";
+import dompurify from "dompurify";
 
 const CourseDesc = () => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const { mainCourse, isLoading } = useCourseStore();
 
-  const courseDescription = `
-    این دوره برای آموزش ESLint و استفاده از آن در پروژه‌های جاوااسکریپت طراحی شده است. 
-    در این دوره، شما با نحوه پیکربندی ESLint، ایجاد قواعد سفارشی، و بهبود کدهای جاوااسکریپت آشنا خواهید شد.
-    این ابزار به توسعه‌دهندگان کمک می‌کند تا کدهای بهینه، بدون خطا، و قابل نگهداری بنویسند.
-    ESLint از محبوب‌ترین ابزارهای linting برای جاوااسکریپت است که در پروژه‌های مختلف استفاده می‌شود.
-    در این دوره، علاوه بر یادگیری مفاهیم پایه ESLint، نکات پیشرفته‌تری همچون نحوه تنظیم آن برای انواع مختلف پروژه‌ها را نیز خواهید آموخت.
-    اگر به دنبال بهبود کیفیت کدهای خود و جلوگیری از اشتباهات رایج در برنامه‌نویسی جاوااسکریپت هستید، این دوره برای شما مناسب است.
-  `;
+  const sanitizeHtml = dompurify.sanitize(mainCourse?.body as string, {
+    ALLOWED_TAGS: ["p", "ul", "li", "h1", "h2", "h3", "h4", "h5", "h6", "strong", "em", "a"],
+    ALLOWED_ATTR: ["href", "target"],
+    FORBID_TAGS: ["img", "figure"],
+  });
 
   return (
     <div className="flex flex-1 bg-base-300 shadow-lg p-4 rounded-lg">
-      <div className="flex flex-1 p-6  flex-col gap-4">
+      <div className="flex flex-1 p-6 flex-col gap-4">
         <div className="flex items-center gap-4 mb-6">
           <motion.div
             whileHover={{ scale: 1.1, rotate: 10 }}
@@ -33,30 +33,55 @@ const CourseDesc = () => {
             توضیحات
           </h2>
         </div>
-        <Image
-          src="https://sabzlearn.ir/wp-content/uploads/2024/11/c8-1.webp"
-          alt="Course Image"
-          className="rounded-lg w-full object-cover mb-4"
-          width={500}
-          height={400}
-        />
 
-        <h2 className="text-2xl font-semibold text-base-content mb-4">
-          آموزش کاربردی ESLint
-        </h2>
+        {!mainCourse?.cover ? (
+          <div className="skeleton block w-full h-[400px] rounded-lg mb-4"></div>
+        ) : (
+          <Image
+            src={mainCourse?.cover as string}
+            alt="Course Image"
+            className="rounded-lg w-full object-cover mb-4"
+            width={500}
+            height={400}
+          />
+        )}
 
-        <p className="text-lg text-gray-700">
-          {isExpanded
-            ? courseDescription
-            : courseDescription.slice(0, 250) + "..."}
-        </p>
+        {isLoading ? (
+          <div className="skeleton block w-1/2 h-6 rounded-lg mb-4"></div>
+        ) : (
+          <h2 className="text-2xl font-semibold text-base-content mb-4">
+            {mainCourse?.name}
+          </h2>
+        )}
 
-        <button
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="btn btn-success w-fit mx-auto mt-4"
-        >
-          {isExpanded ? "مشاهده کمتر" : "مشاهده بیشتر"}
-        </button>
+        <div className="prose max-w-none">
+          {isLoading ? (
+            <div className="space-y-4">
+              <div className="skeleton block w-full h-6 rounded-lg"></div>
+              <div className="skeleton block w-3/4 h-6 rounded-lg"></div>
+              <div className="skeleton block w-5/6 h-6 rounded-lg"></div>
+            </div>
+          ) : (
+            <div
+              className="text-base leading-8 font-dana-extra-light text-base-content 
+              [&_:is(h1,h2,h3,h4,h5,h6)]:my-6 [&_:is(h1,h2,h3,h4,h5,h6)]:text-xl [&_:is(h1,h2,h3,h4,h5,h6)]:font-dana-bold [&_:is(li)]:my-[4px] [&_:is(li)]:list-disc"
+              dangerouslySetInnerHTML={{
+                __html: isExpanded ? sanitizeHtml : sanitizeHtml.slice(0, 250) + "..."
+              }}
+            />
+          )}
+        </div>
+
+        {isLoading ? (
+          <div className="skeleton block w-32 h-10 rounded-lg mx-auto mt-4"></div>
+        ) : (
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="btn btn-success w-fit mx-auto mt-4"
+          >
+            {isExpanded ? "مشاهده کمتر" : "مشاهده بیشتر"}
+          </button>
+        )}
       </div>
     </div>
   );
