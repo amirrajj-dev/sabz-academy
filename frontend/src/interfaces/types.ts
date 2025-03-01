@@ -32,6 +32,7 @@ export interface ICourse {
   comments: IComment[];
   sessions: ISession[];
   createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface ICategory {
