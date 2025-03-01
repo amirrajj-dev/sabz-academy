@@ -312,36 +312,3 @@ export const adminPannelCardInfo = [
   {id : 11 , title : "تیکت ها" , count : "4" , icon : <FaTicketAlt/> , bgColor : 'bg-violet-500' , link : "tickets"},
   {id : 12 , title : "برگزاری کمپین" , count : "7" , icon : <MdCampaign/> , bgColor : 'bg-lime-500' , link : "campaigan"}
 ]
-
-export const courseDetails = [
-  {
-    title: "آخرین بروزرسانی",
-    Icon: <SlCalender/>,
-    desc: "1403/09/05",
-  },
-  {
-    title: "مدت زمان دوره",
-    Icon: <FaClock/>,
-    desc: "12 ساعت آموزش ویدیویی",
-  },
-  {
-    title: "تعداد دانشجویان",
-    Icon: <FaUsers/>,
-    desc: "بیش از 1500 دانشجو",
-  },
-  {
-    title: "سطح دوره",
-    Icon: <FaChartLine/>,
-    desc: "مقدماتی تا پیشرفته",
-  },
-  {
-    title: "گواهینامه پایان دوره",
-    Icon: <FaCertificate/>,
-    desc: "مدرک معتبر از سبزلرن",
-  },
-  {
-    title: "پیش نیازها",
-    Icon: <FaClipboardList/>,
-    desc: "آشنایی مقدماتی با جاوااسکریپت",
-  },
-];
