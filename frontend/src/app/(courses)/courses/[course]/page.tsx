@@ -9,17 +9,18 @@ import CourseSessions from "@/components/course/courseSessions/CourseSessions";
 import RelatedCourses from "@/components/course/relatedCourses/RelatedCourses";
 import CourseCommentSection from "@/components/course/courseCommentSesction/CourseCommentSection";
 import React, { useEffect, useState } from "react";
+import { useCourseStore } from "@/store/course.store";
 
 interface MainCourseProps {
   params: Promise<{ course: string }>;
 }
 
 const MainCourse: React.FC<MainCourseProps> = ({ params }) => {
-  const [CourseName, setCourseName] = useState("");
+  const {getSingleCourse , mainCourse} = useCourseStore()
   useEffect(() => {
     const getCourseName = async () => {
       const { course } = await params;
-      setCourseName(course);
+      getSingleCourse(course);
     };
     getCourseName();
   }, []);
@@ -87,16 +88,19 @@ const MainCourse: React.FC<MainCourseProps> = ({ params }) => {
     },
   ];
 
+
   const submitComment = (newComment) => {
     console.log("New comment submitted:", newComment);
   };
 
+  console.log(mainCourse);
+
   return (
     <div className="max-w-7xl mx-auto my-10 p-4">
       <BreadCrumb
-        courseTitle="آموزش کاربردی ESlint"
-        courseCategory="ارتقای  مهارت ها"
-        courseCategoryLink="/"
+        courseTitle={mainCourse?.name as string}
+        courseCategory={mainCourse?.category.name as string}
+        courseCategoryLink={`/course-cat/${mainCourse?.category.title}`}
       />
       <CourseHeader />
       <CourseDetails />
