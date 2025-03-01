@@ -235,7 +235,7 @@ export const getSingleCourse = async (
     if (!courseID) {
       return res.status(400).json({ success: false, message: 'Please provide course ID' });
     }
-    const course = await prisma.course.findUnique({ where: { id: courseID } , include : {sessions : true} });
+    const course = await prisma.course.findFirst({ where: { shortName : courseID } , include : {sessions : true , creator : true , category : true , comments : true} });
     if (!course) {
       return res.status(404).json({ success: false, message: 'Course not found' });
     }
