@@ -7,31 +7,50 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { LiaCommentSolid } from "react-icons/lia";
 import Image from "next/image";
+import { IComment, IUser } from "@/interfaces/types";
+import { useCommentsStore } from "@/store/comment.store";
+import { toastOptions } from "@/helpers/toastOptions";
 
-const ourseCommentSection = ({
+interface CourseCommentSectionProps {
+  isAuthenticated : boolean,
+  user : IUser,
+  courseId : string,
+  comments : IComment[],
+  submitComment : (comment : IComment)=>void, 
+}
+
+const CourseCommentSection = ({
   isAuthenticated,
   user,
   courseId,
   comments,
-  submitComment,
-}) => {
+} : CourseCommentSectionProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [comment, setComment] = useState("");
   const [replyTo, setReplyTo] = useState(null);
+  const {submitComment} = useCommentsStore()
 
   const handleNewCommentClick = () => {
     if (!isAuthenticated) {
-      toast.error("برای ارسال نظر باید وارد حساب کاربری خود شوید.");
+      toast.error("برای ارسال نظر باید وارد حساب کاربری خود شوید." , toastOptions);
       return;
     }
     setIsOpen(true);
   };
-
-  const handleSubmitComment = () => {
-    if (!comment.trim()) return;
-    submitComment({ userId: user.id, courseId, comment, replyTo });
-    setIsOpen(false);
-    setComment("");
+  
+  const handleSubmitComment = async () => {
+    if (!comment.trim()){
+      toast.error("متن نظر خود را وارد کنید." , toastOptions);
+      return;
+    }
+    const res = await submitComment({body : comment , courseID : courseId , score : 5})
+    if (res.success){
+      toast.success("نظر شما با موفقیت ارسال شد." , toastOptions);
+      setComment("");
+      setIsOpen(false);
+    }else{
+      toast.error("خطا در ارسال نظر." , toastOptions);
+    }
     setReplyTo(null);
   };
 
@@ -63,7 +82,7 @@ const ourseCommentSection = ({
             <Image
             width={48}
             height={48}
-              src={user.avatar}
+              src={'https://secure.gravatar.com/avatar/e7b9929942190634b0267c963d2513eb?s=96&d=mm&r=g'}
               alt={user.name}
               className=" rounded-full"
             />
@@ -150,4 +169,4 @@ const ourseCommentSection = ({
   );
 };
 
-export default ourseCommentSection;
+export default CourseCommentSection;

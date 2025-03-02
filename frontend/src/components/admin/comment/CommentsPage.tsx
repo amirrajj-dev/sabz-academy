@@ -26,6 +26,7 @@ const comments = [
 
 const CommentsTable = () => {
   const {comments , getAllComments} = useCommentsStore()
+  console.log(comments);
   useEffect(() => {
     getAllComments()
   }, [])
@@ -53,12 +54,12 @@ const CommentsTable = () => {
               key={comment.id}
               className={`border-b hover:bg-base-300 transition ${index % 2 === 0 ? "bg-base-200" : "bg-base-100"}`}
             >
-              <td className="p-4 font-medium text-base-content">{comment.id}</td>
+              <td className="p-4 font-medium text-base-content">{index + 1}</td>
               <td className="p-4 font-semibold text-base-content">{comment.user}</td>
-              <td className="p-4">{comment.course}</td>
-              <td className="p-4 flex justify-center">
+              <td className="p-4">{comment.course.name}</td>
+              <td className="p-4 flex justify-center items-center">
                 {[...Array(5)].map((_, i) => (
-                  <FaStar key={i} className={i < comment.rating ? "text-yellow-500" : "text-gray-300"} />
+                  <FaStar key={i} className={"text-yellow-500"} />
                 ))}
               </td>
               <td className="p-4">

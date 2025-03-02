@@ -10,6 +10,9 @@ import RelatedCourses from "@/components/course/relatedCourses/RelatedCourses";
 import CourseCommentSection from "@/components/course/courseCommentSesction/CourseCommentSection";
 import React, { useEffect, useState } from "react";
 import { useCourseStore } from "@/store/course.store";
+import { useCommentsStore } from "@/store/comment.store";
+import { useAuthStore } from "@/store/auth.store";
+import { IUser } from "@/interfaces/types";
 
 interface MainCourseProps {
   params: Promise<{ course: string }>;
@@ -24,76 +27,65 @@ const MainCourse: React.FC<MainCourseProps> = ({ params }) => {
     };
     getCourseName();
   }, []);
-  const user = {
-    id: 1,
-    name: "amirrajj",
-    avatar:
-      "https://secure.gravatar.com/avatar/3f58c412b0a58283b996679c819684d0?s=96&d=mm&r=g",
-    role: "Student",
-  };
+  const {user , isAuthenticated} = useAuthStore()
 
-  const comments = [
-    {
-      id: 1,
-      user: {
-        name: "علی رضایی",
-        avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-        role: "مدرس",
-      },
-      comment: "این دوره واقعا فوق‌العاده بود! ممنون از مدرس محترم.",
-      createdAt: "1403/11/26",
-    },
-    {
-      id: 2,
-      user: {
-        name: "مریم احمدی",
-        avatar: "https://randomuser.me/api/portraits/women/45.jpg",
-        role: "دانشجو",
-      },
-      comment:
-        "واقعا یادگیری مفاهیم ری‌اکت با این دوره راحت‌تر شد. پیشنهاد می‌کنم به همه!",
-      createdAt: "1403/11/25",
-    },
-    {
-      id: 3,
-      user: {
-        name: "حسین عباسی",
-        avatar: "https://randomuser.me/api/portraits/men/47.jpg",
-        role: "دانشجو",
-      },
-      comment: "سرفصل‌های آموزشی خیلی کامل بود اما کاش تمرین‌های بیشتری داشت.",
-      createdAt: "1403/11/24",
-    },
-    {
-      id: 4,
-      user: {
-        name: "زهرا موسوی",
-        avatar: "https://randomuser.me/api/portraits/women/40.jpg",
-        role: "دانشجو",
-      },
-      comment:
-        "مدرس خیلی خوب توضیح می‌ده، مخصوصا بخش‌های مربوط به هوک‌های ری‌اکت.",
-      createdAt: "1403/11/23",
-    },
-    {
-      id: 5,
-      user: {
-        name: "رضا کریمی",
-        avatar: "https://randomuser.me/api/portraits/men/50.jpg",
-        role: "دانشجو",
-      },
-      comment:
-        "دوره خوبی بود اما بعضی از ویدیوها کیفیت صدای بهتری می‌تونست داشته باشه.",
-      createdAt: "1403/11/22",
-    },
-  ];
+  // const comments = [
+  //   {
+  //     id: 1,
+  //     user: {
+  //       name: "علی رضایی",
+  //       avatar: "https://randomuser.me/api/portraits/men/32.jpg",
+  //       role: "مدرس",
+  //     },
+  //     comment: "این دوره واقعا فوق‌العاده بود! ممنون از مدرس محترم.",
+  //     createdAt: "1403/11/26",
+  //   },
+  //   {
+  //     id: 2,
+  //     user: {
+  //       name: "مریم احمدی",
+  //       avatar: "https://randomuser.me/api/portraits/women/45.jpg",
+  //       role: "دانشجو",
+  //     },
+  //     comment:
+  //       "واقعا یادگیری مفاهیم ری‌اکت با این دوره راحت‌تر شد. پیشنهاد می‌کنم به همه!",
+  //     createdAt: "1403/11/25",
+  //   },
+  //   {
+  //     id: 3,
+  //     user: {
+  //       name: "حسین عباسی",
+  //       avatar: "https://randomuser.me/api/portraits/men/47.jpg",
+  //       role: "دانشجو",
+  //     },
+  //     comment: "سرفصل‌های آموزشی خیلی کامل بود اما کاش تمرین‌های بیشتری داشت.",
+  //     createdAt: "1403/11/24",
+  //   },
+  //   {
+  //     id: 4,
+  //     user: {
+  //       name: "زهرا موسوی",
+  //       avatar: "https://randomuser.me/api/portraits/women/40.jpg",
+  //       role: "دانشجو",
+  //     },
+  //     comment:
+  //       "مدرس خیلی خوب توضیح می‌ده، مخصوصا بخش‌های مربوط به هوک‌های ری‌اکت.",
+  //     createdAt: "1403/11/23",
+  //   },
+  //   {
+  //     id: 5,
+  //     user: {
+  //       name: "رضا کریمی",
+  //       avatar: "https://randomuser.me/api/portraits/men/50.jpg",
+  //       role: "دانشجو",
+  //     },
+  //     comment:
+  //       "دوره خوبی بود اما بعضی از ویدیوها کیفیت صدای بهتری می‌تونست داشته باشه.",
+  //     createdAt: "1403/11/22",
+  //   },
+  // ];
 
-
-  const submitComment = (newComment) => {
-    console.log("New comment submitted:", newComment);
-  };
-
-  console.log(mainCourse);
+  const {comments , getAllComments , isLoading : commentsIsLoading} = useCommentsStore()
 
   return (
     <div className="max-w-7xl mx-auto my-10 p-4">
@@ -112,10 +104,9 @@ const MainCourse: React.FC<MainCourseProps> = ({ params }) => {
          <RelatedCourses />
           <CourseCommentSection
             comments={comments}
-            courseId={2}
-            isAuthenticated={true}
-            submitComment={submitComment}
-            user={user}
+            courseId={mainCourse?.id as string}
+            isAuthenticated={isAuthenticated}
+            user={user as IUser}
           />
         </div>
 

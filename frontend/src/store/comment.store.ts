@@ -5,8 +5,8 @@ import axiosnInstance from "@/configs/axios";
 interface CommentsStore {
   comments: IComment[];
   setComments: (comments: IComment[]) => void;
-  getAllComments: () => void;
-  submitComment: (comment: IComment) => void;
+  getAllComments: () => Promise<{message : string , success : boolean}>;
+  submitComment: (comment: Pick<IComment , "body" | 'courseID' | 'score'>) => Promise<{message : string , success : boolean}>;
   deleteComment: (commentId: string) => void;
   answerComment: (
     commentId: string,
@@ -47,5 +47,33 @@ export const useCommentsStore = create<CommentsStore>((set, get) => ({
         set({isLoading : false})
     }
   },
-  submitComment(comment) {},
+  submitComment : async (comment) => {
+    try {
+      set({isLoading : true})
+      const {body , courseID , score} = comment
+      if (!body || !courseID || !score){
+        throw new Error('invalid comment')
+      }
+      const res = await axiosnInstance.post('/comments', {
+        body,
+        courseID,
+        score
+      })
+      console.log(res);
+      if (res.data.success){
+        set({isLoading: false });
+        return {
+          success : res.data.success,
+          message : res.data.message
+        }
+      }else{
+        throw new Error('failed to submit comment')
+      }
+    } catch (error : any) {
+      return {
+        success : false,
+        message : error.response.data.message || error.message
+      }
+    }
+  },
 }));
