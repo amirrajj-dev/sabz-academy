@@ -7,7 +7,6 @@ import Link from "next/link";
 import { ICourse } from "@/interfaces/types";
 
 const CourseCard = ({ course } : {course : ICourse}) => {
-  console.log(course);
   return (
     <motion.div
       className="card w-full relative bg-base-200 shadow-lg rounded-2xl hover:shadow-xl transition-all duration-300 border hover:scale-105 border-gray-700"

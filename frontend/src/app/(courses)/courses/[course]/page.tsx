@@ -16,11 +16,11 @@ interface MainCourseProps {
 }
 
 const MainCourse: React.FC<MainCourseProps> = ({ params }) => {
-  const {getSingleCourse , mainCourse} = useCourseStore()
+  const {getSingleCourse , mainCourse , relatedCourses} = useCourseStore()
   useEffect(() => {
     const getCourseName = async () => {
       const { course } = await params;
-      getSingleCourse(course);
+      await getSingleCourse(course);
     };
     getCourseName();
   }, []);
@@ -109,7 +109,7 @@ const MainCourse: React.FC<MainCourseProps> = ({ params }) => {
         <div className="lg:col-span-2 space-y-6">
           <CourseDesc />
           <CourseSessions />
-          <RelatedCourses />
+         <RelatedCourses />
           <CourseCommentSection
             comments={comments}
             courseId={2}
