@@ -22,7 +22,6 @@ const Page = async ({ params }: { params: { route: string } }) => {
     "messages",
     "courses",
     "comments",
-    "menues",
     "campaigan",
     "tickets",
     "discounts",
@@ -48,8 +47,6 @@ const Page = async ({ params }: { params: { route: string } }) => {
         return <CoursesPage />;
       case "comments":
         return <CommentsPage />;
-      case "menues":
-        return <MenuesPage />;
       case "campaigan":
         return <CampaigansPage />;
       case "tickets":
