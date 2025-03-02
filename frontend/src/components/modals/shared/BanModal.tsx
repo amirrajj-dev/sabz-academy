@@ -16,7 +16,7 @@ console.log(user);
 
   return (
     <>
-      {user.isBanned ? (
+      {user?.isBanned ? (
         <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}

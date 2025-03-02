@@ -14,8 +14,12 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useCategoriesStore } from "@/store/category.store";
 
 const Navbar = React.memo(() => {
-  const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "light");
-  const [innerWidth, setInnerWidth] = useState<number>(typeof window !== "undefined" ? window.innerWidth : 1024);
+  const [theme, setTheme] = useState(
+    () => localStorage.getItem("theme") || "light"
+  );
+  const [innerWidth, setInnerWidth] = useState<number>(
+    typeof window !== "undefined" ? window.innerWidth : 1024
+  );
   const [cartOpen, setCartOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [themeMenuOpen, setThemeMenuOpen] = useState(false);
@@ -61,14 +65,19 @@ const Navbar = React.memo(() => {
         >
           {/* Left Section - Logo & Menu */}
           <div className="flex items-center gap-10">
-            <motion.div whileHover={{ scale: 1.1 }} transition={{ type: "spring", stiffness: 300 }}>
-              <Image
-                src="/logo/logo.webp"
-                width={75}
-                height={75}
-                alt="sabzlearn logo"
-                className="cursor-pointer"
-              />
+            <motion.div
+              whileHover={{ scale: 1.1 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              <Link href={"/"}>
+                <Image
+                  src="/logo/logo.webp"
+                  width={75}
+                  height={75}
+                  alt="sabzlearn logo"
+                  className="cursor-pointer"
+                />
+              </Link>
             </motion.div>
 
             {/* Navigation Links */}
@@ -85,14 +94,28 @@ const Navbar = React.memo(() => {
                 setCurrentOption={setCurrentOption}
               />
 
-              <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }} className="relative group">
-                <Link href="/courses" className="btn btn-ghost text-base font-medium text-base-content">
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.2 }}
+                className="relative group"
+              >
+                <Link
+                  href="/courses"
+                  className="btn btn-ghost text-base font-medium text-base-content"
+                >
                   همه دوره ها
                 </Link>
               </motion.div>
 
-              <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }} className="relative group">
-                <Link href="/articles" className="btn btn-ghost text-base font-medium text-base-content">
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.2 }}
+                className="relative group"
+              >
+                <Link
+                  href="/articles"
+                  className="btn btn-ghost text-base font-medium text-base-content"
+                >
                   مقالات
                 </Link>
               </motion.div>
@@ -117,9 +140,16 @@ const Navbar = React.memo(() => {
             {isLoading ? (
               <AiOutlineLoading3Quarters className="animate-spin" />
             ) : isAuthenticated ? (
-              <UserMenu menuOpen={menuOpen} setMenuOpen={setMenuOpen} username={user?.username as string} />
+              <UserMenu
+                menuOpen={menuOpen}
+                setMenuOpen={setMenuOpen}
+                username={user?.username as string}
+              />
             ) : (
-              <Link href="/signin" className="btn btn-primary text-primary-content font-medium">
+              <Link
+                href="/signin"
+                className="btn btn-primary text-primary-content font-medium"
+              >
                 ورود | عضویت
               </Link>
             )}
