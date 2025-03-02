@@ -6,6 +6,6 @@ const router = express.Router()
 
 router.post('/' , protectRouteAdmin as express.RequestHandler , createMenu as express.RequestHandler)
 router.get('/' , getAllMenues as express.RequestHandler)
-router.delete('/:id' , deleteMenues as express.RequestHandler)
+router.delete('/:id' ,protectRouteAdmin as express.RequestHandler , deleteMenues as express.RequestHandler)
 
 export default router;

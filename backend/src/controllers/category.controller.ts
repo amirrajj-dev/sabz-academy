@@ -11,6 +11,7 @@ export const getAllCategories = async (req : Request , res : Response , next : N
                         status: true,
                         price: true,
                         name: true,
+                        shortName : true ,
                         category: {
                             select: { title: true },
                         },

@@ -50,34 +50,6 @@ export const themeItems = [
   { label: "سینتویو", value: "synthwave" },
 ];
 
-export const menuItems = [
-  {
-    label: "دوره های آموزشی",
-    subItems: [
-      {
-        label: "فرانت اند",
-        options: ["HTML", "CSS", "جاوا اسکریپت", "ری اکت"],
-      },
-      {
-        label: "امنیت",
-        options: ["مبانی امنیت", "هک اخلاقی", "تست نفوذ"],
-      },
-      {
-        label: "پایتون",
-        options: ["جنگو", "فلسک", "علم داده", "یادگیری ماشین"],
-      },
-      {
-        label: "پی اچ پی",
-        options: ["لاراول", "سیمفونی", "کدایگنایتر"],
-      },
-      {
-        label: "ارتقای مهارت ها",
-        options: ["مهارت‌های نرم", "حل مسئله", "کار تیمی"],
-      },
-    ],
-  },
-];
-
 export const mobileMenuItems = [
   { label: "فرانت اند", subItems: ["HTML", "CSS", "JavaScript"] },
   { label: "امنیت", subItems: ["XSS", "SQL Injection", "CSRF"] },
