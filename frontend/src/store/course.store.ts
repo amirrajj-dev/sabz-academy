@@ -5,7 +5,9 @@ import axiosnInstance from "@/configs/axios";
 interface CourseStore {
   courses: ICourse[];
   mainCourse: ICourse | null;
+  relatedCourses : ICourse[];
   fetchCourses: () => Promise<{ message: string; success: boolean }>;
+  fetchRelatedCourses : (id : string) => Promise<{ message: string; success: boolean}>;
   setCourses: (courses: ICourse[]) => void;
   addCourse: (
     course: Partial<ICourse>,
@@ -21,6 +23,7 @@ export const useCourseStore = create<CourseStore>((set, get) => ({
   courses: [],
   mainCourse: null,
   isLoading: false,
+  relatedCourses : [],
   fetchCourses: async () => {
     try {
       set({ isLoading: true });
@@ -164,6 +167,27 @@ export const useCourseStore = create<CourseStore>((set, get) => ({
         message: error.response?.data?.message || error.message,
         success: false,
       }
+    }
+  },
+  fetchRelatedCourses: async (id : string) => {
+    try {
+      console.log(id);
+      set({ isLoading: true });
+      if (!id) throw new Error("No course id provided");
+      const res = await axiosnInstance.get(`/courses/${id}/related`);
+      if (res.data.success) {
+        set({ relatedCourses: res.data.data , isLoading : false });
+        return { message: res.data.message, success: true };
+      }else{
+        throw new Error(res.data.message || "Failed to fetch related courses");
+      }
+    } catch (error : any) {
+      return {
+        message: error.response?.data?.message || error.message,
+        success : false
+      }
+    }finally{
+      set({ isLoading : false })
     }
   }
 }));
