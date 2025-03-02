@@ -20,17 +20,18 @@ interface MainCourseProps {
 
 const MainCourse: React.FC<MainCourseProps> = ({ params }) => {
   const {getSingleCourse , mainCourse , relatedCourses} = useCourseStore()
+  const {comments , getAllComments , isLoading : commentsIsLoading} = useCommentsStore()
   useEffect(() => {
     const getCourseName = async () => {
       const { course } = await params;
       await getSingleCourse(course);
     };
     getCourseName();
+    getAllComments()
   }, []);
   const {user , isAuthenticated} = useAuthStore()
 
-  // const comments = [
-  //   {
+  console.log(comments);
   //     id: 1,
   //     user: {
   //       name: "علی رضایی",
@@ -64,36 +65,35 @@ const MainCourse: React.FC<MainCourseProps> = ({ params }) => {
   //   {
   //     id: 4,
   //     user: {
-  //       name: "زهرا موسوی",
-  //       avatar: "https://randomuser.me/api/portraits/women/40.jpg",
-  //       role: "دانشجو",
-  //     },
-  //     comment:
-  //       "مدرس خیلی خوب توضیح می‌ده، مخصوصا بخش‌های مربوط به هوک‌های ری‌اکت.",
-  //     createdAt: "1403/11/23",
-  //   },
-  //   {
-  //     id: 5,
-  //     user: {
-  //       name: "رضا کریمی",
-  //       avatar: "https://randomuser.me/api/portraits/men/50.jpg",
-  //       role: "دانشجو",
-  //     },
-  //     comment:
-  //       "دوره خوبی بود اما بعضی از ویدیوها کیفیت صدای بهتری می‌تونست داشته باشه.",
-  //     createdAt: "1403/11/22",
-  //   },
-  // ];
-
-  const {comments , getAllComments , isLoading : commentsIsLoading} = useCommentsStore()
-
-  return (
-    <div className="max-w-7xl mx-auto my-10 p-4">
+    //       name: "زهرا موسوی",
+    //       avatar: "https://randomuser.me/api/portraits/women/40.jpg",
+    //       role: "دانشجو",
+    //     },
+    //     comment:
+    //       "مدرس خیلی خوب توضیح می‌ده، مخصوصا بخش‌های مربوط به هوک‌های ری‌اکت.",
+    //     createdAt: "1403/11/23",
+    //   },
+    //   {
+      //     id: 5,
+      //     user: {
+        //       name: "رضا کریمی",
+        //       avatar: "https://randomuser.me/api/portraits/men/50.jpg",
+        //       role: "دانشجو",
+        //     },
+        //     comment:
+        //       "دوره خوبی بود اما بعضی از ویدیوها کیفیت صدای بهتری می‌تونست داشته باشه.",
+        //     createdAt: "1403/11/22",
+        //   },
+        // ];
+        
+        
+        return (
+          <div className="max-w-7xl mx-auto my-10 p-4">
       <BreadCrumb
         courseTitle={mainCourse?.name as string}
         courseCategory={mainCourse?.category.name as string}
         courseCategoryLink={`/course-cat/${mainCourse?.category.title}`}
-      />
+        />
       <CourseHeader />
       <CourseDetails />
       <div className="mt-10 grid grid-cols-1 lg:grid-cols-3 gap-6">

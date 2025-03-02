@@ -12,7 +12,7 @@ interface CommentsStore {
     commentId: string,
     data: { body: string; courseID: string }
   ) => void;
-  acceptComment: (commentId: string) => void;
+  acceptComment: (commentId: string) => Promise<{message : string , success : boolean}>;
   rejectComment: (commentId: string) => void;
   isLoading: boolean;
 }
@@ -20,7 +20,29 @@ interface CommentsStore {
 export const useCommentsStore = create<CommentsStore>((set, get) => ({
   comments: [],
   isLoading: false,
-  acceptComment(commentId) {},
+  acceptComment : async (commentId) => {
+    try {
+      set({isLoading : true})
+      if (!commentId){
+        throw new Error('invalid comment commentId')
+      }
+      const res = await axiosnInstance.put(`/comments/accept/${commentId}`)
+      if (res.data.success) {
+        set({isLoading : false , comments : get().comments.map(c=>c.id === commentId ? {...c , answer : 1} : c)})
+        return {
+            success : true,
+            message: res.data.message,
+        }
+      }else{
+        throw new Error(res.data.message)
+      }
+    } catch (error : any) {
+      return {
+        success : false,
+        message : error.response.data.message || error.message
+      }
+    }
+  },
   answerComment(commentId, data) {},
   deleteComment(commentId) {},
   rejectComment(commentId) {},

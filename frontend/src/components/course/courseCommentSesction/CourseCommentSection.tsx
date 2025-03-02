@@ -10,6 +10,7 @@ import Image from "next/image";
 import { IComment, IUser } from "@/interfaces/types";
 import { useCommentsStore } from "@/store/comment.store";
 import { toastOptions } from "@/helpers/toastOptions";
+import moment from 'moment-jalali'
 
 interface CourseCommentSectionProps {
   isAuthenticated : boolean,
@@ -53,6 +54,7 @@ const CourseCommentSection = ({
     }
     setReplyTo(null);
   };
+  const courseComments = comments.filter(comment=>comment.courseID.toString() === courseId && comment.answer === 1)
 
   return (
     <div className="bg-base-300 p-6 rounded-lg shadow-lg">
@@ -119,7 +121,7 @@ const CourseCommentSection = ({
 
       {/* Display Comments */}
       <div className="mt-6">
-        {comments.map((commentData, index) => (
+        {courseComments.map((commentData, index) => (
           <div
             key={index}
             className="bg-base-100 p-4 rounded-lg shadow-md mb-4 relative"
@@ -128,26 +130,26 @@ const CourseCommentSection = ({
               <Image
               width={40}
               height={40}
-                src={commentData.user.avatar}
-                alt={commentData.user.name}
+                src={"https://secure.gravatar.com/avatar/e7b9929942190634b0267c963d2513eb?s=96&d=mm&r=g"}
+                alt={`کامنت ${commentData.creator.name}`}
                 className="rounded-full"
               />
               <div>
                 <h3 className="font-dana-demi text-base-content text-sm sm:text-base">
-                  {commentData.user.name} | 
-                  <span className="mr-1">{commentData.user.role}</span>
+                  {commentData.creator.name} | 
+                  <span className="mr-1">{commentData.creator.role === 'ADMIN' ? 'ادمین' : "کاربر"}</span>
                 </h3>
                 <span className="text-sm text-gray-400 font-dana-extra-light">
-                {commentData.createdAt}
+                {moment(commentData.createdAt).format('jYYYY/jM/jD')}
                 </span>
               </div>
             </div>
             <div className="divider divide-base-content"></div>
-            <p className="text-base-content font-dana-extra-light">{commentData.comment}</p>
+            <p className="text-base-content font-dana-extra-light">{commentData.body}</p>
               <button
                 onClick={() => {
                   if (isAuthenticated) {
-                    setReplyTo(commentData.id);
+                    // setReplyTo(commentData.id);
                     setIsOpen(true);
                   } else {
                     toast.error(
@@ -162,9 +164,6 @@ const CourseCommentSection = ({
           </div>
         ))}
       </div>
-
-      {/* Toast Notifications */}
-      <ToastContainer />
     </div>
   );
 };
