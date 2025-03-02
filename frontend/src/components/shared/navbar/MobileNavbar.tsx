@@ -6,10 +6,12 @@ import Logo from "./ui/Logo";
 import HamburgerMenu from "./ui/HamburgerMenu";
 import MobileDrawer from "./ui/MobileDrawer";
 import { mobileMenuItems, themeItems } from "@/data/data";
+import { useCategoriesStore } from "@/store/category.store";
 
 const MobileNavbar = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
+  const {categories} = useCategoriesStore()
 
   const handleClickOutside = (e: MouseEvent) => {
     if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
@@ -43,7 +45,7 @@ const MobileNavbar = () => {
             drawerOpen={drawerOpen}
             setDrawerOpen={setDrawerOpen}
             menuRef={menuRef}
-            menuItems={mobileMenuItems}
+            menuItems={categories}
             themeItems={themeItems}
           />
         )}

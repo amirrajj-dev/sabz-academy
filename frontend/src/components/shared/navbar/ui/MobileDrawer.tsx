@@ -3,6 +3,7 @@ import UserSection from "./UserSection";
 import MenuItem from "./MenuItem";
 import ThemeSwitcher from "./themeSwitcher";
 import { useEffect, useState } from "react";
+import { ICategory } from "@/interfaces/types";
 
 const MobileDrawer = ({
   drawerOpen,
@@ -14,22 +15,23 @@ const MobileDrawer = ({
   drawerOpen: boolean;
   setDrawerOpen: (value: boolean) => void;
   menuRef: React.RefObject<HTMLDivElement | null>;
-  menuItems: any[];
+  menuItems: ICategory[];
   themeItems: any[];
 }) => {
     const [themeDropDownToggle, setThemeDropdownToggle] = useState(false);
-    const [theme , setTheme] = useState('light')
-  
+    const [theme , setTheme] = useState('light');
+    const [openIndex, setOpenIndex] = useState<number | null>(null);
+
     const toggleDrawer = () => {
       setDrawerOpen(!drawerOpen);
     };
-  
+
     const handleClickOutside = (e: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
         setDrawerOpen(false);
       }
     };
-  
+
     useEffect(() => {
       document.addEventListener("mousedown", handleClickOutside);
       document.documentElement.setAttribute(
@@ -40,15 +42,19 @@ const MobileDrawer = ({
         document.removeEventListener("mousedown", handleClickOutside);
       };
     }, []);
-  
+
     const handleThemeToggle = () => {
       setThemeDropdownToggle(!themeDropDownToggle);
     };
-  
+
     const handleThemeChange = (newTheme : string) => {
       setTheme(newTheme);
       localStorage.setItem("theme", newTheme);
       document.documentElement.setAttribute("data-theme", newTheme);
+    };
+
+    const toggleMenuItem = (index: number) => {
+      setOpenIndex((prevIndex) => (prevIndex === index ? null : index));
     };
 
   return (
@@ -63,11 +69,11 @@ const MobileDrawer = ({
         <UserSection />
         <ul className="menu p-4 space-y-3 w-full">
           {menuItems.map((item, index) => (
-            <MenuItem key={index} item={item} />
+            <MenuItem key={index} item={item} isOpen={openIndex === index} toggleOpen={() => toggleMenuItem(index)} />
           ))}
         </ul>
         <div className="divider divide-base-300 p-2 pt-0"></div>
-          <ThemeSwitcher themeItems={themeItems} handleThemeToggle={handleThemeToggle} handleThemeChange={handleThemeChange} themeDropDownOpen={themeDropDownToggle} />
+        <ThemeSwitcher themeItems={themeItems} handleThemeToggle={handleThemeToggle} handleThemeChange={handleThemeChange} themeDropDownOpen={themeDropDownToggle} />
       </motion.div>
     </div>
   );

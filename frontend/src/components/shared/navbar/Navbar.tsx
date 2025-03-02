@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import MobileNavbar from "./MobileNavbar";
 import { menuItems, themeItems } from "@/data/data";
 import UserMenu from "./ui/UserMenu";
@@ -11,39 +11,44 @@ import CoursesMenu from "./ui/CourseMenu";
 import { motion } from "framer-motion";
 import { useAuthStore } from "@/store/auth.store";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { useCategoriesStore } from "@/store/category.store";
 
-const Navbar = () => {
-  const [theme, setTheme] = useState("light");
-  const [innerWidth, setInnerWidth] = useState<number>(window.innerWidth);
+const Navbar = React.memo(() => {
+  const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "light");
+  const [innerWidth, setInnerWidth] = useState<number>(typeof window !== "undefined" ? window.innerWidth : 1024);
   const [cartOpen, setCartOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [themeMenuOpen, setThemeMenuOpen] = useState(false);
   const [currentOption, setCurrentOption] = useState<null | number>(null);
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
-  const [cartItems, setCartItems] = useState([]);
+
   const { user, isLoading, getMe, isAuthenticated } = useAuthStore();
 
+  const { categories, fetchCategories } = useCategoriesStore();
+
   useEffect(() => {
-    document.documentElement.setAttribute(
-      "data-theme",
-      localStorage.getItem("theme") as string
-    );
+    document.documentElement.setAttribute("data-theme", theme);
     getMe();
+    fetchCategories();
+
     const handleResize = () => setInnerWidth(window.innerWidth);
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
-  const handleThemeChange = (newTheme: string) => {
+    return () => window.removeEventListener("resize", handleResize);
+  }, [theme, getMe, fetchCategories]);
+
+  const handleThemeChange = useCallback((newTheme: string) => {
     setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
     document.documentElement.setAttribute("data-theme", newTheme);
-  };
+  }, []);
 
-  const handleSetCurrentOption = (value: number) => {
+  const handleSetCurrentOption = useCallback((value: number) => {
     setIsSideMenuOpen(true);
     setCurrentOption(value);
-  };
+  }, []);
+
+  const memoizedCategories = useMemo(() => categories, [categories]);
 
   return (
     <>
@@ -76,26 +81,18 @@ const Navbar = () => {
               <CoursesMenu
                 currentOption={currentOption}
                 handleSetCurrentOption={handleSetCurrentOption}
-                menuItems={menuItems}
+                menuItems={memoizedCategories}
                 setCurrentOption={setCurrentOption}
               />
 
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.2 }}
-                className="relative group"
-              >
-                <Link href="/" className="btn btn-ghost text-base font-medium text-base-content">
+              <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }} className="relative group">
+                <Link href="/courses" className="btn btn-ghost text-base font-medium text-base-content">
                   همه دوره ها
                 </Link>
               </motion.div>
 
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.2 }}
-                className="relative group"
-              >
-                <Link href="/" className="btn btn-ghost text-base font-medium text-base-content">
+              <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }} className="relative group">
+                <Link href="/articles" className="btn btn-ghost text-base font-medium text-base-content">
                   مقالات
                 </Link>
               </motion.div>
@@ -109,7 +106,7 @@ const Navbar = () => {
             transition={{ delay: 0.3, duration: 0.4 }}
             className="flex items-center gap-6"
           >
-            <CartMenu cartItems={cartItems} cartOpen={cartOpen} setCartOpen={setCartOpen} />
+            <CartMenu cartOpen={cartOpen} setCartOpen={setCartOpen} />
             <ThemeMenu
               handleThemeChange={handleThemeChange}
               setThemeMenuOpen={setThemeMenuOpen}
@@ -120,11 +117,7 @@ const Navbar = () => {
             {isLoading ? (
               <AiOutlineLoading3Quarters className="animate-spin" />
             ) : isAuthenticated ? (
-              <UserMenu
-                menuOpen={menuOpen}
-                setMenuOpen={setMenuOpen}
-                username={user?.username as string}
-              />
+              <UserMenu menuOpen={menuOpen} setMenuOpen={setMenuOpen} username={user?.username as string} />
             ) : (
               <Link href="/signin" className="btn btn-primary text-primary-content font-medium">
                 ورود | عضویت
@@ -137,6 +130,6 @@ const Navbar = () => {
       )}
     </>
   );
-};
+});
 
 export default Navbar;
