@@ -313,3 +313,44 @@ export const getAllSessions = async (
     next(error);
   }
 };
+
+export const getRelatedCourses = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const courseID = req.params.id;
+    console.log(courseID);
+    if (!courseID) {
+      return res.status(400).json({ success: false, message: 'Please provide course ID' });
+    }
+    
+    const course = await prisma.course.findUnique({
+      where: { id: courseID },
+      include : {category : {select : {title : true}}}
+    });
+    
+    if (!course) {
+      return res.status(404).json({ success: false, message: 'Course not found' });
+    }
+    
+    const relatedCourses = await prisma.course.findMany({
+      where: {
+        categoryID: course.categoryID,
+        id: { notIn: [courseID] },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      include: {
+        creator: true,
+        category: true
+      },
+    })
+    
+    res.status(200).json({
+      success: true,
+      message: 'Related courses retrieved successfully',
+      data: relatedCourses
+    })
+  } catch (error) {
+    next(error);
+  }
+}

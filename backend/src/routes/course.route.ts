@@ -5,6 +5,7 @@ import {getAllCourses,
     updateCourse,
     getSingleCourse,
     createSession,
+    getRelatedCourses,
     getAllSessions} from '../controllers/course.controller'
 import { upload } from '../../utils/fileUpload'
 import { protectRouteAdmin } from '../middlewares/authMiddleware'
@@ -17,5 +18,6 @@ router.put('/:id' , protectRouteAdmin as express.RequestHandler ,  upload  , upd
 router.get('/:id' , getSingleCourse as express.RequestHandler)
 router.post('/:id/sessions' , protectRouteAdmin as express.RequestHandler , upload , createSession as express.RequestHandler)
 router.get('/:id/sessions' , getAllSessions as express.RequestHandler)
+router.get('/:id/related' , getRelatedCourses as express.RequestHandler)
 
 export default router;
