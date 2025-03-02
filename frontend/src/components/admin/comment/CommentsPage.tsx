@@ -1,11 +1,12 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { FaStar, FaTrash, FaCheck, FaEye, FaReply, FaBan, FaEdit } from "react-icons/fa";
 import DeleteModal from "@/components/modals/shared/DeleteModal";
 import SeeCommentModal from "@/components/modals/comment/SeeCommentModal";
 import ReplyCommentModal from "@/components/modals/comment/ReplyComment";
 import BanModal from "@/components/modals/shared/BanModal";
+import { useCommentsStore } from "@/store/comment.store";
 
 interface Comment {
   id: number;
@@ -24,6 +25,11 @@ const comments = [
 
 
 const CommentsTable = () => {
+  const {comments , getAllComments} = useCommentsStore()
+  useEffect(() => {
+    getAllComments()
+  }, [])
+  console.log(comments);
   return (
     <div className="shadow-lg rounded-xl overflow-x-auto">
       <table className="table bg-base-300 w-full text-center">

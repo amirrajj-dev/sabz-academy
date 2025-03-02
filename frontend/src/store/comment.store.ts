@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { IComment } from "@/interfaces/types";
+import axiosnInstance from "@/configs/axios";
 
 interface CommentsStore {
   comments: IComment[];
@@ -24,6 +25,27 @@ export const useCommentsStore = create<CommentsStore>((set, get) => ({
   deleteComment(commentId) {},
   rejectComment(commentId) {},
   setComments(comments) {},
-  getAllComments() {},
+  getAllComments : async () => {
+    try {
+        set({isLoading : true})
+        const res = await axiosnInstance.get('/comments')
+        if (res.data.success){
+            set({ comments: res.data.comments, isLoading: false });
+            return {
+                success : res.data.success,
+                message : res.data.message
+            }
+        }else{
+            throw new Error('failed to get comments')
+        }
+    } catch (error : any) {
+        return{
+            success : false,
+            message : error.response.data.message || error.message
+        }
+    }finally{
+        set({isLoading : false})
+    }
+  },
   submitComment(comment) {},
 }));
