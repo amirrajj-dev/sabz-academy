@@ -124,7 +124,6 @@ export const useCourseStore = create<CourseStore>((set, get) => ({
     }
   },
   editCourse : async (id , data) => {
-    console.log(data);
     try {
     set({isLoading : true})
     if (!id){
@@ -135,7 +134,6 @@ export const useCourseStore = create<CourseStore>((set, get) => ({
       throw new Error("Please fill all fields");
     }
     const res = await axiosnInstance.put(`/courses/${id}`, data);
-    console.log(res);
     if (res.data.success) {
       set({isLoading : false , courses : get().courses.map(course=>course.id === id ? {...course , data} : course)})
       return { message: res.data.message, success: true };
@@ -171,7 +169,6 @@ export const useCourseStore = create<CourseStore>((set, get) => ({
   },
   fetchRelatedCourses: async (id : string) => {
     try {
-      console.log(id);
       set({ isLoading: true });
       if (!id) throw new Error("No course id provided");
       const res = await axiosnInstance.get(`/courses/${id}/related`);

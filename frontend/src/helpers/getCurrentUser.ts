@@ -2,10 +2,10 @@
 import axiosnInstance from "@/configs/axios";
 import { cookies } from "next/headers";
 
-export const getUser = async () => {
+export const getUser = async (t? : string) => {
   try {
     const cokkiesStore = await cookies();
-    const token = cokkiesStore.get("sabz-token")?.value;
+    const token = t || cokkiesStore.get("sabz-token")?.value;
     const res = await axiosnInstance.get("/auth/me", {
       withCredentials: true,
       headers: {

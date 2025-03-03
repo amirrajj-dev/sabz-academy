@@ -317,7 +317,6 @@ export const getAllSessions = async (
 export const getRelatedCourses = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const courseID = req.params.id;
-    console.log(courseID);
     if (!courseID) {
       return res.status(400).json({ success: false, message: 'Please provide course ID' });
     }

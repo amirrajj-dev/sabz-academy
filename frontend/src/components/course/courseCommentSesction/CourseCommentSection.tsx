@@ -14,10 +14,7 @@ import moment from "moment-jalaali";
 import { useAuthStore } from "@/store/auth.store";
 
 interface CourseCommentSectionProps {
-  isAuthenticated: boolean;
-  user: IUser;
   courseId: string;
-  comments: IComment[];
 }
 
 const CourseCommentSection = ({ courseId }: CourseCommentSectionProps) => {
@@ -63,8 +60,6 @@ const CourseCommentSection = ({ courseId }: CourseCommentSectionProps) => {
       toast.error("خطا در ارسال نظر.", toastOptions);
     }
   };
-
-  console.log(comments);
 
   const renderComments = (commentList: IComment[], parentId: string | null = null) => {
     const filteredComments = commentList.filter(

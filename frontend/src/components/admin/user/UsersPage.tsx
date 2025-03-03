@@ -25,7 +25,6 @@ const UsersPage = () => {
 
   const handleBan = async (id: string) => {
     const res = await banUser(id);
-    console.log(res);
     if (res.success) {
       res.message === "User unbanned successfully"
         ? toast.success("کاربر با موفقیت از بن خارج شد", toastOptions)

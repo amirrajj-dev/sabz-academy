@@ -61,7 +61,6 @@ export const useCommentsStore = create<CommentsStore>((set, get) => ({
         throw new Error("invalid comment data");
       }
       const res = await axiosnInstance.post(`/comments/answer/${commentId}`, data);
-      console.log(res);
       if (res.data.success) {
         set({isLoading : false})
         return {
@@ -170,7 +169,6 @@ export const useCommentsStore = create<CommentsStore>((set, get) => ({
         mainCommentID: mainCommentID || null
       });
 
-      console.log(res);
       if (res.data.success) {
         set({ isLoading: false });
         return {

@@ -56,7 +56,6 @@ export const useAuthStore = create<AuthStore>((set) => ({
         try {
             set({isLoading : true})
             const {email , password} = user
-            console.log(email , password);
             if (!email.trim() ||!password.trim()) {
                 throw new Error("All fields are required");
             }
@@ -94,7 +93,6 @@ export const useAuthStore = create<AuthStore>((set) => ({
         try {
             set({ isLoading: true });
             const res = await axiosnInstance.get('/auth/signout')
-            console.log(res);
             set({ user: null, isAuthenticated: false, error: null, isLoading: false });
             return {
                 success : res.data.success,

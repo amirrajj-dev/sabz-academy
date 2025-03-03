@@ -8,7 +8,7 @@ import CourseHeader from "@/components/course/courseHeader/CourseHeader";
 import CourseSessions from "@/components/course/courseSessions/CourseSessions";
 import RelatedCourses from "@/components/course/relatedCourses/RelatedCourses";
 import CourseCommentSection from "@/components/course/courseCommentSesction/CourseCommentSection";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useCourseStore } from "@/store/course.store";
 import { useCommentsStore } from "@/store/comment.store";
 import { useAuthStore } from "@/store/auth.store";
@@ -29,9 +29,6 @@ const MainCourse: React.FC<MainCourseProps> = ({ params }) => {
     getCourseName();
     getAllComments()
   }, []);
-  const {user , isAuthenticated} = useAuthStore()
-
-  console.log(comments);
         
         
         return (
@@ -50,10 +47,7 @@ const MainCourse: React.FC<MainCourseProps> = ({ params }) => {
           <CourseSessions />
          <RelatedCourses />
           <CourseCommentSection
-            comments={comments}
             courseId={mainCourse?.id as string}
-            isAuthenticated={isAuthenticated}
-            user={user as IUser}
           />
         </div>
 

@@ -41,7 +41,6 @@ const SignUp = () => {
   const onSubmit = async (data: SignupSchemaType) => {
     const res: { success: boolean; error?: string; message?: string } =
       await signup(data);
-      console.log(res);
     if (res.success) {
       toast.success("ثبت نام شما با موفقیت به انجام رسید", toastOptions);
       router.replace("/");

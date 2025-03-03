@@ -150,7 +150,6 @@ export const answerComment = async (req: Request, res: Response, next: NextFunct
     try {
         const commentID = req.params.id;
         const { body, courseID } = req.body;
-        console.log(commentID , courseID , body)
 
         if (!body || !courseID) {
             return res.status(400).json({ message: "Please provide all required fields", success: false });
