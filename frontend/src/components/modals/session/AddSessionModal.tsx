@@ -1,7 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaPlus, FaTimes } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSessionStore } from "@/store/session.store";
+import { useCourseStore } from "@/store/course.store";
+import { toast } from "react-toastify";
+import { toastOptions } from "@/helpers/toastOptions";
 
 const AddSessionModal = () => {
   const [sessionTitle, setSessionTitle] = useState("");
@@ -10,33 +14,45 @@ const AddSessionModal = () => {
   const [video, setVideo] = useState<File | null>(null);
   const [isFree, setIsFree] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-
-  const courses = [
-    { id: 1, name: "دوره 1" },
-    { id: 2, name: "دوره 2" },
-    { id: 3, name: "دوره 3" },
-  ];
-
-  const handleAddSession = () => {
+  const {addSession , isLoading} = useSessionStore()
+  const {courses , fetchCourses} = useCourseStore()
+  useEffect(() => {
+    fetchCourses()
+  }, [])
+  const handleAddSession = async () => {
     if (!sessionTitle || !duration || !course || !video) {
+      alert("لطفاً تمام فیلدها را پر کنید.");
       return;
     }
 
-    console.log({
-      sessionTitle,
-      duration,
-      course,
-      video: video.name,
-      isFree,
-    });
+    
+    try {
+      const response = await addSession({
+        title: sessionTitle,
+        time: duration,
+        free: isFree ? 1 : 0,
+        video : video,
+        courseId: course
+      });
 
-    setSessionTitle("");
-    setDuration("");
-    setCourse("");
-    setVideo(null);
-    setIsFree(false);
-    setIsOpen(false);
+      console.log(response);
+  
+      if (response.success) {
+        toast.success("جلسه با موفقیت افزوده شد.", toastOptions)
+        setSessionTitle("");
+        setDuration("");
+        setCourse("");
+        setVideo(null);
+        setIsFree(false);
+        setIsOpen(false);
+      } else {
+        toast.error("خطا در افزودن جلسه.", toastOptions)
+      }
+    } catch (error : any) {
+      toast.error(error.message, toastOptions)
+    }
   };
+  
 
   return (
     <>
@@ -114,7 +130,7 @@ const AddSessionModal = () => {
                   >
                     <option value="">انتخاب دوره</option>
                     {courses.map((c) => (
-                      <option key={c.id} value={c.name}>
+                      <option key={c.id} value={c.id}>
                         {c.name}
                       </option>
                     ))}
