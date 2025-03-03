@@ -7,7 +7,7 @@ interface CommentsStore {
   setComments: (comments: IComment[]) => void;
   getAllComments: () => Promise<{ message: string; success: boolean }>;
   submitComment: (
-    comment: Pick<IComment, "body" | "courseID" | "score">
+    comment: Pick<IComment, "body" | "courseID" | "score" | "mainCommentID">
   ) => Promise<{ message: string; success: boolean }>;
   deleteComment: (commentId: string) => Promise<{message : string ; success : boolean}>;
   answerComment: (
@@ -157,15 +157,19 @@ export const useCommentsStore = create<CommentsStore>((set, get) => ({
   submitComment: async (comment) => {
     try {
       set({ isLoading: true });
-      const { body, courseID, score } = comment;
+      const { body, courseID, score, mainCommentID } = comment;
+
       if (!body || !courseID || !score) {
-        throw new Error("invalid comment");
+        throw new Error("Invalid comment");
       }
+
       const res = await axiosnInstance.post("/comments", {
         body,
         courseID,
         score,
+        mainCommentID: mainCommentID || null
       });
+
       console.log(res);
       if (res.data.success) {
         set({ isLoading: false });
@@ -174,13 +178,13 @@ export const useCommentsStore = create<CommentsStore>((set, get) => ({
           message: res.data.message,
         };
       } else {
-        throw new Error("failed to submit comment");
+        throw new Error("Failed to submit comment");
       }
     } catch (error: any) {
       return {
         success: false,
-        message: error.response.data.message || error.message,
+        message: error.response?.data?.message || error.message,
       };
     }
-  },
+  }
 }));

@@ -57,13 +57,26 @@ export const createComment = async (req: Request, res: Response, next: NextFunct
             return res.status(400).json({ message: "Score must be between 1 and 5", success: false });
         }
 
+        let parentComment = null;
+
         if (mainCommentID) {
-            const parentComment = await prisma.comment.findUnique({
+            parentComment = await prisma.comment.findUnique({
                 where: { id: mainCommentID },
+                include: { replies: true }
             });
 
             if (!parentComment) {
                 return res.status(404).json({ message: "Parent comment not found", success: false });
+            }
+
+            if (parentComment.courseID !== courseID) {
+                return res.status(400).json({ message: "Reply must belong to the same course", success: false });
+            }
+            if (parentComment.replies.some((reply) => reply.id === mainCommentID)) {
+                return res.status(400).json({ message: "Reply already exists", success: false });
+            }
+            if (parentComment.replies.length >= 3) {
+                return res.status(400).json({ message: "Cannot reply to a parent comment more than 3 times", success: false });
             }
         }
 
@@ -71,16 +84,18 @@ export const createComment = async (req: Request, res: Response, next: NextFunct
             data: {
                 body,
                 courseID,
-                score : +score,
+                score: +score,
                 creatorID: user.id,
-                answer: 0, // Admin hasn't answered yet
+                answer: 0,
                 isAnswer: 0,
-                mainCommentID: mainCommentID || null, // If it's a reply, set the parent comment ID
+                mainCommentID: mainCommentID || null,
             },
             include: {
-                creator: { select: { id: true, username: true, email: true } }
+                creator: { select: { id: true, username: true, email: true, name: true, role: true } },
+                parentComment: mainCommentID ? { select: { id: true, body: true } } : undefined
             },
         });
+        
 
         return res.status(201).json({ message: "Comment created successfully", success: true, comment });
     } catch (error) {
