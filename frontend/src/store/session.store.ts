@@ -4,8 +4,8 @@ import axiosnInstance from "@/configs/axios";
 
 interface SessionStore {
   sessions: ISession[];
-  getAllSessions : (courseID : string)=>void
-  setSession: (session: ISession[] | null) => void;
+  getAllSessions : (courseID : string)=>Promise<{message : string ; success : boolean}>;
+  setSession: (session: ISession[]) => void;
   addSession: (session: ISession) => void;
   deleteSession: (sessionId: string) => void; 
   isLoading : boolean 
@@ -21,7 +21,7 @@ const useSessionStore = create<SessionStore>((set) => ({
         
     },  
     setSession(session) {
-        
+      set({ sessions: session });
     },  
     getAllSessions : async (courseID) => {
       try {
@@ -31,6 +31,10 @@ const useSessionStore = create<SessionStore>((set) => ({
         const res = await axiosnInstance.get(`/courses/${courseID}/sessions`)
         if (res.data.success) {
           set({sessions: res.data.data, isLoading : false });
+          return {
+            message: res.data.message,
+            success: true,
+          };
         } else {
           throw new Error(res.data.message || 'Failed to fetch sessions');
         }
