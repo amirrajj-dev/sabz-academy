@@ -14,9 +14,7 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useCategoriesStore } from "@/store/category.store";
 
 const Navbar = React.memo(() => {
-  const [theme, setTheme] = useState(
-    () => localStorage.getItem("theme") || "light"
-  );
+  const [theme, setTheme] = useState('dark');
   const [innerWidth, setInnerWidth] = useState<number>(
     typeof window !== "undefined" ? window.innerWidth : 1024
   );
@@ -29,6 +27,13 @@ const Navbar = React.memo(() => {
   const { user, isLoading, getMe, isAuthenticated } = useAuthStore();
 
   const { categories, fetchCategories } = useCategoriesStore();
+
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme) {
+      setTheme(storedTheme);
+    }
+  }, []);  
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
