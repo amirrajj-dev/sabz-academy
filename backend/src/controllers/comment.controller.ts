@@ -15,7 +15,8 @@ export const getAllComments = async (req : Request , res : Response , next : Nex
                         email : true,
                         username : true,
                         name : true,
-                        role : true
+                        role : true,
+                        isBanned : true
                     }
                 },
                 course : {

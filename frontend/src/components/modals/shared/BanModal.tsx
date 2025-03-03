@@ -12,6 +12,7 @@ const BanModal = ({ user, onBan } : {user : IUser ,onBan : (id : string)=>void})
       setIsOpen(false);
     }
   };
+  console.log(user);
 
   return (
     <>

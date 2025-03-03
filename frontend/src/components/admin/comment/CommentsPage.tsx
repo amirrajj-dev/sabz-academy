@@ -10,10 +10,11 @@ import BanModal from "@/components/modals/shared/BanModal";
 import { useCommentsStore } from "@/store/comment.store";
 import { toast } from "react-toastify";
 import { toastOptions } from "@/helpers/toastOptions";
+import { useUserStore } from "@/store/user.store";
 
 const CommentsTable = () => {
   const { comments, getAllComments, acceptComment, isLoading , rejectComment , deleteComment , answerComment , setComments } = useCommentsStore();
-
+  const {banUser} = useUserStore()
   useEffect(() => {
     getAllComments();
   }, []);
@@ -54,6 +55,19 @@ const CommentsTable = () => {
       toast.error("خطا در ارسال پاسخ", toastOptions);
     }
   } 
+
+    const handleBan = async (id: string) => {
+      const res = await banUser(id);
+      console.log(res);
+      if (res.success) {
+        await getAllComments()
+        res.message === "User unbanned successfully"
+          ? toast.success("کاربر با موفقیت از بن خارج شد", toastOptions)
+          : toast.success("کاربر با موفقیت بن شد", toastOptions);
+      } else {
+        toast.error("خطا در بن کاربر", toastOptions);
+      }
+    };
 
   return (
     <div className="shadow-lg rounded-xl overflow-x-auto">
@@ -113,7 +127,7 @@ const CommentsTable = () => {
                   </motion.button>
                 </td>
                 <td className="p-4"><DeleteModal onDelete={handleDeleteComment} deleteId={comment.id} title="حذف کامنت" message="آیا از حذف کامنت اطمینان دارید؟" messageDesc="این اقدام قابل بازگشت نیست!" deleteBtnText="حذف کامنت" /></td>
-                <td className="p-4"><BanModal /></td>
+                <td className="p-4"><BanModal onBan={handleBan} user={comment.creator} /></td>
                 <td className="p-4">
                   {comment.answer === 1 ? (
                     <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="btn btn-success btn-sm" onClick={()=>handleRejectComment(comment.id)}>
