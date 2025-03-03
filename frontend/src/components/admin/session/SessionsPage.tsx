@@ -1,19 +1,18 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import AddSessionModal from '../../modals/session/AddSessionModal';
 import DeleteModal from '@/components/modals/shared/DeleteModal';
+import { useSessionStore } from '@/store/session.store';
 
 const SessionsPage = () => {
-  const [sessions, setSessions] = useState([
-    { id: 1, title: 'جلسه مقدماتی', duration: '45 دقیقه', course: 'دوره جاوااسکریپت' },
-    { id: 2, title: 'مفاهیم پیشرفته', duration: '60 دقیقه', course: 'دوره ری‌اکت' },
-  ]);
+  const {sessions , getAllSessions , isLoading} = useSessionStore()
+  useEffect(()=>{
+    getAllSessions()
+  } , [])
 
-  const handleDeleteSession = (id: number) => {
-    setSessions(sessions.filter((session) => session.id !== id));
-  };
+  console.log(sessions);
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
@@ -40,10 +39,10 @@ const SessionsPage = () => {
                   index % 2 === 0 ? 'bg-base-200' : 'bg-base-100'
                 }`}
               >
-                <td className="p-4 font-medium text-base-content">{session.id}</td>
+                <td className="p-4 font-medium text-base-content">{index + 1}</td>
                 <td className="p-4 font-semibold text-base-content">{session.title}</td>
-                <td className="p-4">{session.duration}</td>
-                <td className="p-4">{session.course}</td>
+                <td className="p-4">{session.time}</td>
+                <td className="p-4">{session.course?.name}</td>
                 <td className="p-4">
                   <DeleteModal message='آیا از حذف این جلسه اطمینان دارید ؟' messageDesc='این اقدام قابل بازگشت نیست !' title='حذف جلسه 📚' deleteBtnText='حذف جلسه' deleteId={''} onDelete={(id)=>{}} />
                 </td>
