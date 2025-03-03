@@ -242,8 +242,9 @@ export const rejectComment = async (req: Request, res: Response, next: NextFunct
             return res.status(404).json({ message: "Comment not found", success: false });
         }
 
-        await prisma.comment.delete({
+        await prisma.comment.update({
             where: { id: commentID },
+            data: { answer: 0 }
         });
 
         return res.status(200).json({ message: "Comment rejected successfully", success: true });

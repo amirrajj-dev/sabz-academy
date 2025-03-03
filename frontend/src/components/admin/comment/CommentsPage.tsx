@@ -12,7 +12,7 @@ import { toast } from "react-toastify";
 import { toastOptions } from "@/helpers/toastOptions";
 
 const CommentsTable = () => {
-  const { comments, getAllComments, acceptComment, isLoading } = useCommentsStore();
+  const { comments, getAllComments, acceptComment, isLoading , rejectComment } = useCommentsStore();
 
   useEffect(() => {
     getAllComments();
@@ -26,6 +26,15 @@ const CommentsTable = () => {
       toast.error("خطایی رخ داد", toastOptions);
     }
   };
+
+  const handleRejectComment = async (id : string) => {
+    const res = await rejectComment(id);
+    if (res.success) {
+      toast.success("پیام با موفقیت رد شد", toastOptions);
+    } else {
+      toast.error("خطایی رخ داد", toastOptions);
+    }
+  }
 
   return (
     <div className="shadow-lg rounded-xl overflow-x-auto">
@@ -88,7 +97,7 @@ const CommentsTable = () => {
                 <td className="p-4"><BanModal /></td>
                 <td className="p-4">
                   {comment.answer === 1 ? (
-                    <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="btn btn-success btn-sm">
+                    <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="btn btn-success btn-sm" onClick={()=>handleRejectComment(comment.id)}>
                       <FaCheck />
                     </motion.button>
                   ) : (
