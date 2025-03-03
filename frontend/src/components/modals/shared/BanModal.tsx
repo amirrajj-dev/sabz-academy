@@ -6,7 +6,6 @@ import { IUser } from "@/interfaces/types";
 
 const BanModal = ({ user, onBan } : {user : IUser ,onBan : (id : string)=>void}) => {
   const [isOpen, setIsOpen] = useState(false);
-console.log(user);
   const handleBanUser = () => {
     if (user) {
       onBan(user.id);

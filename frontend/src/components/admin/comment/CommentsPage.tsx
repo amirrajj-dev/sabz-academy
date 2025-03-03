@@ -12,13 +12,13 @@ import { toast } from "react-toastify";
 import { toastOptions } from "@/helpers/toastOptions";
 
 const CommentsTable = () => {
-  const { comments, getAllComments, acceptComment, isLoading , rejectComment , deleteComment } = useCommentsStore();
+  const { comments, getAllComments, acceptComment, isLoading , rejectComment , deleteComment , answerComment , setComments } = useCommentsStore();
 
   useEffect(() => {
     getAllComments();
   }, []);
 
-  const handleAcceptComment = async (id) => {
+  const handleAcceptComment = async (id : string) => {
     const res = await acceptComment(id);
     if (res.success) {
       toast.success("پیام با موفقیت تایید شد", toastOptions);
@@ -44,6 +44,16 @@ const CommentsTable = () => {
       toast.error("خطا در حذف پیام", toastOptions);
     }
   }
+
+  const handleReplyComment = async (id : string , data : {body : string , courseID : string}) => {
+    const res = await answerComment(id , {body : data.body ,courseID : data.courseID});
+    if (res.success) {
+      await getAllComments()
+      toast.success("پاسخ با موفقیت ارسال شد", toastOptions);
+    } else {
+      toast.error("خطا در ارسال پاسخ", toastOptions);
+    }
+  } 
 
   return (
     <div className="shadow-lg rounded-xl overflow-x-auto">
@@ -95,8 +105,8 @@ const CommentsTable = () => {
                     <FaStar key={i} className="text-yellow-500" />
                   ))}
                 </td>
-                <td className="p-4"><SeeCommentModal /></td>
-                <td className="p-4"><ReplyCommentModal /></td>
+                <td className="p-4"><SeeCommentModal comment={comment.body} /></td>
+                <td className="p-4"><ReplyCommentModal commentId={comment.id} courseID={comment.course.id} onReply={handleReplyComment} /></td>
                 <td className="p-4">
                   <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="btn btn-primary btn-sm">
                     <FaEdit />

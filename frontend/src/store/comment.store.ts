@@ -13,7 +13,7 @@ interface CommentsStore {
   answerComment: (
     commentId: string,
     data: { body: string; courseID: string }
-  ) => void;
+  ) => Promise<{ message : string; success : boolean }>;
   acceptComment: (
     commentId: string
   ) => Promise<{ message: string; success: boolean }>;
@@ -54,7 +54,30 @@ export const useCommentsStore = create<CommentsStore>((set, get) => ({
       };
     }
   },
-  answerComment(commentId, data) {},
+  answerComment : async (commentId, data) => {
+    try {
+      set({isLoading : true})
+      if (!commentId ||!data.body ||!data.courseID) {
+        throw new Error("invalid comment data");
+      }
+      const res = await axiosnInstance.post(`/comments/answer/${commentId}`, data);
+      console.log(res);
+      if (res.data.success) {
+        set({isLoading : false})
+        return {
+            success: true,
+            message: res.data.message,
+        };
+      }else{
+        throw new Error(res.data.message);
+      }
+    } catch (error : any) {
+      return {
+        success: false,
+        message: error.response.data.message || error.message,
+      }
+    }
+  },
   deleteComment : async (commentId) => {
     try {
       set({ isLoading: true });
