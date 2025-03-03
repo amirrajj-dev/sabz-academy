@@ -244,6 +244,7 @@ export const createSession = async (req: Request, res: Response, next: NextFunct
     const courseID = req.params.id;
     const { title, time, free } = req.body;
     const file = req.file;
+    console.log(courseID , title, time, free , file);
 
     if (!courseID || !title.trim() || !time.trim() || isNaN(Number(free))) {
       return res.status(400).json({ success: false, message: 'Please fill all fields correctly' });
@@ -278,7 +279,7 @@ export const createSession = async (req: Request, res: Response, next: NextFunct
 };
 
 
-export const getAllSessions = async (
+export const getSingleCourseSessions = async (
   req: Request,
   res: Response,
   next: NextFunction

@@ -18,6 +18,7 @@ import infosRoutes from './routes/info.route';
 import offsRoutes from './routes/off.route';
 import ordersRoutes from './routes/order.route';
 import ticketsRoutes from './routes/ticket.route';
+import sessionRoutes from './routes/session.route'
 import prisma from "../utils/prisma";
 import { errorMiddleware } from './middlewares/errorMiddleware'
 import fs from 'fs';
@@ -55,6 +56,7 @@ app.use("/api/articles", articlesRoutes);
 app.use("/api/comments", commentsRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/search", searchRoutes);
+app.use('/api/sessions' , sessionRoutes)
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/infos", infosRoutes);
 app.use("/api/offs", offsRoutes);

@@ -6,7 +6,7 @@ import {getAllCourses,
     getSingleCourse,
     createSession,
     getRelatedCourses,
-    getAllSessions,
+    getSingleCourseSessions,
     deleteSession} from '../controllers/course.controller'
 import { upload } from '../../utils/fileUpload'
 import { protectRouteAdmin } from '../middlewares/authMiddleware'
@@ -18,7 +18,7 @@ router.delete('/:id' , protectRouteAdmin as express.RequestHandler , deleteCours
 router.put('/:id' , protectRouteAdmin as express.RequestHandler ,  upload  , updateCourse as express.RequestHandler)
 router.get('/:id' , getSingleCourse as express.RequestHandler)
 router.post('/:id/sessions' , protectRouteAdmin as express.RequestHandler , upload , createSession as express.RequestHandler)
-router.get('/:id/sessions' , getAllSessions as express.RequestHandler)
+router.get('/:id/sessions' , getSingleCourseSessions as express.RequestHandler)
 router.delete('/:id/sessions/:sessionID' , protectRouteAdmin as express.RequestHandler , deleteSession as express.RequestHandler)
 router.get('/:id/related' , getRelatedCourses as express.RequestHandler)
 
