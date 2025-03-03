@@ -11,6 +11,7 @@ import { useCommentsStore } from "@/store/comment.store";
 import { toast } from "react-toastify";
 import { toastOptions } from "@/helpers/toastOptions";
 import { useUserStore } from "@/store/user.store";
+import { RiAdminLine } from "react-icons/ri";
 
 const CommentsTable = () => {
   const { comments, getAllComments, acceptComment, isLoading , rejectComment , deleteComment , answerComment , setComments } = useCommentsStore();
@@ -120,7 +121,14 @@ const CommentsTable = () => {
                   ))}
                 </td>
                 <td className="p-4"><SeeCommentModal comment={comment.body} /></td>
-                <td className="p-4"><ReplyCommentModal commentId={comment.id} courseID={comment.course.id} onReply={handleReplyComment} /></td>
+                <td className="p-4">{comment?.mainCommentID ? <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={()=>toast.info('این کامنت یک پاسخ از طرف ادمین است و امکان پاسخگویی به آن وجود ندارد')}
+                        className="btn btn-secondary btn-soft btn-sm hover:scale-110 transition-transform"
+                      >
+                        <RiAdminLine />
+                      </motion.button>  : <ReplyCommentModal commentId={comment.id} courseID={comment.course.id} onReply={handleReplyComment} />}</td>
                 <td className="p-4">
                   <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="btn btn-primary btn-sm">
                     <FaEdit />
