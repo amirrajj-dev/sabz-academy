@@ -66,68 +66,71 @@ const CourseCommentSection = ({ courseId }: CourseCommentSectionProps) => {
 
   console.log(comments);
 
-  const renderComments = (
-    commentList: IComment[],
-    parentId: string | null = null
-  ) => {
-    console.log(commentList);
-    return commentList
-      .filter(
-        (comment) => comment.mainCommentID === parentId && comment.answer === 1 && comment.course.id === courseId
-      )
-      .map((comment) => (
-        <div
-          key={comment.id}
-          className={`p-4 rounded-lg shadow-md mb-4 ${
-            parentId
-              ? "ml-8 mt-4 border-l-4 border-success bg-base-300 pl-4"
-              : "bg-base-100"
-          }`}
-        >
-          <div className="flex items-center gap-4 mb-2">
-            <Image
-              width={40}
-              height={40}
-              src="https://secure.gravatar.com/avatar/e7b9929942190634b0267c963d2513eb?s=96&d=mm&r=g"
-              alt={comment.creator.name}
-              className="rounded-full"
-            />
-            <div>
-              <h3 className="font-dana-demi text-base-content text-sm sm:text-base">
-                {comment.creator.name} |
-                <span className="mr-1">
-                  {comment.creator.role === "ADMIN" ? "ادمین" : "کاربر"}
-                </span>
-              </h3>
-              <span className="text-sm text-gray-400 font-dana-extra-light">
-                {moment(comment.createdAt).format("jYYYY/jM/jD")}
-              </span>
-            </div>
-          </div>
-          <div className="divider divide-base-content"></div>
-          <p className="text-base-content font-dana-extra-light">
-            {comment.body}
-          </p>
-          <button
-            onClick={() => {
-              if (isAuthenticated) {
-                setReplyTo(comment.id);
-                setIsOpen(true);
-              } else {
-                toast.error(
-                  "برای پاسخ دادن باید وارد حساب کاربری خود شوید.",
-                  toastOptions
-                );
-              }
-            }}
-            className="mt-2 btn btn-success btn-sm"
-          >
-            <FaReply /> پاسخ
-          </button>
-          {renderComments(commentList, comment.id)}
+  const renderComments = (commentList: IComment[], parentId: string | null = null) => {
+    const filteredComments = commentList.filter(
+      (comment) => comment.mainCommentID === parentId && comment.answer === 1 && comment.course.id === courseId
+    );
+    if (parentId === null && filteredComments.length === 0) {
+      return (
+        <div className="flex flex-col items-center justify-center p-6 bg-base-200 rounded-lg shadow-md">
+          <FaComments className="text-gray-400 text-5xl mb-2" />
+          <h3 className="text-lg font-dana-demi text-gray-500">هنوز نظری ثبت نشده است!</h3>
+          <p className="text-sm text-gray-400">اولین نفری باشید که نظر می‌دهد.</p>
+          {isAuthenticated && (
+            <button onClick={() => setIsOpen(true)} className="mt-4 btn btn-success btn-md">
+              <LiaCommentSolid className="text-xl" />
+              ایجاد نظر جدید
+            </button>
+          )}
         </div>
-      ));
+      );
+    }
+  
+    return filteredComments.map((comment) => (
+      <div
+        key={comment.id}
+        className={`p-4 rounded-lg shadow-md mb-4 ${
+          parentId ? "ml-8 mt-4 border-l-4 border-success bg-base-300 pl-4" : "bg-base-100"
+        }`}
+      >
+        <div className="flex items-center gap-4 mb-2">
+          <Image
+            width={40}
+            height={40}
+            src="https://secure.gravatar.com/avatar/e7b9929942190634b0267c963d2513eb?s=96&d=mm&r=g"
+            alt={comment.creator.name}
+            className="rounded-full"
+          />
+          <div>
+            <h3 className="font-dana-demi text-base-content text-sm sm:text-base">
+              {comment.creator.name} |
+              <span className="mr-1">{comment.creator.role === "ADMIN" ? "ادمین" : "کاربر"}</span>
+            </h3>
+            <span className="text-sm text-gray-400 font-dana-extra-light">
+              {moment(comment.createdAt).format("jYYYY/jM/jD")}
+            </span>
+          </div>
+        </div>
+        <div className="divider divide-base-content"></div>
+        <p className="text-base-content font-dana-extra-light">{comment.body}</p>
+        <button
+          onClick={() => {
+            if (isAuthenticated) {
+              setReplyTo(comment.id);
+              setIsOpen(true);
+            } else {
+              toast.error("برای پاسخ دادن باید وارد حساب کاربری خود شوید.", toastOptions);
+            }
+          }}
+          className="mt-2 btn btn-success btn-sm"
+        >
+          <FaReply /> پاسخ
+        </button>
+        {renderComments(commentList, comment.id)}
+      </div>
+    ));
   };
+  
 
   return (
     <div className="bg-base-300 p-6 rounded-lg shadow-lg">
