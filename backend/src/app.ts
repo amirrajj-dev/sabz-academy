@@ -23,7 +23,7 @@ import prisma from "../utils/prisma";
 import { errorMiddleware } from './middlewares/errorMiddleware'
 import fs from 'fs';
 import path from 'path';
-
+import cron from 'node-cron'
 const __dirname = path.resolve()
 
 const uploadsDir = path.join(__dirname, 'uploads');
@@ -46,6 +46,24 @@ app.use(helmet({
 }))
 app.use(morgan('dev'))
 app.use(cookieParser())
+
+const tmpDir = path.join(process.cwd() , 'uploads')
+console.log(tmpDir);
+//every one hour deletes the tmp folder thass why we use node-cron its a cron job
+cron.schedule("0 * * * *" , ()=>{
+  fs.readdir(tmpDir, (err, files) => {
+      if (err) {
+          throw err;
+      }
+      files.forEach(file => {
+          fs.unlink(path.join(tmpDir, file), err => {
+              if (err) {
+                  throw err;
+              }
+          });
+      });
+  });
+})
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", usersRoutes);
