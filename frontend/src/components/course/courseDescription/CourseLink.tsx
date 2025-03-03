@@ -3,6 +3,7 @@ import React from "react";
 import Image from "next/image";
 import { FaRegCopy } from "react-icons/fa";
 import { motion } from "framer-motion";
+import { toast } from "react-toastify";
 
 const CourseLink = () => {
   const txt = "sabzlearn.ir/?p=5418";
@@ -21,7 +22,7 @@ const CourseLink = () => {
         <span className="text-lg font-medium text-success">{txt}</span>
 
         <button 
-          onClick={() => navigator.clipboard.writeText(txt)}
+          onClick={() =>{ navigator.clipboard.writeText(txt);toast.info('لینک با موفقیت کپی گردید')}}
           className="btn btn-success btn-circle border-none hover:bg-success/90 focus:outline-none"
         >
           <FaRegCopy className="text-xl text-white" />
