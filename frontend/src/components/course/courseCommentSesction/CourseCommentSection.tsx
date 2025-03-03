@@ -10,7 +10,7 @@ import Image from "next/image";
 import { IComment, IUser } from "@/interfaces/types";
 import { useCommentsStore } from "@/store/comment.store";
 import { toastOptions } from "@/helpers/toastOptions";
-import moment from 'moment-jalali'
+import moment from 'moment-jalaali'
 
 interface CourseCommentSectionProps {
   isAuthenticated : boolean,

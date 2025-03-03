@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { IoIosArrowBack } from "react-icons/io";
-import moment from "moment-jalali";
+import moment from "moment-jalaali";
 import { useState, useEffect } from "react";
 import { useAuthStore } from "@/store/auth.store";
 

@@ -4,7 +4,7 @@ import { SlCalender } from "react-icons/sl";
 import { FaCertificate, FaChartLine, FaClipboardList, FaClock } from "react-icons/fa";
 import { TbMoodConfuzedFilled , TbMoodHappyFilled } from "react-icons/tb";
 import { useCourseStore } from "@/store/course.store";
-import moment from 'moment-jalali'
+import moment from 'moment-jalaali'
 
 const CourseDetailsRight = () => {
   const {mainCourse} = useCourseStore()

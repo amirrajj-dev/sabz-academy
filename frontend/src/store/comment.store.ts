@@ -45,7 +45,13 @@ export const useCommentsStore = create<CommentsStore>((set, get) => ({
   },
   answerComment(commentId, data) {},
   deleteComment(commentId) {},
-  rejectComment(commentId) {},
+  rejectComment(commentId) {
+    try {
+      
+    } catch (error) {
+      
+    }
+  },
   setComments(comments) {},
   getAllComments : async () => {
     try {
