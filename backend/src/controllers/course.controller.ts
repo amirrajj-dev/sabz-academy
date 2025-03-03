@@ -365,6 +365,10 @@ export const deleteSession = async (req : Request , res : Response ,  next : Nex
       return res.status(404).json({ success: false, message: 'Session not found' });
     }
     await prisma.session.delete({ where: { id: sessionID } });
+    //delete session from courses
+    await prisma.course.update({ where: { id: courseID }, data: {
+      sessions: { disconnect: { id: sessionID } },
+    }})
     return res.status(200).json({ success: true, message: 'Session deleted successfully' });
   } catch (error) {
     next(error);
