@@ -1,7 +1,7 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoArrowBackCircleSharp, IoWarningOutline } from "react-icons/io5";
-import { FaComments, FaLayerGroup, FaReply } from "react-icons/fa";
+import { FaComments, FaReply } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -10,51 +10,124 @@ import Image from "next/image";
 import { IComment, IUser } from "@/interfaces/types";
 import { useCommentsStore } from "@/store/comment.store";
 import { toastOptions } from "@/helpers/toastOptions";
-import moment from 'moment-jalaali'
+import moment from "moment-jalaali";
+import { useAuthStore } from "@/store/auth.store";
 
 interface CourseCommentSectionProps {
-  isAuthenticated : boolean,
-  user : IUser,
-  courseId : string,
-  comments : IComment[],
-  submitComment : (comment : IComment)=>void, 
+  isAuthenticated: boolean;
+  user: IUser;
+  courseId: string;
+  comments: IComment[];
 }
 
-const CourseCommentSection = ({
-  isAuthenticated,
-  user,
-  courseId,
-  comments,
-} : CourseCommentSectionProps) => {
+const CourseCommentSection = ({ courseId }: CourseCommentSectionProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [comment, setComment] = useState("");
-  const [replyTo, setReplyTo] = useState(null);
-  const {submitComment} = useCommentsStore()
+  const [replyTo, setReplyTo] = useState<string | null>(null);
+  const { submitComment, comments, getAllComments, isLoading } =
+    useCommentsStore();
+  const { isAuthenticated } = useAuthStore();
+  useEffect(() => {
+    getAllComments();
+  }, []);
 
   const handleNewCommentClick = () => {
     if (!isAuthenticated) {
-      toast.error("برای ارسال نظر باید وارد حساب کاربری خود شوید." , toastOptions);
+      toast.error(
+        "برای ارسال نظر باید وارد حساب کاربری خود شوید.",
+        toastOptions
+      );
       return;
     }
     setIsOpen(true);
-  };
-  
-  const handleSubmitComment = async () => {
-    if (!comment.trim()){
-      toast.error("متن نظر خود را وارد کنید." , toastOptions);
-      return;
-    }
-    const res = await submitComment({body : comment , courseID : courseId , score : 5})
-    if (res.success){
-      toast.success("نظر شما با موفقیت ارسال شد." , toastOptions);
-      setComment("");
-      setIsOpen(false);
-    }else{
-      toast.error("خطا در ارسال نظر." , toastOptions);
-    }
     setReplyTo(null);
   };
-  const courseComments = comments.filter(comment=>comment.courseID.toString() === courseId && comment.answer === 1)
+
+  const handleSubmitComment = async () => {
+    if (!comment.trim()) {
+      toast.error("متن نظر خود را وارد کنید.", toastOptions);
+      return;
+    }
+    const res = await submitComment({
+      body: comment,
+      courseID: courseId,
+      score: 5,
+      mainCommentID: replyTo as string,
+    });
+    if (res.success) {
+      toast.success("نظر شما با موفقیت ارسال شد.", toastOptions);
+      setComment("");
+      setIsOpen(false);
+      setReplyTo(null);
+    } else {
+      toast.error("خطا در ارسال نظر.", toastOptions);
+    }
+  };
+
+  console.log(comments);
+
+  const renderComments = (
+    commentList: IComment[],
+    parentId: string | null = null
+  ) => {
+    console.log(commentList);
+    return commentList
+      .filter(
+        (comment) => comment.mainCommentID === parentId && comment.answer === 1 && comment.course.id === courseId
+      )
+      .map((comment) => (
+        <div
+          key={comment.id}
+          className={`p-4 rounded-lg shadow-md mb-4 ${
+            parentId
+              ? "ml-8 mt-4 border-l-4 border-success bg-base-300 pl-4"
+              : "bg-base-100"
+          }`}
+        >
+          <div className="flex items-center gap-4 mb-2">
+            <Image
+              width={40}
+              height={40}
+              src="https://secure.gravatar.com/avatar/e7b9929942190634b0267c963d2513eb?s=96&d=mm&r=g"
+              alt={comment.creator.name}
+              className="rounded-full"
+            />
+            <div>
+              <h3 className="font-dana-demi text-base-content text-sm sm:text-base">
+                {comment.creator.name} |
+                <span className="mr-1">
+                  {comment.creator.role === "ADMIN" ? "ادمین" : "کاربر"}
+                </span>
+              </h3>
+              <span className="text-sm text-gray-400 font-dana-extra-light">
+                {moment(comment.createdAt).format("jYYYY/jM/jD")}
+              </span>
+            </div>
+          </div>
+          <div className="divider divide-base-content"></div>
+          <p className="text-base-content font-dana-extra-light">
+            {comment.body}
+          </p>
+          <button
+            onClick={() => {
+              if (isAuthenticated) {
+                setReplyTo(comment.id);
+                setIsOpen(true);
+              } else {
+                toast.error(
+                  "برای پاسخ دادن باید وارد حساب کاربری خود شوید.",
+                  toastOptions
+                );
+              }
+            }}
+            className="mt-2 btn btn-success btn-sm"
+          >
+            <FaReply /> پاسخ
+          </button>
+          {renderComments(commentList, comment.id)}
+        </div>
+      ));
+  };
 
   return (
     <div className="bg-base-300 p-6 rounded-lg shadow-lg">
@@ -67,29 +140,20 @@ const CourseCommentSection = ({
           >
             <FaComments className="text-success" />
           </motion.div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-dana-demi bg-gradient-to-r text-success">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-dana-demi text-success">
             نظرات
           </h2>
         </div>
-        <button onClick={()=>handleNewCommentClick()} className="btn btn-success btn-soft sm:btn-lg gap-3">
-            <span>ایجاد نظر جدید</span>
-            <LiaCommentSolid className="text-2xl hidden sm:block -translate-y-[3px]"/>
+        <button
+          onClick={handleNewCommentClick}
+          className="btn btn-success sm:btn-lg gap-3"
+        >
+          <span>ایجاد نظر جدید</span>
+          <LiaCommentSolid className="text-2xl hidden sm:block" />
         </button>
       </div>
-
-      {/* New comment form */}
-      {isOpen && isAuthenticated && (
+      {isOpen && (
         <div className="mb-6 bg-base-200 p-6 rounded-lg shadow-md">
-          <div className="flex items-center gap-4 mb-4">
-            <Image
-            width={48}
-            height={48}
-              src={'https://secure.gravatar.com/avatar/e7b9929942190634b0267c963d2513eb?s=96&d=mm&r=g'}
-              alt={user.name}
-              className=" rounded-full"
-            />
-            <h3 className="text-xl font-dana-demi text-base-content">{user.name}</h3>
-          </div>
           <textarea
             value={comment}
             onChange={(e) => setComment(e.target.value)}
@@ -97,72 +161,49 @@ const CourseCommentSection = ({
             rows={4}
             className="w-full p-4 border border-gray-300 rounded-lg resize-none mb-4"
           />
-          <p className="text-sm hidden sm:flex items-center gap-2 bg-red-500/95 text-white p-3 rounded-md shadow-sm mb-4">
-            <IoWarningOutline className="text-xl -translate-y-[2px]" />
-            لطفا پرسش مربوط به هر درس یا ویدئو دوره را در صفحه همان ویدئو مطرح
-            کنید.
-          </p>
           <div className="flex justify-between items-center">
             <button
-              onClick={() => setIsOpen(false)}
-              className="btn btn-error px-4 py-2 rounded-lg font-semibold"
+              onClick={() => {
+                setIsOpen(false);
+                setReplyTo(null);
+              }}
+              className="btn btn-error px-4 py-2 rounded-lg"
             >
               لغو
             </button>
             <button
               onClick={handleSubmitComment}
-              className="btn btn-success px-4 py-2 rounded-lg font-semibold"
+              className="btn btn-success px-4 py-2 rounded-lg"
             >
               ارسال
             </button>
           </div>
         </div>
       )}
-
-      {/* Display Comments */}
       <div className="mt-6">
-        {courseComments.map((commentData, index) => (
-          <div
-            key={index}
-            className="bg-base-100 p-4 rounded-lg shadow-md mb-4 relative"
-          >
-            <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-2">
-              <Image
-              width={40}
-              height={40}
-                src={"https://secure.gravatar.com/avatar/e7b9929942190634b0267c963d2513eb?s=96&d=mm&r=g"}
-                alt={`کامنت ${commentData.creator.name}`}
-                className="rounded-full"
-              />
-              <div>
-                <h3 className="font-dana-demi text-base-content text-sm sm:text-base">
-                  {commentData.creator.name} | 
-                  <span className="mr-1">{commentData.creator.role === 'ADMIN' ? 'ادمین' : "کاربر"}</span>
-                </h3>
-                <span className="text-sm text-gray-400 font-dana-extra-light">
-                {moment(commentData.createdAt).format('jYYYY/jM/jD')}
-                </span>
-              </div>
-            </div>
-            <div className="divider divide-base-content"></div>
-            <p className="text-base-content font-dana-extra-light">{commentData.body}</p>
-              <button
-                onClick={() => {
-                  if (isAuthenticated) {
-                    // setReplyTo(commentData.id);
-                    setIsOpen(true);
-                  } else {
-                    toast.error(
-                      "برای پاسخ دادن باید وارد حساب کاربری خود شوید."
-                    );
-                  }
-                }}
-                className="absolute top-4 left-4 btn btn-success btn-circle sm:btn-lg btn-soft"
+        {isLoading ? (
+          <div className="space-y-4">
+            {[...Array(3)].map((_, i) => (
+              <div
+                key={i}
+                className="p-4 rounded-lg shadow-md bg-base-100 animate-pulse"
               >
-                <FaReply />
-              </button>
+                <div className="flex items-center gap-4 mb-2">
+                  <div className="w-10 h-10 rounded-full bg-base-300"></div>
+                  <div className="space-y-2">
+                    <div className="h-4 w-32 bg-base-300 rounded"></div>
+                    <div className="h-3 w-20 bg-base-300 rounded"></div>
+                  </div>
+                </div>
+                <div className="divider divide-base-content"></div>
+                <div className="h-4 w-full bg-base-300 rounded"></div>
+                <div className="h-4 w-3/4 bg-base-300 rounded mt-2"></div>
+              </div>
+            ))}
           </div>
-        ))}
+        ) : (
+          renderComments(comments)
+        )}
       </div>
     </div>
   );

@@ -32,59 +32,6 @@ const MainCourse: React.FC<MainCourseProps> = ({ params }) => {
   const {user , isAuthenticated} = useAuthStore()
 
   console.log(comments);
-  //     id: 1,
-  //     user: {
-  //       name: "علی رضایی",
-  //       avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-  //       role: "مدرس",
-  //     },
-  //     comment: "این دوره واقعا فوق‌العاده بود! ممنون از مدرس محترم.",
-  //     createdAt: "1403/11/26",
-  //   },
-  //   {
-  //     id: 2,
-  //     user: {
-  //       name: "مریم احمدی",
-  //       avatar: "https://randomuser.me/api/portraits/women/45.jpg",
-  //       role: "دانشجو",
-  //     },
-  //     comment:
-  //       "واقعا یادگیری مفاهیم ری‌اکت با این دوره راحت‌تر شد. پیشنهاد می‌کنم به همه!",
-  //     createdAt: "1403/11/25",
-  //   },
-  //   {
-  //     id: 3,
-  //     user: {
-  //       name: "حسین عباسی",
-  //       avatar: "https://randomuser.me/api/portraits/men/47.jpg",
-  //       role: "دانشجو",
-  //     },
-  //     comment: "سرفصل‌های آموزشی خیلی کامل بود اما کاش تمرین‌های بیشتری داشت.",
-  //     createdAt: "1403/11/24",
-  //   },
-  //   {
-  //     id: 4,
-  //     user: {
-    //       name: "زهرا موسوی",
-    //       avatar: "https://randomuser.me/api/portraits/women/40.jpg",
-    //       role: "دانشجو",
-    //     },
-    //     comment:
-    //       "مدرس خیلی خوب توضیح می‌ده، مخصوصا بخش‌های مربوط به هوک‌های ری‌اکت.",
-    //     createdAt: "1403/11/23",
-    //   },
-    //   {
-      //     id: 5,
-      //     user: {
-        //       name: "رضا کریمی",
-        //       avatar: "https://randomuser.me/api/portraits/men/50.jpg",
-        //       role: "دانشجو",
-        //     },
-        //     comment:
-        //       "دوره خوبی بود اما بعضی از ویدیوها کیفیت صدای بهتری می‌تونست داشته باشه.",
-        //     createdAt: "1403/11/22",
-        //   },
-        // ];
         
         
         return (
