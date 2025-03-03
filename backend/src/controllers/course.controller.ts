@@ -198,12 +198,7 @@ export const updateCourse = async (req: Request, res: Response, next: NextFuncti
       const result = await uploadToCloudinary(req.file);
       coverURL = result;
     }
-    let newPrice = null
-    if (discount){
-      const discountPercentage = (discount / price) * 100;
-      const discountPrice = price - (price * (discount / 100));
-      newPrice = discountPrice
-    }
+    let newPrice = price - (price * (discount / 100));
 
     const updatedCourse = await prisma.course.update({
       where: { id: courseID },
@@ -259,7 +254,7 @@ export const createSession = async (req: Request, res: Response, next: NextFunct
       return res.status(404).json({ success: false, message: 'Course not found' });
     }
 
-    if (!file || file.size === 0) {
+    if (!file || file?.size === 0) {
       return res.status(400).json({ success: false, message: 'Please upload a file' });
     }
 
@@ -349,6 +344,28 @@ export const getRelatedCourses = async (req: Request, res: Response, next: NextF
       message: 'Related courses retrieved successfully',
       data: relatedCourses
     })
+  } catch (error) {
+    next(error);
+  }
+}
+
+export const deleteSession = async (req : Request , res : Response ,  next : NextFunction) => {
+  try {
+    const courseID = req.params.id
+    const sessionID = req.params.sessionID
+    if (!courseID ||!sessionID) {
+      return res.status(400).json({ success: false, message: 'Please provide course ID and session ID' });
+    }
+    const course = await prisma.course.findUnique({ where: { id: courseID } });
+    if (!course) {
+      return res.status(404).json({ success: false, message: 'Course not found' });
+    }
+    const session = await prisma.session.findFirst({ where: { id: sessionID, courseId : courseID } });
+    if (!session) {
+      return res.status(404).json({ success: false, message: 'Session not found' });
+    }
+    await prisma.session.delete({ where: { id: sessionID } });
+    return res.status(200).json({ success: true, message: 'Session deleted successfully' });
   } catch (error) {
     next(error);
   }
