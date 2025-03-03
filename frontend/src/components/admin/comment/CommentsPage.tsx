@@ -12,7 +12,7 @@ import { toast } from "react-toastify";
 import { toastOptions } from "@/helpers/toastOptions";
 
 const CommentsTable = () => {
-  const { comments, getAllComments, acceptComment, isLoading , rejectComment } = useCommentsStore();
+  const { comments, getAllComments, acceptComment, isLoading , rejectComment , deleteComment } = useCommentsStore();
 
   useEffect(() => {
     getAllComments();
@@ -33,6 +33,15 @@ const CommentsTable = () => {
       toast.success("پیام با موفقیت رد شد", toastOptions);
     } else {
       toast.error("خطایی رخ داد", toastOptions);
+    }
+  }
+
+  const handleDeleteComment = async (id : string) => {
+    const res = await deleteComment(id);
+    if (res.success) {
+      toast.success("پیام با موفقیت حذف شد", toastOptions);
+    } else {
+      toast.error("خطا در حذف پیام", toastOptions);
     }
   }
 
@@ -93,7 +102,7 @@ const CommentsTable = () => {
                     <FaEdit />
                   </motion.button>
                 </td>
-                <td className="p-4"><DeleteModal title="حذف کامنت" message="آیا از حذف کامنت اطمینان دارید؟" messageDesc="این اقدام قابل بازگشت نیست!" deleteBtnText="حذف کامنت" /></td>
+                <td className="p-4"><DeleteModal onDelete={handleDeleteComment} deleteId={comment.id} title="حذف کامنت" message="آیا از حذف کامنت اطمینان دارید؟" messageDesc="این اقدام قابل بازگشت نیست!" deleteBtnText="حذف کامنت" /></td>
                 <td className="p-4"><BanModal /></td>
                 <td className="p-4">
                   {comment.answer === 1 ? (

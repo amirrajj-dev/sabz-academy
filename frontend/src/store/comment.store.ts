@@ -9,7 +9,7 @@ interface CommentsStore {
   submitComment: (
     comment: Pick<IComment, "body" | "courseID" | "score">
   ) => Promise<{ message: string; success: boolean }>;
-  deleteComment: (commentId: string) => void;
+  deleteComment: (commentId: string) => Promise<{message : string ; success : boolean}>;
   answerComment: (
     commentId: string,
     data: { body: string; courseID: string }
@@ -55,7 +55,29 @@ export const useCommentsStore = create<CommentsStore>((set, get) => ({
     }
   },
   answerComment(commentId, data) {},
-  deleteComment(commentId) {},
+  deleteComment : async (commentId) => {
+    try {
+      set({ isLoading: true });
+      if (!commentId) {
+        throw new Error("invalid comment commentId");
+      }
+      const res = await axiosnInstance.delete(`/comments/${commentId}`);
+      if (res.data.success) {
+        set({ isLoading: false, comments: get().comments.filter((c) => c.id !== commentId) });
+        return {
+          success: true,
+          message: res.data.message,
+        };
+      } else {
+        throw new Error(res.data.message);
+      }
+    } catch (error: any) {
+      return {
+        success: false,
+        message: error.response.data.message || error.message,
+      };
+    }
+  },
   rejectComment: async (commentId) => {
     try {
       set({ isLoading: true });
@@ -84,7 +106,9 @@ export const useCommentsStore = create<CommentsStore>((set, get) => ({
       };
     }
   },
-  setComments(comments) {},
+  setComments(comments) {
+    set({ comments });
+  },
   getAllComments: async () => {
     try {
       set({ isLoading: true });
