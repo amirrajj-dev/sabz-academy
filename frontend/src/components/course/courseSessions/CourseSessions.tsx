@@ -1,47 +1,37 @@
 "use client";
+
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { FaGraduationCap } from "react-icons/fa";
+import { useSessionStore } from "@/store/session.store";
+import { useCourseStore } from "@/store/course.store";
+import ReactPlayer from "react-player";
 
 interface Session {
   title: string;
   description: string;
+  video: string;
 }
-
-const courseSessions: Session[] = [
-  {
-    title: "جلسه اول: مقدمه‌ای بر ESLint",
-    description:
-      "در این جلسه، با ابزار ESLint آشنا می‌شوید و یاد می‌گیرید چگونه آن را در پروژه‌های جاوااسکریپت خود پیاده‌سازی کنید.",
-  },
-  {
-    title: "جلسه دوم: پیکربندی اولیه ESLint",
-    description:
-      "در این جلسه، نحوه پیکربندی ESLint برای پروژه‌های مختلف را بررسی می‌کنیم و به شما نحوه تنظیم و سفارشی‌سازی قوانین را آموزش می‌دهیم.",
-  },
-  {
-    title: "جلسه سوم: استفاده از قوانین پیش‌فرض ESLint",
-    description:
-      "در این جلسه، با قوانین پیش‌فرض ESLint آشنا می‌شوید و نحوه استفاده و تنظیم آن‌ها در پروژه‌های خود را یاد خواهید گرفت.",
-  },
-  {
-    title: "جلسه چهارم: کار با افزونه‌ها و پلاگین‌ها",
-    description:
-      "در این جلسه، نحوه استفاده از افزونه‌ها و پلاگین‌های ESLint برای بهبود کیفیت کد و تسهیل فرآیند linting را بررسی می‌کنیم.",
-  },
-];
 
 const CourseSessions = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const { sessions, getSingleCourseSessions, isLoading } = useSessionStore();
+  const { mainCourse } = useCourseStore();
+
+  useEffect(() => {
+    if (mainCourse?.id) {
+      getSingleCourseSessions(mainCourse.id);
+    }
+  }, [mainCourse]);
 
   const toggleAccordion = (index: number) => {
     setActiveIndex(activeIndex === index ? null : index);
   };
 
   return (
-    <div className="mt-10  gap-6">
+    <div className="mt-10 gap-6">
       <div className="w-full space-y-4 p-6 bg-base-300 shadow-lg rounded-2xl">
         <div className="flex items-center gap-4 mb-6">
           <motion.div
@@ -52,39 +42,56 @@ const CourseSessions = () => {
             <FaGraduationCap className="text-primary -translate-y-1" />
           </motion.div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-dana-demi text-primary">
-          سرفصل ها
+            سرفصل ها
           </h2>
         </div>
-        {courseSessions.map((session, index) => (
-          <div
-            key={index}
-            className="border bg-base-100 border-gray-300 dark:border-gray-700 rounded-xl overflow-hidden"
-          >
-            <button
-              className="w-full flex justify-between items-center px-5 py-4 text-lg font-semibold bg-base-200 transition-all"
-              onClick={() => toggleAccordion(index)}
-            >
-              <span className="text-sm sm:text-base">{session.title}</span>
-              {activeIndex === index ? <IoIosArrowUp /> : <IoIosArrowDown />}
-            </button>
-            <AnimatePresence>
-              {activeIndex === index && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.1 }}
-                  animate={{ opacity: 1, height: "auto", dur: 0.1 }}
-                  exit={{ opacity: 0, height: 0 }}
-                  className="px-5 py-4 bg-base-300"
-                >
-                  <Link href={""} className="flex items-center gap-3 text-sm">
-                    <span className="badge badge-primary">{index + 1}</span>
-                    <p>{session.description}</p>
-                  </Link>
-                </motion.div>
-              )}
-            </AnimatePresence>
+        {isLoading ? (
+          <div className="space-y-4">
+            {[...Array(3)].map((_, index) => (
+              <div
+                key={index}
+                className="skeleton h-16 w-full bg-base-200 rounded-xl"
+              ></div>
+            ))}
           </div>
-        ))}
+        ) : sessions.length === 0 ? (
+          <div className="text-center text-lg text-gray-500 py-6">
+            هیچ جلسه‌ای برای این دوره وجود ندارد.
+          </div>
+        ) : (
+          sessions.map((session, index) => (
+            <div
+              key={index}
+              className="border bg-base-100 border-gray-300 dark:border-gray-700 rounded-xl overflow-hidden"
+            >
+              <button
+                className="w-full flex justify-between items-center px-5 py-4 text-lg font-semibold bg-base-200 transition-all"
+                onClick={() => toggleAccordion(index)}
+              >
+                <span className="text-sm sm:text-base">{session.title}</span>
+                {activeIndex === index ? <IoIosArrowUp /> : <IoIosArrowDown />}
+              </button>
+              <AnimatePresence>
+                {activeIndex === index && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="px-5 py-4 bg-base-300"
+                  >
+                    <ReactPlayer
+                      url={String(session.video)}
+                      controls
+                      width="100%"
+                      height="auto"
+                      className="rounded-lg overflow-hidden sm:h-auto"
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          ))
+        )}
       </div>
       <div className="hidden md:block md:w-1/3"></div>
     </div>
