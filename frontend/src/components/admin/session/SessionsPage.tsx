@@ -5,14 +5,23 @@ import { motion } from 'framer-motion';
 import AddSessionModal from '../../modals/session/AddSessionModal';
 import DeleteModal from '@/components/modals/shared/DeleteModal';
 import { useSessionStore } from '@/store/session.store';
+import { toast } from 'react-toastify';
+import { toastOptions } from '@/helpers/toastOptions';
 
 const SessionsPage = () => {
-  const {sessions , getAllSessions , isLoading} = useSessionStore()
+  const {sessions , getAllSessions , isLoading , deleteSession} = useSessionStore()
   useEffect(()=>{
     getAllSessions()
   } , [])
 
-  console.log(sessions);
+  const handleDeleteSession = async (id : string) => {
+    const res = await deleteSession(id)
+    if(res.success){
+      toast.success('جلسه با موفقیت حذف شد', toastOptions)
+    } else {
+      toast.error('خطا در حذف جلسه', toastOptions)
+    }
+  }
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
@@ -44,7 +53,7 @@ const SessionsPage = () => {
                 <td className="p-4">{session.time}</td>
                 <td className="p-4">{session.course?.name}</td>
                 <td className="p-4">
-                  <DeleteModal message='آیا از حذف این جلسه اطمینان دارید ؟' messageDesc='این اقدام قابل بازگشت نیست !' title='حذف جلسه 📚' deleteBtnText='حذف جلسه' deleteId={''} onDelete={(id)=>{}} />
+                  <DeleteModal message='آیا از حذف این جلسه اطمینان دارید ؟' messageDesc='این اقدام قابل بازگشت نیست !' title='حذف جلسه 📚' deleteBtnText='حذف جلسه' deleteId={session.id} onDelete={handleDeleteSession} />
                 </td>
               </tr>
             ))}

@@ -19,7 +19,7 @@ router.put('/:id' , protectRouteAdmin as express.RequestHandler ,  upload  , upd
 router.get('/:id' , getSingleCourse as express.RequestHandler)
 router.post('/:id/sessions' , protectRouteAdmin as express.RequestHandler , upload , createSession as express.RequestHandler)
 router.get('/:id/sessions' , getSingleCourseSessions as express.RequestHandler)
-router.delete('/:id/sessions/:sessionID' , protectRouteAdmin as express.RequestHandler , deleteSession as express.RequestHandler)
+router.delete('/sessions/:sessionID' , protectRouteAdmin as express.RequestHandler , deleteSession as express.RequestHandler)
 router.get('/:id/related' , getRelatedCourses as express.RequestHandler)
 
 export default router;

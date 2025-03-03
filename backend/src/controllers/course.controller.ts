@@ -352,24 +352,15 @@ export const getRelatedCourses = async (req: Request, res: Response, next: NextF
 
 export const deleteSession = async (req : Request , res : Response ,  next : NextFunction) => {
   try {
-    const courseID = req.params.id
     const sessionID = req.params.sessionID
-    if (!courseID ||!sessionID) {
+    if (!sessionID) {
       return res.status(400).json({ success: false, message: 'Please provide course ID and session ID' });
     }
-    const course = await prisma.course.findUnique({ where: { id: courseID } });
-    if (!course) {
-      return res.status(404).json({ success: false, message: 'Course not found' });
-    }
-    const session = await prisma.session.findFirst({ where: { id: sessionID, courseId : courseID } });
+    const session = await prisma.session.findFirst({ where: { id: sessionID} });
     if (!session) {
       return res.status(404).json({ success: false, message: 'Session not found' });
     }
     await prisma.session.delete({ where: { id: sessionID } });
-    //delete session from courses
-    await prisma.course.update({ where: { id: courseID }, data: {
-      sessions: { disconnect: { id: sessionID } },
-    }})
     return res.status(200).json({ success: true, message: 'Session deleted successfully' });
   } catch (error) {
     next(error);

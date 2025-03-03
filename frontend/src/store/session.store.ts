@@ -13,8 +13,7 @@ interface SessionStore {
     session: Omit<ISession , 'createdAt' | 'id' | 'course'>
   ) => Promise<{ message: string; success: boolean }>;
   deleteSession: (
-    sessionId: string,
-    courseId: string
+    sessionId: string
   ) => Promise<{ message: string; success: boolean }>;
   isLoading: boolean;
 }
@@ -26,6 +25,7 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
     try {
       set({ isLoading: true });
       const { title, time, courseId, video, free } = session;
+      console.log(title , time , courseId , video , free);
       if (!title || !time || !courseId || !video || !free) {
         throw new Error("Please fill all fields");
       }
@@ -41,7 +41,7 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
         { headers: { "Content-Type": "multipart/form-data" } }
       );
       if (res.data.success) {
-        set({ sessions: [...get().sessions, res.data], isLoading: false });
+        set({ sessions: [...get().sessions, res.data.session], isLoading: false });
         return {
           success: true,
           message: res.data.message,
@@ -57,14 +57,14 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
       };
     }
   },
-  deleteSession: async (sessionId, courseId) => {
+  deleteSession: async (sessionId) => {
     try {
       set({ isLoading: true });
-      if (!sessionId || !courseId) {
-        throw new Error("Invalid sessionId or courseId");
+      if (!sessionId) {
+        throw new Error("Invalid sessionId");
       }
       const res = await axiosnInstance.delete(
-        `/courses/${courseId}/sessions/${sessionId}`
+        `/courses/sessions/${sessionId}`
       );
       if (res.data.success) {
         set({

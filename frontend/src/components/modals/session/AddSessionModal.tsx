@@ -6,6 +6,7 @@ import { useSessionStore } from "@/store/session.store";
 import { useCourseStore } from "@/store/course.store";
 import { toast } from "react-toastify";
 import { toastOptions } from "@/helpers/toastOptions";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const AddSessionModal = () => {
   const [sessionTitle, setSessionTitle] = useState("");
@@ -14,17 +15,16 @@ const AddSessionModal = () => {
   const [video, setVideo] = useState<File | null>(null);
   const [isFree, setIsFree] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const {addSession , isLoading} = useSessionStore()
+  const {addSession , isLoading , getAllSessions} = useSessionStore()
   const {courses , fetchCourses} = useCourseStore()
   useEffect(() => {
     fetchCourses()
   }, [])
   const handleAddSession = async () => {
     if (!sessionTitle || !duration || !course || !video) {
-      alert("لطفاً تمام فیلدها را پر کنید.");
+      toast.info('لطفا تمام فیلدهارا پر کنید')
       return;
     }
-
     
     try {
       const response = await addSession({
@@ -38,6 +38,7 @@ const AddSessionModal = () => {
       console.log(response);
   
       if (response.success) {
+        await getAllSessions()
         toast.success("جلسه با موفقیت افزوده شد.", toastOptions)
         setSessionTitle("");
         setDuration("");
@@ -174,7 +175,7 @@ const AddSessionModal = () => {
                   className="btn btn-success"
                   onClick={handleAddSession}
                 >
-                  ذخیره جلسه
+                  {isLoading ? <AiOutlineLoading3Quarters className="animate-spin"/> : "ذخیره جلسه"}
                 </motion.button>
               </div>
             </motion.div>
