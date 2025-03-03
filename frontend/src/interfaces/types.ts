@@ -64,7 +64,7 @@ export interface ISession {
   id: string;
   title: string;
   time: string;
-  video?: string;
+  video?: File;
   free: number;
   courseId?: string;
   course?: ICourse;
