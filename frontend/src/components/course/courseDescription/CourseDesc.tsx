@@ -35,7 +35,7 @@ const CourseDesc = () => {
         </div>
 
         {!mainCourse?.cover ? (
-          <div className="skeleton block w-full h-[400px] rounded-lg mb-4"></div>
+          <div className="skeleton block w-full bg-base-200 h-[400px] rounded-lg mb-4"></div>
         ) : (
           <Image
             src={mainCourse?.cover as string}
@@ -47,7 +47,7 @@ const CourseDesc = () => {
         )}
 
         {isLoading ? (
-          <div className="skeleton block w-1/2 h-6 rounded-lg mb-4"></div>
+          <div className="skeleton block w-1/2  bg-base-200 h-6 rounded-lg mb-4"></div>
         ) : (
           <h2 className="text-2xl font-semibold text-base-content mb-4">
             {mainCourse?.name}
@@ -57,9 +57,9 @@ const CourseDesc = () => {
         <div className="prose max-w-none">
           {isLoading ? (
             <div className="space-y-4">
-              <div className="skeleton block w-full h-6 rounded-lg"></div>
-              <div className="skeleton block w-3/4 h-6 rounded-lg"></div>
-              <div className="skeleton block w-5/6 h-6 rounded-lg"></div>
+              <div className="skeleton block w-full h-6 rounded-lg bg-base-200"></div>
+              <div className="skeleton block w-3/4 h-6 rounded-lg bg-base-200"></div>
+              <div className="skeleton block w-5/6 h-6 rounded-lg bg-base-200"></div>
             </div>
           ) : (
             <div
@@ -73,7 +73,7 @@ const CourseDesc = () => {
         </div>
 
         {isLoading ? (
-          <div className="skeleton block w-32 h-10 rounded-lg mx-auto mt-4"></div>
+          <div className="skeleton block w-32 h-10 bg-base-200 rounded-lg mx-auto mt-4"></div>
         ) : (
           <button
             onClick={() => setIsExpanded(!isExpanded)}
