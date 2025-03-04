@@ -86,7 +86,7 @@ export interface IArticle {
   title: string;
   description: string;
   body: string;
-  cover?: string;
+  cover?: File;
   shortName: string;
   categoryID: string;
   creatorID?: string;

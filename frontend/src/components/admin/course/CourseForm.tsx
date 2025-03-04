@@ -29,9 +29,28 @@ const CourseForm = () => {
     isDraft: false,
   });
 
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
   useEffect(() => {
     fetchCategories();
   }, []);
+
+  const validateForm = () => {
+    let newErrors: Record<string, string> = {};
+
+    if (!formState.title.trim()) newErrors.title = "عنوان دوره الزامی است";
+    if (!formState.link.trim()) newErrors.link = "لینک دوره الزامی است";
+    if (!formState.description.trim()) newErrors.description = "توضیحات دوره الزامی است";
+    if (!formState.abstract.trim()) newErrors.abstract = "چکیده دوره الزامی است";
+    if (!formState.category) newErrors.category = "لطفا یک دسته بندی انتخاب کنید";
+    if (!formState.price.trim() || isNaN(Number(formState.price)) || Number(formState.price) < 0) newErrors.price = "قیمت معتبر نیست";
+    if (!formState.coverImage) newErrors.coverImage = "لطفا یک تصویر انتخاب کنید";
+    else if (formState.coverImage.size > 5 * 1024 * 1024)
+      newErrors.coverImage = "حجم فایل نباید بیش از 5 مگابایت باشد";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -51,10 +70,7 @@ const CourseForm = () => {
   };
 
   const handleSubmit = async () => {
-    if (!formState.title.trim() || !formState.description.trim() || !formState.category) {
-      toast.error("لطفا تمام فیلد ها را پر کنید", toastOptions);
-      return;
-    }
+    if (!validateForm()) return;
 
     try {
       console.log(formState);
@@ -85,6 +101,7 @@ const CourseForm = () => {
           isDraft: false,
           price: ""
         });
+        setErrors({});
         fetchCourses();
       } else {
         toast.error("خطا در افزودن دوره لطفا دوباره تلاش کنید", toastOptions);
@@ -99,17 +116,17 @@ const CourseForm = () => {
       <h2 className="text-xl font-bold text-base-content mb-4">اضافه کردن دوره</h2>
 
       <div className="space-y-4">
-        <InputField label="عنوان" name="title" placeholder="عنوان دوره" value={formState.title} onChange={handleChange} />
-        <InputField label="لینک" name="link" placeholder="لینک دوره" value={formState.link} onChange={handleChange} />
-        <InputField label="قیمت" name="price" type="number" placeholder="قیمت دوره" value={formState.price} onChange={handleChange} />
-        <TextAreaField label="توضیحات دوره" name="description" placeholder="توضیحات دوره" value={formState.description} onChange={handleChange} />
-        <EditorInput label="چکیده دوره" data={formState.abstract} onChange={handleEditorChange} />
-        <FileInput label="انتخاب کاور عکس" onChange={handleFileChange} />
-        <SelectInput label="دسته بندی دوره" name="category" value={formState.category} onChange={handleChange} options={categories.map(cat => ({ value: cat.id, label: cat.name }))} />
+        <InputField label="عنوان" name="title" placeholder="عنوان دوره" value={formState.title} onChange={handleChange} error={errors.title} />
+        <InputField label="لینک" name="link" placeholder="لینک دوره" value={formState.link} onChange={handleChange} error={errors.link} />
+        <InputField label="قیمت" name="price" type="number" placeholder="قیمت دوره" value={formState.price} onChange={handleChange} error={errors.price} />
+        <TextAreaField label="توضیحات دوره" name="description" placeholder="توضیحات دوره" value={formState.description} onChange={handleChange} error={errors.description} />
+        <EditorInput label="چکیده دوره" data={formState.abstract} onChange={handleEditorChange} error={errors.abstract} />
+        <FileInput label="انتخاب کاور عکس" onChange={handleFileChange} error={errors.coverImage} />
+        <SelectInput label="دسته بندی دوره" name="category" value={formState.category} onChange={handleChange} options={categories.map(cat => ({ value: cat.id, label: cat.name }))} error={errors.category} />
         <SelectInput label="نحوه پشتیبانی دوره" name="supportType" value={formState.supportType} onChange={handleChange} options={[{ value: "آنلاین", label: "آنلاین" }, { value: "حضوری", label: "حضوری" }]} />
 
-        <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="btn btn-primary mt-4" onClick={handleSubmit}>
-          اضافه کردن دوره
+        <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="btn btn-primary mt-4" onClick={handleSubmit} disabled={isLoading}>
+          {isLoading ? "در حال ارسال..." : "اضافه کردن دوره"}
         </motion.button>
       </div>
     </div>

@@ -47,6 +47,7 @@ export const useCourseStore = create<CourseStore>((set, get) => ({
   setCourses(courses) {},
   addCourse: async (course, file) => {
     try {
+      set({isLoading : true})
       const {
         name,
         description,
@@ -90,7 +91,7 @@ export const useCourseStore = create<CourseStore>((set, get) => ({
         headers: { "Content-Type": "multipart/form-data" },
       });
       if (res.data.success) {
-        set({ courses: [...get().courses, res.data.data] });
+        set({ courses: [...get().courses, res.data.data] , isLoading : false });
         return { message: res.data.message, success: true };
       } else {
         throw new Error(res.data.message || "Failed to add course");
@@ -100,6 +101,8 @@ export const useCourseStore = create<CourseStore>((set, get) => ({
         message: error.response?.data?.message || error.message,
         success: false,
       };
+    }finally{
+      set({ isLoading : false})
     }
   },
 
