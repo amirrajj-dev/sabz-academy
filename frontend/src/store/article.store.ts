@@ -56,4 +56,21 @@ export const useArticleStore = create<ArticlesStore>((set, get) => ({
     setArticles(articles) {
         
     },
+    fetchArticles: async () => {
+        try {
+            set({ isLoading : true })
+            const res = await axiosnInstance.get('/articles')
+            if (res.data.success){
+                set({ articles : res.data.data, isLoading : false })
+                return { message : res.data.message, success : true }
+            }else{
+                throw new Error(res.data.message || 'Failed to fetch articles')
+            }
+        } catch (error : any) {
+            return {
+                message : error.response.data.message || error.message,
+                success : false
+            }
+        }
+    }
 }))
