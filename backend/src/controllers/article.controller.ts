@@ -182,33 +182,27 @@ export const deleteArticle = async (
   try {
     const articleID = req.params.id;
     if (!articleID) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Please provide article ID" });
+      return res.status(400).json({ success: false, message: "Please provide article ID" });
     }
+
     const user = req.user;
     if (!user) {
-      return res
-        .status(401)
-        .json({ success: false, message: "User not authenticated" });
+      return res.status(401).json({ success: false, message: "User not authenticated" });
     }
-    const article = await prisma.article.findFirst({
+
+    const article = await prisma.article.findUnique({
       where: { id: articleID },
-      include: { creator: true },
+      include: { creator: true, category: true }
     });
+
     if (!article) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Article not found" });
+      return res.status(404).json({ success: false, message: "Article not found" });
     }
+
     if (article.creatorID?.toString() !== user.id.toString()) {
-      return res
-        .status(403)
-        .json({
-          success: false,
-          message: "You are not authorized to delete this article",
-        });
+      return res.status(403).json({ success: false, message: "You are not authorized to delete this article" });
     }
+
     try {
       await deleteCloudinaryFile(article.cover);
     } catch (cloudinaryError) {
@@ -218,40 +212,12 @@ export const deleteArticle = async (
         message: "Failed to delete Cloudinary file, but article was deleted",
       });
     }
-    //delete article from category 
-    const category = await prisma.category.findFirst({
-        where: { articles: { some: { id: articleID } } },
-    })
-    if (category) {
-        await prisma.category.update({
-            where: { id: category.id },
-            data: {
-                articles: {
-                    disconnect: { id: articleID },
-                },
-            },
-        });
-    }
-    //delete article from user
-    const userWhoCreatedThisArticle = await prisma.user.findFirst({
-        where: { id: article.creatorID },
-    })
-    if (userWhoCreatedThisArticle) {
-        await prisma.user.update({
-            where: { id: userWhoCreatedThisArticle.id },
-            data: {
-                articles: {
-                    disconnect: { id: articleID },
-                },
-            },
-        });
-    }
+
     await prisma.article.delete({
       where: { id: articleID },
     });
-    res
-      .status(200)
-      .json({ success: true, message: "Article deleted successfully" });
+
+    res.status(200).json({ success: true, message: "Article deleted successfully" });
   } catch (error) {
     next(error);
   }

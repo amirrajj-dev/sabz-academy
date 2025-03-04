@@ -5,8 +5,6 @@ import { useCategoriesStore } from "@/store/category.store";
 import { useCourseStore } from "@/store/course.store";
 import { toast } from "react-toastify";
 import { toastOptions } from "@/helpers/toastOptions";
-
-// Importing components
 import InputField from "./ui/InputField";
 import TextAreaField from "./ui/TextAreaField";
 import FileInput from "./ui/FileInput";

@@ -5,13 +5,25 @@ import { motion } from 'framer-motion'
 import { FaCheck, FaTrash } from 'react-icons/fa'
 import { useArticleStore } from '@/store/article.store'
 import { IoClose } from 'react-icons/io5'
+import DeleteModal from '@/components/modals/shared/DeleteModal'
+import { toast } from 'react-toastify'
+import { toastOptions } from '@/helpers/toastOptions'
 
 const ArticleTable = () => {
-  const { articles, fetchArticles, isLoading } = useArticleStore()
+  const { articles, fetchArticles, isLoading , deleteArticle } = useArticleStore()
 
   useEffect(() => {
     fetchArticles()
   }, [])
+
+  const handleDeleteArticle = async (id: string) => {
+    const res = await deleteArticle(id)
+    if (res.success){
+      toast.success('مقاله با موفقیت حذف شد', toastOptions)
+    }else{
+      toast.error('خطا در حذف مقاله', toastOptions)
+    }
+  }
 
   return (
     <div className="shadow-lg rounded-xl overflow-x-auto">
@@ -27,7 +39,7 @@ const ArticleTable = () => {
           </tr>
         </thead>
         <tbody>
-          {!isLoading ? (
+          {isLoading ? (
             Array.from({ length: 4 }).map((_, index) => (
               <tr key={index} className="border-b bg-base-200">
                 <td className="p-4"><div className="skeleton h-4 w-10"></div></td>
@@ -52,13 +64,7 @@ const ArticleTable = () => {
                 <td className="p-4 font-semibold text-base-content">{article.title}</td>
                 <td className="p-4">{article.shortName}</td>
                 <td className="p-4">
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="btn btn-error btn-sm"
-                  >
-                    <FaTrash />
-                  </motion.button>
+                  <DeleteModal deleteId={article.id} deleteBtnText='حذف مقاله' message='آیا از حذف مقاله اطمینان دارید ؟' messageDesc='این اقدام قابل بازگشت نیست !' title='حذف مقاله' onDelete={handleDeleteArticle} />
                 </td>
                 <td className="p-4">{article.publish === 1 ? <button className='btn btn-sm btn-soft btn-success'><FaCheck/></button> : <button className='btn btn-sm btn-soft btn-error'><IoClose/></button>}</td>
                 <td className="p-4">
@@ -74,7 +80,6 @@ const ArticleTable = () => {
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="btn btn-primary btn-sm"
                     >
                       تکمیل شده
                     </motion.button>
