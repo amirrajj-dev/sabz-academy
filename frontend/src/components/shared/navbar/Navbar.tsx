@@ -134,7 +134,7 @@ const Navbar = React.memo(() => {
             transition={{ delay: 0.3, duration: 0.4 }}
             className="flex items-center gap-6"
           >
-            <CartMenu cartOpen={cartOpen} setCartOpen={setCartOpen} />
+            <CartMenu cartOpen={cartOpen} setCartOpen={setCartOpen} position="left" />
             <ThemeMenu
               handleThemeChange={handleThemeChange}
               setThemeMenuOpen={setThemeMenuOpen}

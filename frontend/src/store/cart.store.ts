@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { create } from "zustand";
 
 interface ICart {
@@ -21,8 +22,13 @@ export const useCartStore = create<CartStore>((set) => ({
       localStorage.getItem("sabzCart") || "[]"
     ) as ICart[];
     const isCartExist = previousItems.some((item) => item.title === cart.title);
+    if (isCartExist){
+      toast.info("محصول مورد نظر در سبد خرید شما وجود دارد");
+      return;
+    }
     set({ cartItems: [...previousItems, cart] });
     localStorage.setItem("sabzCart", JSON.stringify([...previousItems, cart]));
+    toast.success("محصول با موفقیت به سبد خرید شما اضافه شد");
   },
   deleteCart(name) {
     const items = JSON.parse(

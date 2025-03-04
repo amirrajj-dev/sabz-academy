@@ -7,11 +7,13 @@ import HamburgerMenu from "./ui/HamburgerMenu";
 import MobileDrawer from "./ui/MobileDrawer";
 import { mobileMenuItems, themeItems } from "@/data/data";
 import { useCategoriesStore } from "@/store/category.store";
+import CartMenu from "./ui/CartMenu";
 
 const MobileNavbar = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
-  const {categories} = useCategoriesStore()
+  const [cartOpen, setCartOpen] = useState(false);
+  const { categories } = useCategoriesStore();
 
   const handleClickOutside = (e: MouseEvent) => {
     if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
@@ -33,7 +35,7 @@ const MobileNavbar = () => {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
       >
-        <CartButton />
+        <CartMenu cartOpen={cartOpen} setCartOpen={setCartOpen} position="right" />
         <Logo />
         <HamburgerMenu onClick={() => setDrawerOpen(!drawerOpen)} />
       </motion.div>

@@ -3,9 +3,24 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import React from "react";
 import { useCourseStore } from "@/store/course.store";
+import { ICourse } from "@/interfaces/types";
+import { toast } from "react-toastify";
+import { useCartStore } from "@/store/cart.store";
 
 const CourseHeader = () => {
   const { mainCourse, isLoading } = useCourseStore();
+  const { addToCart } = useCartStore();
+  const handleAddToCart = (
+    course: Pick<ICourse, "name" | "price" | "cover" | "shortName">
+  ) => {
+    if (!course.cover) return toast.error("تصویری برای این دوره موجود نیست");
+    addToCart({
+      title: course.name,
+      price: course.price,
+      cover: course.cover,
+      shortName: course.shortName,
+    });
+  };
 
   return (
     <div className="mt-10 flex justify-center px-4 sm:px-8">
@@ -45,6 +60,14 @@ const CourseHeader = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="btn btn-success btn-lg w-full sm:w-auto px-6 py-3 rounded-full shadow-md transition-all"
+                onClick={() =>
+                  handleAddToCart({
+                    name: mainCourse?.name as string,
+                    price: mainCourse?.price as number,
+                    cover: mainCourse?.cover as string,
+                    shortName: mainCourse?.shortName as string,
+                  })
+                }
               >
                 🎯 افزودن به سبد خرید
               </motion.button>
@@ -54,9 +77,9 @@ const CourseHeader = () => {
               {isLoading ? (
                 <span className="skeleton w-24 sm:w-32 h-8 sm:h-10 block"></span>
               ) : (
-                `${(Math.ceil(mainCourse?.price as number / 1000) * 1000).toLocaleString(
-                  "fa-IR"
-                )} تومان`
+                `${(
+                  Math.ceil((mainCourse?.price as number) / 1000) * 1000
+                ).toLocaleString("fa-IR")} تومان`
               )}
             </span>
           </div>
