@@ -5,6 +5,7 @@ import axiosnInstance from "@/configs/axios";
 interface ArticlesStore {
   articles: IArticle[];
   mainArticle: IArticle | null;
+  suggestedArticles : IArticle[];
   fetchArticles: () => Promise<{ message: string; success: boolean }>;
   setArticles: (articles: IArticle[]) => void;
   addArticle: (
@@ -19,11 +20,13 @@ interface ArticlesStore {
     id: string
   ) => Promise<{ message: string; success: boolean }>;
   isLoading: boolean;
+  getSuggestedArticles: (id : string) => Promise<{ message: string; success: boolean;}>
 }
 
 export const useArticleStore = create<ArticlesStore>((set, get) => ({
   articles: [],
   mainArticle: null,
+  suggestedArticles : [],
   isLoading: false,
   addArticle: async (article) => {
     try {
@@ -97,7 +100,6 @@ export const useArticleStore = create<ArticlesStore>((set, get) => ({
         throw new Error('id is required')
       }
       const res = await axiosnInstance.get(`/articles/${id}`);
-      console.log(res);
       if (res.data.success){
         set({mainArticle : res.data.data , isLoading : false})
         return { message: res.data.message, success: true };
@@ -152,6 +154,29 @@ export const useArticleStore = create<ArticlesStore>((set, get) => ({
       };
     } finally {
       set({ isLoading: false });
+    }
+  },
+  getSuggestedArticles : async (id)=>{
+    try {
+      set({isLoading : true})
+      if (!id){
+        throw new Error('id is required');
+      }
+      const res = await axiosnInstance.get(`/articles/${id}/suggested`)
+      if (res.data.success){
+        set({isLoading : false , suggestedArticles : res.data.data})
+        return {
+          success : true,
+          message : 'suggested articles retrived succesfully'
+        }
+      }else{
+        throw new Error(res.data.message || 'failed to fetch suggested articles')
+      }
+    } catch (error : any) {
+      return {
+        success : false,
+        message : error.response.data.message || error.message 
+      }
     }
   }
 }));
