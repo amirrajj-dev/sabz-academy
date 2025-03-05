@@ -250,3 +250,22 @@ export const updateArticle = async (req : Request , res : Response , next : Next
     next(error)
   }
 }
+
+export const getArticle = async (req : Request, res : Response , next : NextFunction) => {
+  try {
+    const articleID = req.params.id;
+    if (!articleID) {
+      return res.status(400).json({ success: false, message: "Please provide article ID" });
+    }
+    const article = await prisma.article.findFirst({
+      where: { shortName : articleID },
+      include: { creator: true, category: true }
+    });
+    if (!article) {
+      return res.status(404).json({ success: false, message: "Article not found" });
+    }
+    res.status(200).json({ success: true, data: article });
+  } catch (error) {
+    next(error)
+  }
+}
