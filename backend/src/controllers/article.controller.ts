@@ -77,9 +77,6 @@ export const getAllArticles = async (
 ) => {
   try {
     const articles = await prisma.article.findMany({
-      where: {
-        publish: 1,
-      },
       include: {
         category: true,
         creator: true,
@@ -215,3 +212,41 @@ export const deleteArticle = async (
     next(error);
   }
 };
+
+export const updateArticle = async (req : Request , res : Response , next : NextFunction)=>{
+  try {
+    const articleID = req.params.id;
+    if (!articleID) {
+      return res.status(400).json({ success: false, message: "Please provide article ID" });
+    }
+    const {body , publish} = req.body
+    if (!body){
+      return res.status(400).json({ success: false, message: "Please provide article body" });
+    }
+    const user = req.user;
+    if (!user) {
+      return res.status(401).json({ success: false, message: "User not authenticated" });
+    }
+    const article = await prisma.article.findUnique({
+      where: { id: articleID },
+      include: { creator: true, category: true }
+    })
+    if (!article) {
+      return res.status(404).json({ success: false, message: "Article not found" });
+    }
+    if (article.creatorID?.toString() !== user.id.toString()) {
+      return res.status(403).json({ success: false, message: "You are not authorized to update this article" });
+    }
+    const updatedArticle = await prisma.article.update({
+      where: { id: articleID },
+      data: {
+        body,
+        publish: parseInt(publish)
+      },
+      include: { creator: true, category: true }
+    });
+    res.status(200).json({ success: true, message: "Article updated successfully", data: updatedArticle });
+  } catch (error) {
+    next(error)
+  }
+}
