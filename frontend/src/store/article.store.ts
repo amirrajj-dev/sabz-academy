@@ -13,6 +13,7 @@ interface ArticlesStore {
       "title" | "description" | "body" | "cover" | "shortName" | "publish" | "categoryID"
     >
   ) => Promise<{ message: string; success: boolean }>;
+  editArticle : (id : string , body : string , publish : string)=> Promise<{ message: string; success: boolean}>
   deleteArticle: (id: string) => Promise<{ message: string; success: boolean }>;
   getSingleArticle: (
     id: string
@@ -110,4 +111,23 @@ export const useArticleStore = create<ArticlesStore>((set, get) => ({
       set({ isLoading: false });
     }
   },
+  editArticle: async (id , body , publish) => {
+    try {
+      set({ isLoading: true });
+      const res = await axiosnInstance.put(`/articles/${id}`, { body , publish });
+      if (res.data.success) {
+        set({articles : get().articles.map(article=>article.id === id ? {...article , body : res.data.data.body , publish : res.data.data.publish} : article)})
+        return { message: res.data.message, success: true };
+      } else {
+        throw new Error(res.data.message || "Failed to edit article");
+      }
+    } catch (error: any) {
+      return {
+        message: error.response.data.message || error.message,
+        success: false,
+      };
+    } finally {
+      set({ isLoading: false });
+    }
+  }
 }));

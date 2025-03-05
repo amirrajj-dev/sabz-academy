@@ -12,7 +12,6 @@ const BanModal = ({ user, onBan } : {user : IUser ,onBan : (id : string)=>void})
       setIsOpen(false);
     }
   };
-  console.log(user);
 
   return (
     <>
@@ -67,7 +66,7 @@ const BanModal = ({ user, onBan } : {user : IUser ,onBan : (id : string)=>void})
 
               <div className="mt-4 text-center">
                 <p className="text-lg text-base-content">
-                  {user.isBanned ? "آیا از بیرون آوردن کاربر از حالت بن اطمینان دارید؟" : "آیا از بن کردن این کاربر اطمینان دارید؟"}
+                  {user?.isBanned ? "آیا از بیرون آوردن کاربر از حالت بن اطمینان دارید؟" : "آیا از بن کردن این کاربر اطمینان دارید؟"}
                 </p>
               </div>
 
@@ -86,7 +85,7 @@ const BanModal = ({ user, onBan } : {user : IUser ,onBan : (id : string)=>void})
                   className="btn btn-warning"
                   onClick={handleBanUser}
                 >
-                  {user.isBanned ? "بیرون آوردن" : "بن کردن"}
+                  {user?.isBanned ? "بیرون آوردن" : "بن کردن"}
                 </motion.button>
               </div>
             </motion.div>
