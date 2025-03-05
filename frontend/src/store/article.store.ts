@@ -90,7 +90,29 @@ export const useArticleStore = create<ArticlesStore>((set, get) => ({
       set({ isLoading: false });
     }
   },
-  getSingleArticle(id) {},
+  getSingleArticle : async (id) => {
+    try {
+      set({isLoading : true})
+      if (!id){
+        throw new Error('id is required')
+      }
+      const res = await axiosnInstance.get(`/articles/${id}`);
+      if (res.data.success){
+        set({mainArticle : res.data.data , isLoading : false})
+        return { message: res.data.message, success: true };
+      }else{
+        set({isLoading : false})
+        throw new Error(res.data.message || "Failed to fetch article");
+      }
+    } catch (error : any) {
+      return {
+        message: error.response.data.message || error.message,
+        success: false,
+      }
+    }finally{
+      set({ isLoading: false });
+    }
+  },
   setArticles(articles) {},
   fetchArticles: async () => {
     try {
