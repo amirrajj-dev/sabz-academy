@@ -10,7 +10,8 @@ export const createArticle = async (
 ) => {
   try {
     const file = req.file;
-    const { title, description, body, categoryID, shortName , publish } = req.body;
+    const { title, description, body, categoryID, shortName, publish } =
+      req.body;
     const user = req.user;
     if (!user) {
       return res
@@ -47,8 +48,7 @@ export const createArticle = async (
         .json({ success: false, message: "Invalid category ID" });
     }
 
-      let coverURL = await uploadToCloudinary(file);
-;
+    let coverURL = await uploadToCloudinary(file);
     const article = await prisma.article.create({
       data: {
         title,
@@ -58,7 +58,7 @@ export const createArticle = async (
         categoryID,
         shortName,
         creatorID: user.id,
-        publish : parseInt(publish)
+        publish: parseInt(publish),
       },
     });
     res.status(201).json({
@@ -172,25 +172,36 @@ export const deleteArticle = async (
   try {
     const articleID = req.params.id;
     if (!articleID) {
-      return res.status(400).json({ success: false, message: "Please provide article ID" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Please provide article ID" });
     }
 
     const user = req.user;
     if (!user) {
-      return res.status(401).json({ success: false, message: "User not authenticated" });
+      return res
+        .status(401)
+        .json({ success: false, message: "User not authenticated" });
     }
 
     const article = await prisma.article.findUnique({
       where: { id: articleID },
-      include: { creator: true, category: true }
+      include: { creator: true, category: true },
     });
 
     if (!article) {
-      return res.status(404).json({ success: false, message: "Article not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Article not found" });
     }
 
     if (article.creatorID?.toString() !== user.id.toString()) {
-      return res.status(403).json({ success: false, message: "You are not authorized to delete this article" });
+      return res
+        .status(403)
+        .json({
+          success: false,
+          message: "You are not authorized to delete this article",
+        });
     }
 
     try {
@@ -207,65 +218,141 @@ export const deleteArticle = async (
       where: { id: articleID },
     });
 
-    res.status(200).json({ success: true, message: "Article deleted successfully" });
+    res
+      .status(200)
+      .json({ success: true, message: "Article deleted successfully" });
   } catch (error) {
     next(error);
   }
 };
 
-export const updateArticle = async (req : Request , res : Response , next : NextFunction)=>{
+export const updateArticle = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const articleID = req.params.id;
     if (!articleID) {
-      return res.status(400).json({ success: false, message: "Please provide article ID" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Please provide article ID" });
     }
-    const {body , publish} = req.body
-    if (!body){
-      return res.status(400).json({ success: false, message: "Please provide article body" });
+    const { body, publish } = req.body;
+    if (!body) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Please provide article body" });
     }
     const user = req.user;
     if (!user) {
-      return res.status(401).json({ success: false, message: "User not authenticated" });
+      return res
+        .status(401)
+        .json({ success: false, message: "User not authenticated" });
     }
     const article = await prisma.article.findUnique({
       where: { id: articleID },
-      include: { creator: true, category: true }
-    })
+      include: { creator: true, category: true },
+    });
     if (!article) {
-      return res.status(404).json({ success: false, message: "Article not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Article not found" });
     }
     if (article.creatorID?.toString() !== user.id.toString()) {
-      return res.status(403).json({ success: false, message: "You are not authorized to update this article" });
+      return res
+        .status(403)
+        .json({
+          success: false,
+          message: "You are not authorized to update this article",
+        });
     }
     const updatedArticle = await prisma.article.update({
       where: { id: articleID },
       data: {
         body,
-        publish: parseInt(publish)
+        publish: parseInt(publish),
       },
-      include: { creator: true, category: true }
+      include: { creator: true, category: true },
     });
-    res.status(200).json({ success: true, message: "Article updated successfully", data: updatedArticle });
+    res
+      .status(200)
+      .json({
+        success: true,
+        message: "Article updated successfully",
+        data: updatedArticle,
+      });
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
+};
 
-export const getArticle = async (req : Request, res : Response , next : NextFunction) => {
+export const getArticle = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const articleID = req.params.id;
     if (!articleID) {
-      return res.status(400).json({ success: false, message: "Please provide article ID" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Please provide article ID" });
     }
     const article = await prisma.article.findFirst({
-      where: { shortName : articleID },
-      include: { creator: true, category: true }
+      where: { shortName: articleID },
+      include: { creator: true, category: true },
     });
     if (!article) {
-      return res.status(404).json({ success: false, message: "Article not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Article not found" });
     }
     res.status(200).json({ success: true, data: article });
   } catch (error) {
+    next(error);
+  }
+};
+
+export const getSuggestedArticles = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const articleID = req.params.id;
+    if (!articleID) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Please provide article ID" });
+    }
+    const article = await prisma.article.findFirst({
+      where: {
+        shortName: articleID,
+      },
+    });
+    if (!article) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Article not found" });
+    }
+    const suggestedArticles = await prisma.article.findMany({
+      where: {
+        categoryID: article.categoryID,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      take: 3,
+    });
+    return res
+      .status(200)
+      .json({
+        success: true,
+        data: suggestedArticles,
+        message: "suggested articles fetchedsuccesfully",
+      });
+  } catch (error) {
     next(error)
   }
-}
+};
