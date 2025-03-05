@@ -19,26 +19,29 @@ interface MainCourseProps {
 }
 
 const MainCourse: React.FC<MainCourseProps> = ({ params }) => {
-  const {getSingleCourse , mainCourse , relatedCourses} = useCourseStore()
-  const {comments , getAllComments , isLoading : commentsIsLoading} = useCommentsStore()
+  const { getSingleCourse, mainCourse, relatedCourses } = useCourseStore();
+  const {
+    comments,
+    getAllComments,
+    isLoading: commentsIsLoading,
+  } = useCommentsStore();
   useEffect(() => {
     const getCourseName = async () => {
       const { course } = await params;
       await getSingleCourse(course);
     };
     getCourseName();
-    getAllComments()
+    getAllComments();
   }, []);
-        
-        
-        return (
-          <div className="max-w-7xl mx-auto my-10 p-4">
+
+  return (
+    <div className="max-w-7xl mx-auto my-10 p-4">
       <BreadCrumb
-        courseTitle={mainCourse?.name as string}
-        courseCategory={mainCourse?.category.name as string}
-        courseCategoryLink={`/course-cat/${mainCourse?.category.title}`}
+        title={mainCourse?.name as string}
+        category={mainCourse?.category.name as string}
+        categoryLink={`/course-cat/${mainCourse?.category.title}`}
         section="دوره ها"
-        />
+      />
       <CourseHeader />
       <CourseDetails />
       <div className="mt-10 grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -46,10 +49,8 @@ const MainCourse: React.FC<MainCourseProps> = ({ params }) => {
         <div className="lg:col-span-2 space-y-6">
           <CourseDesc />
           <CourseSessions />
-         <RelatedCourses />
-          <CourseCommentSection
-            courseId={mainCourse?.id as string}
-          />
+          <RelatedCourses />
+          <CourseCommentSection courseId={mainCourse?.id as string} />
         </div>
 
         {/* Right Section */}
