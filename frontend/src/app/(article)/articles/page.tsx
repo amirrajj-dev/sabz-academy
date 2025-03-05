@@ -5,27 +5,42 @@ import ArticleCardSkeleton from "@/components/skeletons/ArticleCardSkeleton";
 import ArticleCard from "@/components/ui/ArticleCard";
 import { useArticleStore } from "@/store/article.store";
 import React, { useEffect, useState } from "react";
-import { FaArrowDown, FaArrowUp, FaSearch } from "react-icons/fa";
+import { FaArrowDown, FaArrowUp, FaSearch, FaExclamationTriangle } from "react-icons/fa";
 
 const sortingOptions = [
   {
     label: "جدیدترین",
-    key: "priceAsc",
+    key: "newest",
     icon: <FaArrowDown className="text-lg" />,
   },
   {
     label: "قدیمی ترین",
-    key: "priceDesc",
+    key: "oldest",
     icon: <FaArrowUp className="text-lg" />,
   },
 ];
 
-const page = () => {
-  const { articles, fetchArticles , isLoading } = useArticleStore();
-  const [selectedSort, setSelectedSort] = useState("");
+const Page = () => {
+  const { articles, fetchArticles, isLoading } = useArticleStore();
+  const [selectedSort, setSelectedSort] = useState("newest");
+  const [searchQuery, setSearchQuery] = useState("");
+
   useEffect(() => {
     fetchArticles();
   }, []);
+
+  const filteredArticles = articles
+    .filter((article) =>
+      article.title.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    .sort((a, b) => {
+      if (selectedSort === "newest") {
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      } else {
+        return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+      }
+    });
+
   return (
     <div className="max-w-7xl mx-auto my-20 flex flex-col gap-6 px-4">
       <div className="flex flex-col items-start sm:flex-row sm:items-center justify-between">
@@ -38,7 +53,7 @@ const page = () => {
           linkUrl=""
         />
         <span className="text-2xl text-base-content text-nowrap">
-          {articles.length} مقاله
+          {filteredArticles.length} مقاله
         </span>
       </div>
 
@@ -49,6 +64,8 @@ const page = () => {
             type="text"
             placeholder="جستجوی بین مقاله ها"
             className="input w-full pl-10 bg-base-300 border-none rounded-lg shadow-md h-19.5 focus:ring-2 focus:ring-primary"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
 
@@ -58,21 +75,27 @@ const page = () => {
             setSelectedSort={setSelectedSort}
             sortingOptions={sortingOptions}
           />
-           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-      {isLoading ? (
-        Array.from({ length: 6 }).map((_, index) => (
-          <ArticleCardSkeleton key={index} />
-        ))
-      ) : articles.length > 0 ? (
-        articles.map((article) => <ArticleCard key={article.id} article={article} />)
-      ) : (
-        <p></p>
-      )}
-    </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+            {isLoading ? (
+              Array.from({ length: 6 }).map((_, index) => (
+                <ArticleCardSkeleton key={index} />
+              ))
+            ) : filteredArticles.length > 0 ? (
+              filteredArticles.map((article) => (
+                <ArticleCard key={article.id} article={article} />
+              ))
+            ) : (
+              <div className="col-span-full flex flex-col items-center justify-center text-center p-10 bg-base-200 rounded-lg shadow-md">
+                <FaExclamationTriangle className="text-4xl text-warning mb-4" />
+                <p className="text-lg font-semibold text-base-content">متاسفیم! مقاله‌ای یافت نشد.</p>
+                <p className="text-sm text-base-content opacity-70 mt-2">کلمه دیگری را امتحان کنید یا فیلترها را تغییر دهید.</p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default page;
+export default Page;

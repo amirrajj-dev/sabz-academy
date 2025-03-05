@@ -15,8 +15,6 @@ const ArticleCard = ({ article } : {article : IArticle}) => {
       transition={{ duration: 0.4, ease: "easeOut" }}
     >
     
-
-      {/* Article Image */}
       <div className="relative w-full h-44 overflow-hidden rounded-xl">
         <Image
           src={String(article.cover)}
@@ -36,10 +34,9 @@ const ArticleCard = ({ article } : {article : IArticle}) => {
           <span className="text-xs text-base-content opacity-50">{formatedDate}</span>
         </div>
 
-        {/* "Read Article" Link using DaisyUI */}
         <div className="mt-6">
           <Link
-            href={"/"}
+            href={`/articles/${article.shortName}`}
             className="btn btn-primary w-full transition-all duration-300 font-semibold text-sm"
           >
             مطالعه مقاله
@@ -47,7 +44,6 @@ const ArticleCard = ({ article } : {article : IArticle}) => {
         </div>
       </div>
 
-      {/* Subtle Floating Particles */}
       <div className="absolute -top-5 -left-5 w-16 h-16 bg-primary blur-[80px] opacity-20"></div>
       <div className="absolute -bottom-5 -right-5 w-20 h-20 bg-secondary blur-[80px] opacity-20"></div>
     </motion.div>
