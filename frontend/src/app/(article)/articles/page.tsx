@@ -1,11 +1,16 @@
 "use client";
-import SortOptions from "@/components/courses/SortOptions";
+import SortOptions from "@/components/shared/SortOptions";
 import SectionHeader from "@/components/shared/SectionHeader";
 import ArticleCardSkeleton from "@/components/skeletons/ArticleCardSkeleton";
 import ArticleCard from "@/components/ui/ArticleCard";
 import { useArticleStore } from "@/store/article.store";
 import React, { useEffect, useState } from "react";
-import { FaArrowDown, FaArrowUp, FaSearch, FaExclamationTriangle } from "react-icons/fa";
+import {
+  FaArrowDown,
+  FaArrowUp,
+  FaSearch,
+  FaExclamationTriangle,
+} from "react-icons/fa";
 
 const sortingOptions = [
   {
@@ -35,9 +40,13 @@ const Page = () => {
     )
     .sort((a, b) => {
       if (selectedSort === "newest") {
-        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+        return (
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
       } else {
-        return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+        return (
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        );
       }
     });
 
@@ -87,8 +96,12 @@ const Page = () => {
             ) : (
               <div className="col-span-full flex flex-col items-center justify-center text-center p-10 bg-base-200 rounded-lg shadow-md">
                 <FaExclamationTriangle className="text-4xl text-warning mb-4" />
-                <p className="text-lg font-semibold text-base-content">متاسفیم! مقاله‌ای یافت نشد.</p>
-                <p className="text-sm text-base-content opacity-70 mt-2">کلمه دیگری را امتحان کنید یا فیلترها را تغییر دهید.</p>
+                <p className="text-lg font-semibold text-base-content">
+                  متاسفیم! مقاله‌ای یافت نشد.
+                </p>
+                <p className="text-sm text-base-content opacity-70 mt-2">
+                  کلمه دیگری را امتحان کنید یا فیلترها را تغییر دهید.
+                </p>
               </div>
             )}
           </div>
