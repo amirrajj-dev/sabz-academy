@@ -11,7 +11,7 @@ const ArticleCard = ({ article } : {article : IArticle}) => {
   const formatedDate = moment(article?.createdAt as Date).format("jYYYY/jMM/jDD");
   return (
     <motion.div
-      className="relative w-full max-w-sm bg-base-200 border border-base-300 shadow-xl rounded-3xl p-4 overflow-hidden group transition-all duration-300 hover:scale-[1.05] hover:shadow-2xl"
+      className="relative w-full bg-base-200 border border-base-300 shadow-xl rounded-3xl p-4 overflow-hidden group transition-all duration-300 hover:scale-[1.05] hover:shadow-2xl"
       transition={{ duration: 0.4, ease: "easeOut" }}
     >
     
