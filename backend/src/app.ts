@@ -48,7 +48,6 @@ app.use(morgan('dev'))
 app.use(cookieParser())
 
 const tmpDir = path.join(process.cwd() , 'uploads')
-console.log(tmpDir);
 //every one hour deletes the tmp folder thass why we use node-cron its a cron job
 cron.schedule("0 * * * *" , ()=>{
   fs.readdir(tmpDir, (err, files) => {

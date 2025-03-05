@@ -71,7 +71,6 @@ const CourseForm = () => {
     if (!validateForm()) return;
 
     try {
-      console.log(formState);
       const res = await addCourse({
         name: formState.title,
         description: formState.description,

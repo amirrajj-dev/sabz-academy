@@ -7,7 +7,6 @@ export async function middleware(request: NextRequest) {
   console.log("middleware executed:", request.nextUrl.pathname);
 
   const token = request.cookies.get("sabz-token")?.value;
-  console.log('Token:', token);
 
   if (token) {
     try {
