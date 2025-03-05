@@ -1,5 +1,5 @@
 "use client";
-import BreadCrumb from "@/components/course/breadCrumb/BreadCrumb";
+import BreadCrumb from "@/components/shared/breadCrumb/BreadCrumb";
 import CourseDesc from "@/components/course/courseDescription/CourseDesc";
 import CourseLink from "@/components/course/courseDescription/CourseLink";
 import CourseMaster from "@/components/course/courseDescription/CourseMaster";
@@ -37,6 +37,7 @@ const MainCourse: React.FC<MainCourseProps> = ({ params }) => {
         courseTitle={mainCourse?.name as string}
         courseCategory={mainCourse?.category.name as string}
         courseCategoryLink={`/course-cat/${mainCourse?.category.title}`}
+        section="دوره ها"
         />
       <CourseHeader />
       <CourseDetails />

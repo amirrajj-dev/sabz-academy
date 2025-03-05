@@ -18,7 +18,7 @@ import { MdOutlineSentimentDissatisfied } from "react-icons/md";
 import FilterSidebar from "@/components/courses/FilterSideBar";
 import NoCoursesMessage from "@/components/courses/NoCoursesMessage";
 import CourseGrid from "@/components/courses/CourseGrid";
-import SortOptions from "@/components/courses/SortOptions";
+import SortOptions from "@/components/shared/SortOptions";
 
 const sortingOptions = [
   {
@@ -42,11 +42,11 @@ const CoursesPage = () => {
   const [selectedSort, setSelectedSort] = useState("");
   const [expanded, setExpanded] = useState(false);
   const [sortedCourses, setSortedCourses] = useState<ICourse[]>([]);
-  
+
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [isFree, setIsFree] = useState(false);
   const [isPreSale, setIsPreSale] = useState(false);
-  const [searhcQuery , setSearchQuery] = useState<string>('')
+  const [searhcQuery, setSearchQuery] = useState<string>("");
 
   const { courses, fetchCourses, isLoading } = useCourseStore();
   const { categories, fetchCategories } = useCategoriesStore();
@@ -60,7 +60,14 @@ const CoursesPage = () => {
     if (courses.length > 0) {
       filterAndSortCourses();
     }
-  }, [selectedSort, courses, isFree, isPreSale, selectedCategories , searhcQuery]);
+  }, [
+    selectedSort,
+    courses,
+    isFree,
+    isPreSale,
+    selectedCategories,
+    searhcQuery,
+  ]);
 
   const filterAndSortCourses = () => {
     let filteredCourses = [...courses];
@@ -86,7 +93,7 @@ const CoursesPage = () => {
     } else if (selectedSort === "popular") {
       filteredCourses.sort((a, b) => b.studentsCount - a.studentsCount);
     }
-    if (searhcQuery.length > 0){
+    if (searhcQuery.length > 0) {
       filteredCourses = filteredCourses.filter((course) =>
         course.name.toLowerCase().includes(searhcQuery.toLowerCase())
       );
@@ -131,7 +138,7 @@ const CoursesPage = () => {
           selectedCategories={selectedCategories}
           handleCategoryChange={handleCategoryChange}
           searchQuery={searhcQuery}
-           setSearchQuery={setSearchQuery}
+          setSearchQuery={setSearchQuery}
         />
 
         <div className="lg:w-3/4 w-full">

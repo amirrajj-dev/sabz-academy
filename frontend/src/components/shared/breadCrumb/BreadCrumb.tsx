@@ -9,12 +9,14 @@ interface BreadCrumbProps {
   courseTitle: string;
   courseCategory: string;
   courseCategoryLink: string;
+  section : string
 }
 
 const BreadCrumb = ({
   courseTitle,
   courseCategory,
   courseCategoryLink,
+  section
 }: BreadCrumbProps) => {
   const { isLoading } = useCourseStore();
 
@@ -35,7 +37,7 @@ const BreadCrumb = ({
 
         <li>
           <Link href="/courses" className="transition">
-            دوره‌ها
+            {section}
           </Link>
         </li>
 
