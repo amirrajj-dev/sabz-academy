@@ -46,6 +46,7 @@ const CoursesPage = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [isFree, setIsFree] = useState(false);
   const [isPreSale, setIsPreSale] = useState(false);
+  const [searhcQuery , setSearchQuery] = useState<string>('')
 
   const { courses, fetchCourses, isLoading } = useCourseStore();
   const { categories, fetchCategories } = useCategoriesStore();
@@ -59,7 +60,7 @@ const CoursesPage = () => {
     if (courses.length > 0) {
       filterAndSortCourses();
     }
-  }, [selectedSort, courses, isFree, isPreSale, selectedCategories]);
+  }, [selectedSort, courses, isFree, isPreSale, selectedCategories , searhcQuery]);
 
   const filterAndSortCourses = () => {
     let filteredCourses = [...courses];
@@ -84,6 +85,11 @@ const CoursesPage = () => {
       filteredCourses.sort((a, b) => b.price - a.price);
     } else if (selectedSort === "popular") {
       filteredCourses.sort((a, b) => b.studentsCount - a.studentsCount);
+    }
+    if (searhcQuery.length > 0){
+      filteredCourses = filteredCourses.filter((course) =>
+        course.name.toLowerCase().includes(searhcQuery.toLowerCase())
+      );
     }
 
     setSortedCourses(filteredCourses);
@@ -124,6 +130,8 @@ const CoursesPage = () => {
           setIsPreSale={setIsPreSale}
           selectedCategories={selectedCategories}
           handleCategoryChange={handleCategoryChange}
+          searchQuery={searhcQuery}
+           setSearchQuery={setSearchQuery}
         />
 
         <div className="lg:w-3/4 w-full">

@@ -13,6 +13,8 @@ interface FilterSidebarProps {
   handleCategoryChange: (categoryID: string) => void;
   expanded: boolean;
   setExpanded: React.Dispatch<React.SetStateAction<boolean>>;
+  searchQuery : string;
+  setSearchQuery: React.Dispatch<React.SetStateAction<string>>
 }
 
 const FilterSidebar: React.FC<FilterSidebarProps> = ({
@@ -25,6 +27,8 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   handleCategoryChange,
   expanded,
   setExpanded,
+  searchQuery,
+  setSearchQuery
 }) => {
   return (
     <motion.div
@@ -38,6 +42,8 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
       <div className="relative mb-4">
         <FaSearch className="absolute left-3 top-3 text-gray-500" />
         <input
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
           type="text"
           placeholder="جستجوی بین دوره‌ها"
           className="input w-full pl-10 bg-base-100 border-none rounded-lg shadow-md focus:ring-2 focus:ring-primary"
