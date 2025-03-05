@@ -1,6 +1,7 @@
 "use client";
 import SortOptions from "@/components/courses/SortOptions";
 import SectionHeader from "@/components/shared/SectionHeader";
+import ArticleCardSkeleton from "@/components/skeletons/ArticleCardSkeleton";
 import ArticleCard from "@/components/ui/ArticleCard";
 import { useArticleStore } from "@/store/article.store";
 import React, { useEffect, useState } from "react";
@@ -59,7 +60,9 @@ const page = () => {
           />
            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
       {isLoading ? (
-        <p>loading ...</p>
+        Array.from({ length: 6 }).map((_, index) => (
+          <ArticleCardSkeleton key={index} />
+        ))
       ) : articles.length > 0 ? (
         articles.map((article) => <ArticleCard key={article.id} article={article} />)
       ) : (
