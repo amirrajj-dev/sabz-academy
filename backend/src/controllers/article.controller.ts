@@ -10,8 +10,7 @@ export const createArticle = async (
 ) => {
   try {
     const file = req.file;
-    const { title, description, body, categoryID, shortName } = req.body;
-
+    const { title, description, body, categoryID, shortName , publish } = req.body;
     const user = req.user;
     if (!user) {
       return res
@@ -23,7 +22,8 @@ export const createArticle = async (
       !description.trim() ||
       !body.trim() ||
       !categoryID.trim() ||
-      !shortName
+      !shortName ||
+      publish === undefined
     ) {
       return res
         .status(400)
@@ -47,15 +47,8 @@ export const createArticle = async (
         .json({ success: false, message: "Invalid category ID" });
     }
 
-    let coverURL = "";
-    try {
-      coverURL = await uploadToCloudinary(file);
-    } catch (uploadError) {
-      return res.status(500).json({
-        success: false,
-        message: "Failed to upload file to Cloudinary",
-      });
-    }
+      let coverURL = await uploadToCloudinary(file);
+;
     const article = await prisma.article.create({
       data: {
         title,
@@ -65,7 +58,7 @@ export const createArticle = async (
         categoryID,
         shortName,
         creatorID: user.id,
-        publish: 1,
+        publish : parseInt(publish)
       },
     });
     res.status(201).json({

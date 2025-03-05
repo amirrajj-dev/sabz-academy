@@ -10,7 +10,7 @@ interface ArticlesStore {
   addArticle: (
     article: Pick<
       IArticle,
-      "title" | "description" | "body" | "cover" | "shortName" | "categoryID"
+      "title" | "description" | "body" | "cover" | "shortName" | "publish" | "categoryID"
     >
   ) => Promise<{ message: string; success: boolean }>;
   deleteArticle: (id: string) => Promise<{ message: string; success: boolean }>;
@@ -27,7 +27,7 @@ export const useArticleStore = create<ArticlesStore>((set, get) => ({
   addArticle: async (article) => {
     try {
       set({ isLoading: true });
-      const { body, categoryID, description, shortName, title, cover } =
+      const { body, categoryID, description, shortName, title, cover , publish } =
         article;
       if (
         !body ||
@@ -35,7 +35,8 @@ export const useArticleStore = create<ArticlesStore>((set, get) => ({
         !description ||
         !shortName ||
         !title ||
-        !cover
+        !cover ||
+        publish === undefined
       ) {
         throw new Error("all fields are required");
       }
@@ -46,6 +47,7 @@ export const useArticleStore = create<ArticlesStore>((set, get) => ({
       formData.append("file", cover);
       formData.append("categoryID", categoryID);
       formData.append("shortName", shortName);
+      formData.append("publish", publish.toString());
       const res = await axiosnInstance.post("/articles", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
@@ -53,9 +55,11 @@ export const useArticleStore = create<ArticlesStore>((set, get) => ({
         set({ articles: [...get().articles, res.data.data], isLoading: false });
         return { message: res.data.message, success: true };
       } else {
+        set({isLoading : false})
         throw new Error(res.data.message || "Failed to add article");
       }
     } catch (error: any) {
+      console.log(error);
       return {
         message: error.response.data.message || error.message,
         success: false,

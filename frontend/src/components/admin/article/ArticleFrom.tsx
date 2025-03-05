@@ -60,9 +60,6 @@ const ArticleForm = () => {
       categoryID: category,
       cover: coverImage!,
     };
-
-    console.log(articleData);
-
     const response = await addArticle({
       body: articleData.body,
       categoryID: articleData.categoryID,
@@ -70,6 +67,7 @@ const ArticleForm = () => {
       description: articleData.description,
       shortName: articleData.shortName,
       title: articleData.title,
+      publish : isDraft ? 0 : 1
     });
 
     if (response.success) {
