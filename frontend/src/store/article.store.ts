@@ -97,6 +97,7 @@ export const useArticleStore = create<ArticlesStore>((set, get) => ({
         throw new Error('id is required')
       }
       const res = await axiosnInstance.get(`/articles/${id}`);
+      console.log(res);
       if (res.data.success){
         set({mainArticle : res.data.data , isLoading : false})
         return { message: res.data.message, success: true };
@@ -105,6 +106,7 @@ export const useArticleStore = create<ArticlesStore>((set, get) => ({
         throw new Error(res.data.message || "Failed to fetch article");
       }
     } catch (error : any) {
+      console.log(error);
       return {
         message: error.response.data.message || error.message,
         success: false,
