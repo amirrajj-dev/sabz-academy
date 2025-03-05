@@ -1,0 +1,56 @@
+"use client";
+import React from "react";
+import Image from "next/image";
+import { useArticleStore } from "@/store/article.store";
+import { FaCalendar, FaEye } from "react-icons/fa";
+import moment from "moment-jalaali";
+import Link from "next/link";
+
+const SuggestedArticles = () => {
+  const { suggestedArticles, isLoading } = useArticleStore();
+
+  return (
+    <div className="mt-10 bg-base-200 rounded-md shadow-md p-6">
+      <h3 className="text-lg font-semibold mb-4">مقالات پیشنهادی</h3>
+
+      {isLoading ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {Array.from({ length: 3 }).map((_, index) => (
+            <div key={index} className="skeleton bg-base-200 rounded-md p-4">
+              <div className="skeleton bg-base-200 h-40 w-full rounded-md"></div>
+              <div className="skeleton bg-base-200 h-6 w-3/4 mt-2 rounded"></div>
+              <div className="skeleton bg-base-200 h-4 w-1/2 mt-2 rounded"></div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {suggestedArticles.map((article: any) => (
+            <Link key={article.id} href={`/articles/${article.shortName}`}>
+              <div className="card bg-base-100 shadow-md rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition">
+                <Image
+                  src={article.cover}
+                  alt={article.title}
+                  width={300}
+                  height={200}
+                  className="w-full h-40 object-cover"
+                />
+                <div className="p-4">
+                  <h4 className="font-semibold text-base">{article.title}</h4>
+                  <div className="flex items-center text-sm text-gray-500 mt-2 gap-2">
+                    <span>{moment(article.createdAt).format("jYYYY/jMM/jDD")}</span>
+                    <FaCalendar />
+                    <span>{article.views ?? 0}</span>
+                    <FaEye />
+                  </div>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default SuggestedArticles;

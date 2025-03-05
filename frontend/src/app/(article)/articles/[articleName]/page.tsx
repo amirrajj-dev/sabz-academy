@@ -6,6 +6,7 @@ import Image from "next/image";
 import React, { use, useEffect } from "react";
 import { FaCalendar, FaEye, FaUser } from "react-icons/fa";
 import dompurify from "dompurify";
+import SuggestedArticles from "@/components/article/SuggestedArticles";
 
 interface MainArticleProps {
   params: Promise<{ articleName: string }>;
@@ -13,14 +14,14 @@ interface MainArticleProps {
 
 const Page = ({ params }: MainArticleProps) => {
   const { articleName } = use(params);
-  const { getSingleArticle, mainArticle, isLoading } = useArticleStore();
+  const { getSingleArticle, mainArticle, isLoading , getSuggestedArticles } = useArticleStore();
 
   useEffect(() => {
     getSingleArticle(articleName);
+    getSuggestedArticles(articleName)
   }, [articleName]);
 
   const sanitizeHtml = dompurify.sanitize(mainArticle?.body ?? "");
-
   return (
     <div className="max-w-6xl p-4 mx-auto mt-10">
       <BreadCrumb title={mainArticle?.title ?? "در حال بارگذاری..."} section="مقاله ها" />
@@ -100,6 +101,7 @@ const Page = ({ params }: MainArticleProps) => {
           )
         )}
       </div>
+        <SuggestedArticles/>
     </div>
   );
 };
