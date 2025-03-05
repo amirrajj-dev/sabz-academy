@@ -4,8 +4,11 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { FaBookReader } from "react-icons/fa";
+import { IArticle } from "@/interfaces/types";
+import moment from 'moment-jalaali'
 
-const ArticleCard = ({ article }) => {
+const ArticleCard = ({ article } : {article : IArticle}) => {
+  const formatedDate = moment(article?.createdAt as Date).format("jYYYY/jMM/jDD");
   return (
     <motion.div
       className="relative w-full max-w-sm bg-base-200 border border-base-300 shadow-xl rounded-3xl p-4 overflow-hidden group transition-all duration-300 hover:scale-[1.05] hover:shadow-2xl"
@@ -16,7 +19,7 @@ const ArticleCard = ({ article }) => {
       {/* Article Image */}
       <div className="relative w-full h-44 overflow-hidden rounded-xl">
         <Image
-          src={article.cover}
+          src={String(article.cover)}
           alt={article.title}
           layout="fill"
           objectFit="cover"
@@ -29,8 +32,8 @@ const ArticleCard = ({ article }) => {
         <p className="text-base-content text-xs opacity-70 mt-2 line-clamp-2">{article.description}</p>
 
         <div className="flex justify-between items-center mt-4">
-          <span className="text-xs text-base-content opacity-80">{article.creator}</span>
-          <span className="text-xs text-base-content opacity-50">{article.createdAt}</span>
+          <span className="text-xs text-base-content opacity-80">{article.creator?.name}</span>
+          <span className="text-xs text-base-content opacity-50">{formatedDate}</span>
         </div>
 
         {/* "Read Article" Link using DaisyUI */}
