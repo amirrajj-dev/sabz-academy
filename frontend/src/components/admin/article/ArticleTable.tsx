@@ -8,20 +8,29 @@ import { IoClose } from 'react-icons/io5'
 import DeleteModal from '@/components/modals/shared/DeleteModal'
 import { toast } from 'react-toastify'
 import { toastOptions } from '@/helpers/toastOptions'
+import EditArticleModal from '@/components/modals/article/EditArticleModal'
 
 const ArticleTable = () => {
-  const { articles, fetchArticles, isLoading , deleteArticle } = useArticleStore()
+  const { articles, fetchArticles, isLoading , deleteArticle , editArticle } = useArticleStore()
 
   useEffect(() => {
     fetchArticles()
   }, [])
-
   const handleDeleteArticle = async (id: string) => {
     const res = await deleteArticle(id)
     if (res.success){
       toast.success('مقاله با موفقیت حذف شد', toastOptions)
     }else{
       toast.error('خطا در حذف مقاله', toastOptions)
+    }
+  }
+
+  const handleUpdateArticle = async (id: string , body : string , publish : string) => {
+    const res = await editArticle(id , body , publish)
+    if (res.success){
+      toast.success('مقاله با موفقیت ویرایش شد', toastOptions)
+    }else{
+      toast.error('خطا در ویرایش مقاله', toastOptions)
     }
   }
 
@@ -69,13 +78,7 @@ const ArticleTable = () => {
                 <td className="p-4">{article.publish === 1 ? <button className='btn btn-sm btn-soft btn-success'><FaCheck/></button> : <button className='btn btn-sm btn-soft btn-error'><IoClose/></button>}</td>
                 <td className="p-4">
                   {article.publish !== 1 ? (
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="btn btn-warning btn-sm"
-                    >
-                      ادامه نوشتن
-                    </motion.button>
+                    <EditArticleModal content={article.body} onSave={handleUpdateArticle} id={article.id}  />
                   ) : (
                     <motion.button
                       whileHover={{ scale: 1.05 }}
