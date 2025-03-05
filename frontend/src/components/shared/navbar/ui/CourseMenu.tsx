@@ -4,6 +4,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { ICategory } from "@/interfaces/types";
+import { usePathname } from "next/navigation";
 
 interface CourseMenuProps {
     menuItems : ICategory[],
@@ -14,7 +15,7 @@ interface CourseMenuProps {
 
 const CoursesMenu = ({ menuItems, currentOption, setCurrentOption, handleSetCurrentOption } : CourseMenuProps) => {
   const [hovered, setHovered] = useState(false);
-
+  const pathname = usePathname()
   return (
     <div
       className="relative group"
@@ -43,7 +44,7 @@ const CoursesMenu = ({ menuItems, currentOption, setCurrentOption, handleSetCurr
           transition={{ duration: 0.3, ease: "easeInOut" }}
           className="absolute right-0 bg-base-300 shadow-xl rounded-xl z-10 w-64 transition-all p-2 border border-gray-700"
         >
-          {menuItems.map((item, index : number) => (
+          {menuItems.filter(item=>item.courses.length > 0).map((item, index : number) => (
             <div
               key={index}
               className="relative group"
@@ -71,7 +72,7 @@ const CoursesMenu = ({ menuItems, currentOption, setCurrentOption, handleSetCurr
                     <Link
                       href={`/courses/${option.shortName}`}
                     key={option.id}
-                      className="block px-4 py-2 text-xs text-base-content hover:bg-primary hover:text-primary-content rounded-md transition-colors"
+                      className={`block px-4 py-2 text-xs ${pathname.slice(9) === option.shortName ? 'text-success' : 'text-base-content'} hover:bg-primary hover:text-primary-content rounded-md transition-colors`}
                     >
                       {option.name}
                     </Link>

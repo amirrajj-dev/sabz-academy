@@ -12,6 +12,7 @@ import { motion } from "framer-motion";
 import { useAuthStore } from "@/store/auth.store";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useCategoriesStore } from "@/store/category.store";
+import { usePathname } from "next/navigation";
 
 const Navbar = React.memo(() => {
   const [theme, setTheme] = useState('dark');
@@ -58,6 +59,7 @@ const Navbar = React.memo(() => {
   }, []);
 
   const memoizedCategories = useMemo(() => categories, [categories]);
+  const pathname = usePathname()
 
   return (
     <>
@@ -106,7 +108,7 @@ const Navbar = React.memo(() => {
               >
                 <Link
                   href="/courses"
-                  className="btn btn-ghost text-base font-medium text-base-content"
+                  className={`btn btn-ghost text-base font-medium ${pathname === '/courses' ? 'text-success' : 'text-base-content'}`}
                 >
                   همه دوره ها
                 </Link>
@@ -119,7 +121,7 @@ const Navbar = React.memo(() => {
               >
                 <Link
                   href="/articles"
-                  className="btn btn-ghost text-base font-medium text-base-content"
+                  className={`btn btn-ghost text-base font-medium ${pathname === '/articles' ? 'text-success' : 'text-base-content'}`}
                 >
                   مقالات
                 </Link>
