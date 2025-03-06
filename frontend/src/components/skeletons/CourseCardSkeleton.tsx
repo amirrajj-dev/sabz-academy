@@ -7,7 +7,7 @@ import Image from "next/image"; // Import Next.js Image component
 const CourseCardSkeleton = () => {
   return (
     <motion.div
-      className="card w-full max-w-xs bg-base-200 shadow-lg rounded-2xl hover:shadow-xl transition-shadow duration-300 border border-gray-700"
+      className="card w-full bg-base-200 shadow-lg rounded-2xl hover:shadow-xl transition-shadow duration-300 border border-gray-700"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}

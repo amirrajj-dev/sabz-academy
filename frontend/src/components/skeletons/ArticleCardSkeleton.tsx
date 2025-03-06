@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 const ArticleCardSkeleton = () => {
   return (
     <motion.div
-        className="relative w-full max-w-sm bg-base-200 border border-base-300 shadow-xl rounded-3xl p-4 overflow-hidden animate-pulse"
+        className="relative w-full bg-base-200 border border-base-300 shadow-xl rounded-3xl p-4 overflow-hidden animate-pulse"
       >
         <div className="skeleton h-44 w-full rounded-xl"></div>
         <div className="p-4 space-y-4">
