@@ -15,11 +15,12 @@ const UserMenu = ({
   setMenuOpen: (value: boolean) => void;
   username: string;
 }) => {
-  const { logout, user } = useAuthStore();
+  const { logout, user , isAuthenticated } = useAuthStore();
   const handleLogOut = () => {
     const isSure = confirm("آیا از خروج اطمینان دارید ؟");
     if (isSure) {
       logout();
+      setMenuOpen(false)
     }
   };
   return (
@@ -90,11 +91,15 @@ const UserMenu = ({
                   </motion.li>
                 );
               }
+              if (item.label === 'پنل کاربری' && !isAuthenticated){
+                return null
+              }
               return (
                 <motion.li
                   key={index}
                   whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.2 }}
+                  onClick={()=>setMenuOpen(false)}
                 >
                   <Link
                     href={item.href}

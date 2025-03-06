@@ -80,7 +80,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
                 }
             }
         } catch (error : any) {
-            set({ error: error.response.data.message || error.message });
+            set({ error: error.response?.data.message || error.message });
             return {
                 success : false,
                 message : error.response.data.message || error.message
