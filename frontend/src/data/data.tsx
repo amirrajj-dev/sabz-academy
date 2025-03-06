@@ -11,6 +11,7 @@ import {
   FaUsers,
   FaComment,
   FaComments,
+  FaFolderOpen,
 } from "react-icons/fa";
 import { SlCalender } from "react-icons/sl";
 import { FaClock, FaChartLine, FaCertificate, FaClipboardList } from "react-icons/fa";
@@ -28,13 +29,10 @@ import { RiGraduationCapFill } from "react-icons/ri";
 import { IoMdFolder } from "react-icons/io";
 
 export const userMenuItems = [
-  { label: "پیشخوان", icon: <FaTachometerAlt />, showFor: "all" , href : "/my-account" },
-  { label: "دوره های من", icon: <FaBook />, showFor: "all" , href : "/my-account/courses" },
+  { label: "پیشخوان", icon: <FaHome />, showFor: "all" , href : "/my-account" },
+  { label: "دوره های من", icon: <FaFolderOpen />, showFor: "all" , href : "/my-account/courses" },
   { label: "تیکت ها", icon: <FaTicketAlt />, showFor: "all" , href : "/my-account/tickets"},
   { label: "جزئیات حساب", icon: <FaCog />, showFor: "all" , href : "/my-account/edit-account" },
-  { label: "divider", showFor: "all"  , href : ""},
-  { label: "پنل ادمین", icon: <FaUserShield />, showFor: "admin" , href : "/admin-pannel" },
-  { label: "پنل کاربری", icon: <FaUser />, showFor: "all" , href : "/user-pannel" },
   { label: "خروج", icon: <FaSignOutAlt />, showFor: "all" , href : "/" },
 ];
 
