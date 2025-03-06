@@ -60,7 +60,7 @@ const Sidebar = ({ isExpanded, isMobile, setIsMobile }: SidebarProps) => {
         )}
 
         <ul className='flex flex-col gap-6 mt-12 w-full px-.5'>
-          {userMenuItems.map((item, index) => (
+          {userMenuItems.filter(item=>item.label !== 'پنل ادمین' && item.label !== 'divider' && item.label !== "پنل کاربر").map((item, index) => (
             <motion.li 
               key={index}
               className='relative group'
