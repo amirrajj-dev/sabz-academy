@@ -1,25 +1,18 @@
 'use client'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { userMenuItems } from '@/data/data'
 import Image from 'next/image'
 import SabzText from '@/components/shared/SabzText'
 import Link from 'next/link'
 
-const Sidebar = () => {
-  const [isExpanded, setIsExpanded] = useState(false)
-  const [isMobile, setIsMobile] = useState(false)
+interface SidebarProps {
+  isExpanded: boolean
+  isMobile: boolean
+  setIsMobile: (isMobile: boolean) => void
+}
 
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') as string)
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768) 
-    }
-
-    handleResize()
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+const Sidebar = ({ isExpanded, isMobile, setIsMobile }: SidebarProps) => {
 
   const sidebarVariants = {
     collapsed: { width: 58 },
@@ -43,8 +36,7 @@ const Sidebar = () => {
       animate={isExpanded && !isMobile ? 'expanded' : 'collapsed'}
       variants={sidebarVariants}
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-      onMouseEnter={() => !isMobile && setIsExpanded(true)}
-      onMouseLeave={() => !isMobile && setIsExpanded(false)}
+      style={{ width: isMobile ? 58 : undefined }}
     >
       <div className={`flex flex-col pt-16 ${isExpanded ? 'pr-10' : 'pr-2'} items-start`}>
         {!isMobile && (
@@ -77,9 +69,8 @@ const Sidebar = () => {
               animate="rest"
             >
               <Link href={item.href} className='flex items-center gap-4'>
-
                 <motion.span
-                  className={`text-2xl p-2 rounded-lg bg-base-100 shadow-md ${isMobile ? 'tooltip tooltip-left' : null}`}
+                  className={`text-2xl p-2 rounded-lg bg-base-100 shadow-md ${isMobile ? 'tooltip tooltip-left' : ''}`}
                   whileHover={{ rotate: 10 }}
                   data-tip={isMobile ? item.label : ''}
                 >
