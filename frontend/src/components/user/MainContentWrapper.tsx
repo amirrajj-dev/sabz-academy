@@ -1,6 +1,7 @@
 'use client'
 import { UseUserPannelStore } from '@/store/userPannelLayout.store'
 import { motion } from 'framer-motion'
+import UserPannelHeader from './UserPannelHeader/UserPannelHeader'
 
 const MainContentWrapper = ({ children }: { children: React.ReactNode }) => {
   const {isExpanded , isMobile} = UseUserPannelStore()
@@ -13,9 +14,10 @@ const MainContentWrapper = ({ children }: { children: React.ReactNode }) => {
         transition={{ type: 'spring', stiffness: 300, damping: 20 }}
       />
     <motion.main
-      className="flex-grow p-4 md:p-8 mt-5 md:mt-20"
+      className="flex-grow p-4 md:p-8 mt-5 md:!pl-36 md:mt-20"
       layout="position"
     >
+        <UserPannelHeader/>
       {children}
     </motion.main>
     </>

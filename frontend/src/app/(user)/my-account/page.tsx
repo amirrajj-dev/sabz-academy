@@ -2,7 +2,7 @@ import React from 'react'
 
 const UserPannel = () => {
   return (
-    <div>reerew</div>
+    <div>retr</div>
   )
 }
 

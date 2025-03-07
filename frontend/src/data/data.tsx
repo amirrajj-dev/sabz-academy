@@ -29,13 +29,13 @@ import { RiGraduationCapFill } from "react-icons/ri";
 import { IoMdFolder } from "react-icons/io";
 
 export const userMenuItems = [
-  { label: "پیشخوان", icon: <FaTachometerAlt />, showFor: "all" , href : "/user-pannel" },
-  { label: "دوره های من", icon: <FaBook />, showFor: "all" , href : "/user-pannel/courses" },
-  { label: "تیکت ها", icon: <FaTicketAlt />, showFor: "all" , href : "/user-pannel/tickets"},
-  { label: "جزئیات حساب", icon: <FaCog />, showFor: "all" , href : "/user-pannel/edit-account" },
+  { label: "پیشخوان", icon: <FaTachometerAlt />, showFor: "all" , href : "/my-account" },
+  { label: "دوره های من", icon: <FaBook />, showFor: "all" , href : "/my-account/courses" },
+  { label: "تیکت ها", icon: <FaTicketAlt />, showFor: "all" , href : "/my-account/tickets"},
+  { label: "جزئیات حساب", icon: <FaCog />, showFor: "all" , href : "/my-account/edit-account" },
   { label: "divider", showFor: "all"  , href : ""},
   { label: "پنل ادمین", icon: <FaUserShield />, showFor: "admin" , href : "/admin-pannel" },
-  { label: "پنل کاربر", icon: <FaUserShield />, showFor: "admin" , href : "/user-pannel" },
+  { label: "پنل کاربر", icon: <FaUserShield />, showFor: "admin" , href : "/my-account" },
   { label: "خروج", icon: <FaSignOutAlt />, showFor: "all" , href : "/" },
 ];
 
