@@ -95,3 +95,12 @@ export interface IArticle {
   creator?: IUser;
   createdAt: Date;
 }
+
+export interface IDiscount {
+  id : string
+  discount : number
+  code : string
+  maxUse : number
+  courseId : string
+  createdAt: Date;
+}

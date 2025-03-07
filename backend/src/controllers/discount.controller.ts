@@ -18,7 +18,7 @@ export const createDiscount = async (req : Request , res : Response , next : Nex
         if (discountExists){
             return res.status(400).json({message : "Discount code already exists" , success : false})
         }
-        await prisma.discount.create({
+        const newDiscount = await prisma.discount.create({
             data : {
                 code ,
                 courseID : courseId ,
@@ -26,7 +26,7 @@ export const createDiscount = async (req : Request , res : Response , next : Nex
                 maxUse 
             }
         })
-        return res.status(201).json({message : "Discount created successfully" , success : true})
+        return res.status(201).json({message : "Discount created successfully" , success : true , newDiscount })
     } catch (error) {
         next(error)
     }
