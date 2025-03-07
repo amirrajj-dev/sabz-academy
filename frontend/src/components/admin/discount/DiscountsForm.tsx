@@ -27,7 +27,7 @@ const DiscountFrom = () => {
   return (
     <div className="bg-base-100 p-6 rounded-xl shadow-lg mb-6">
       <h2 className="text-xl font-bold text-base-content mb-4">
-        اضافه کردن مقاله
+        اضافه کردن تخفیف
       </h2>
       <div className="space-y-4">
         <div className="flex flex-col gap-2">

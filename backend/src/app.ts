@@ -15,7 +15,7 @@ import contactRoutes from './routes/contact.route';
 import searchRoutes from './routes/search.route';
 import notificationRoutes from './routes/notification.route';
 import infosRoutes from './routes/info.route';
-import offsRoutes from './routes/off.route';
+import disocuntRoutes from './routes/discount.route';
 import ordersRoutes from './routes/order.route';
 import ticketsRoutes from './routes/ticket.route';
 import sessionRoutes from './routes/session.route'
@@ -76,7 +76,7 @@ app.use("/api/search", searchRoutes);
 app.use('/api/sessions' , sessionRoutes)
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/infos", infosRoutes);
-app.use("/api/offs", offsRoutes);
+app.use("/api/discount", disocuntRoutes);
 app.use("/api/orders", ordersRoutes);
 app.use("/api/tickets", ticketsRoutes);
 
