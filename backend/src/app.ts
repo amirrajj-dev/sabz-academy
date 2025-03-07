@@ -76,7 +76,7 @@ app.use("/api/search", searchRoutes);
 app.use('/api/sessions' , sessionRoutes)
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/infos", infosRoutes);
-app.use("/api/discount", disocuntRoutes);
+app.use("/api/discounts", disocuntRoutes);
 app.use("/api/orders", ordersRoutes);
 app.use("/api/tickets", ticketsRoutes);
 

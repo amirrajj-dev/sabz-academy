@@ -26,7 +26,7 @@ export const createDiscount = async (req : Request , res : Response , next : Nex
                 maxUse 
             }
         })
-        return res.status(201).json({message : "Discount created successfully" , success : true , newDiscount })
+        return res.status(201).json({message : "Discount created successfully" , success : true , data : newDiscount })
     } catch (error) {
         next(error)
     }
@@ -48,6 +48,20 @@ export const DeleteDiscount = async (req : Request , res : Response , next : Nex
             where : {id : id}
         })
         return res.status(200).json({message : "Discount deleted successfully" , success : true})
+    } catch (error) {
+        next(error)
+    }
+}
+
+
+export const getAllDiscounts = async (req : Request , res : Response , next : NextFunction)=>{
+    try {
+        const disocunts = await prisma.discount.findMany()
+        return res.status(200).json({
+            message : "Discounts fetched successfully" ,
+            success : true ,
+            discounts : disocunts
+        })
     } catch (error) {
         next(error)
     }

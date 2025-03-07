@@ -16,7 +16,6 @@ export interface Article {
 }
 
 const DiscountsPage = () => {
-const articles : Article[] = [];
 
   return (
     <div className="p-6 max-w-5xl mx-auto bg-base-200">
@@ -25,7 +24,7 @@ const articles : Article[] = [];
       </div>
 
     <DiscountFrom/>
-    <DiscountsTable articles={articles}/>
+    <DiscountsTable/>
 
      
     </div>
