@@ -32,7 +32,8 @@ export const getAllCourses = async (
     const courses = await prisma.course.findMany({
       include : {
         category : {select : {name : true}},
-        creator : {select : {name : true}}
+        creator : {select : {name : true}},
+        comments : {select : {id : true}}
       },
       orderBy : {createdAt : "desc"}
     });

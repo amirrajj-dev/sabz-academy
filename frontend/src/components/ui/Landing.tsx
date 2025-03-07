@@ -5,6 +5,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { FaPlay } from "react-icons/fa";
 import { motion } from "framer-motion";
 import Typewriter from "typewriter-effect";
+import Link from "next/link";
 
 const Landing = () => {
   const [textIndex, setTextIndex] = useState(0);
@@ -67,12 +68,12 @@ const Landing = () => {
           <button onClick={handleGoToTheRoadMaps} className="btn btn-primary btn-lg w-full sm:w-auto">
             از این مسیرها شروع کن
           </button>
-          <div className="flex items-center gap-3">
+          <Link href={'/courses/?sort=free'} className="flex items-center gap-3">
             <button className="btn btn-success btn-circle btn-lg flex items-center">
               <FaPlay />
             </button>
             <span>دوره های رایگان</span>
-          </div>
+          </Link>
         </motion.div>
       </div>
       <motion.div

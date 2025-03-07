@@ -1,20 +1,15 @@
 "use client";
 import React, { use, useEffect, useState } from "react";
 import SectionHeader from "@/components/shared/SectionHeader";
-import { motion } from "framer-motion";
 import {
-  FaSearch,
-  FaChevronDown,
   FaArrowDown,
   FaArrowUp,
   FaFire,
 } from "react-icons/fa";
 import { useCourseStore } from "@/store/course.store";
-import CourseCard from "@/components/shared/CourseCard";
 import { useCategoriesStore } from "@/store/category.store";
 import CourseCardSkeleton from "@/components/skeletons/CourseCardSkeleton";
 import { ICourse } from "@/interfaces/types";
-import { MdOutlineSentimentDissatisfied } from "react-icons/md";
 import FilterSidebar from "@/components/courses/FilterSideBar";
 import NoCoursesMessage from "@/components/courses/NoCoursesMessage";
 import CourseGrid from "@/components/courses/CourseGrid";
@@ -55,10 +50,20 @@ const CoursesPage = ({params , searchParams} : CoursesPageProps) => {
 
   const { courses, fetchCourses, isLoading } = useCourseStore();
   const { categories, fetchCategories } = useCategoriesStore();
-
   useEffect(() => {
     fetchCourses();
     fetchCategories();
+    if (sortQuery && sortQuery === 'popular'){
+      setSelectedSort(sortQuery)
+    }else if (sortQuery && sortQuery === 'free'){
+      setIsFree(true)
+    }else if (sortQuery === 'expensive'){
+      setSelectedSort('priceDesc')
+    }else if(sortQuery === 'cheapest'){
+      setSelectedSort('priceAsc')
+    }else if(sortQuery === 'presale'){
+      setIsPreSale(true)
+    }
   }, []);
 
   useEffect(() => {
@@ -73,6 +78,8 @@ const CoursesPage = ({params , searchParams} : CoursesPageProps) => {
     selectedCategories,
     searhcQuery,
   ]);
+
+  console.log(courses);
 
   const filterAndSortCourses = () => {
     let filteredCourses = [...courses];
@@ -96,11 +103,11 @@ const CoursesPage = ({params , searchParams} : CoursesPageProps) => {
     } else if (selectedSort === "priceDesc") {
       filteredCourses.sort((a, b) => b.price - a.price);
     } else if (selectedSort === "popular") {
-      filteredCourses.sort((a, b) => b.studentsCount - a.studentsCount);
+      filteredCourses.sort((a, b) => b?.comments?.length - a?.comments?.length);
     }
     if (searhcQuery.length > 0) {
       filteredCourses = filteredCourses.filter((course) =>
-        course.name.toLowerCase().includes(searhcQuery.toLowerCase())
+        course.name.toLowerCase().includes(searhcQuery.toLowerCase())  || course.description.toLowerCase().includes(searhcQuery.toLowerCase())
       );
     }
 
