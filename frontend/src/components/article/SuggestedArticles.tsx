@@ -5,12 +5,13 @@ import { useArticleStore } from "@/store/article.store";
 import { FaCalendar, FaEye } from "react-icons/fa";
 import moment from "moment-jalaali";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 const SuggestedArticles = () => {
   const { suggestedArticles, isLoading } = useArticleStore();
 
   return (
-    <div className="mt-10 bg-base-200 rounded-md shadow-md p-6">
+    <div className="mt-10 bg-base-300 rounded-md shadow-md p-6">
       <h3 className="text-lg font-semibold mb-4">مقالات پیشنهادی</h3>
 
       {isLoading ? (
@@ -25,27 +26,42 @@ const SuggestedArticles = () => {
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {suggestedArticles.map((article: any) => (
-            <Link key={article.id} href={`/articles/${article.shortName}`}>
-              <div className="card bg-base-100 shadow-md rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition">
-                <Image
-                  src={article.cover}
-                  alt={article.title}
-                  width={300}
-                  height={200}
-                  className="w-full h-40 object-cover"
-                />
-                <div className="p-4">
-                  <h4 className="font-semibold text-base line-clamp-1">{article.title}</h4>
-                  <div className="flex items-center text-sm text-gray-500 mt-2 gap-2">
-                    <span>{moment(article.createdAt).format("jYYYY/jMM/jDD")}</span>
-                    <FaCalendar />
-                    <span>{article.views ?? 0}</span>
-                    <FaEye />
+          {suggestedArticles.map((article: any, index: number) => (
+            <motion.div
+              key={article.id}
+              initial={{ opacity: 0, y: 20 }} 
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1, duration: 0.5 }}
+            >
+              <Link href={`/articles/${article.shortName}`}>
+                <motion.div
+                  className="card bg-base-100 shadow-md rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition"
+                  whileHover={{ scale: 1.05 }} 
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Image
+                    src={article.cover}
+                    alt={article.title}
+                    width={300}
+                    height={200}
+                    className="w-full h-40 object-cover"
+                  />
+                  <div className="p-4">
+                    <h4 className="font-semibold text-base line-clamp-1">
+                      {article.title}
+                    </h4>
+                    <div className="flex items-center text-sm text-gray-500 mt-2 gap-2">
+                      <span>
+                        {moment(article.createdAt).format("jYYYY/jMM/jDD")}
+                      </span>
+                      <FaCalendar />
+                      <span>{article.views ?? 0}</span>
+                      <FaEye />
+                    </div>
                   </div>
-                </div>
-              </div>
-            </Link>
+                </motion.div>
+              </Link>
+            </motion.div>
           ))}
         </div>
       )}
