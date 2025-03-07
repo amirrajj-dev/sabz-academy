@@ -8,11 +8,11 @@ import Link from 'next/link'
 
 interface SidebarProps {
   isExpanded: boolean
-  isMobile: boolean
-  setIsMobile: (isMobile: boolean) => void
+  isTablet: boolean
+  setIsTablet: (isTablet: boolean) => void
 }
 
-const Sidebar = ({ isExpanded, isMobile, setIsMobile }: SidebarProps) => {
+const Sidebar = ({ isExpanded, isTablet, setIsTablet }: SidebarProps) => {
 
   const sidebarVariants = {
     collapsed: { width: 58 },
@@ -33,13 +33,13 @@ const Sidebar = ({ isExpanded, isMobile, setIsMobile }: SidebarProps) => {
     <motion.div
       className="bg-base-300 min-h-screen z-50 fixed shadow-xl"
       initial="collapsed"
-      animate={isExpanded && !isMobile ? 'expanded' : 'collapsed'}
+      animate={isExpanded && !isTablet ? 'expanded' : 'collapsed'}
       variants={sidebarVariants}
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-      style={{ width: isMobile ? 58 : undefined }}
+      style={{ width: isTablet ? 58 : undefined }}
     >
       <div className={`flex flex-col pt-16 ${isExpanded ? 'pr-10' : 'pr-2'} items-start`}>
-        {!isMobile && (
+        {!isTablet && (
           <motion.div
             className="flex items-center gap-4 ml-2"
             initial={{ opacity: 0 }}
@@ -70,14 +70,14 @@ const Sidebar = ({ isExpanded, isMobile, setIsMobile }: SidebarProps) => {
             >
               <Link href={item.href} className='flex items-center gap-4'>
                 <motion.span
-                  className={`text-2xl p-2 rounded-lg bg-base-100 shadow-md ${isMobile ? 'tooltip tooltip-left' : ''}`}
+                  className={`text-2xl p-2 rounded-lg bg-base-100 shadow-md ${isTablet ? 'tooltip tooltip-left' : ''}`}
                   whileHover={{ rotate: 10 }}
-                  data-tip={isMobile ? item.label : ''}
+                  data-tip={isTablet ? item.label : ''}
                 >
                   {item.icon}
                 </motion.span>
 
-                {!isMobile && (
+                {!isTablet && (
                   <AnimatePresence>
                     {isExpanded && (
                       <motion.span

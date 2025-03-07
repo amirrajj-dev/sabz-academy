@@ -5,14 +5,14 @@ import Sidebar from '@/components/user/Sidebar/Sidebar'
 import { UseUserPannelStore } from '@/store/userPannelLayout.store'
 
 const SidebarWrapper = () => {
-  const {setIsMobile , isExpanded , setIsExpanded , isMobile} = UseUserPannelStore()
+  const {setIsTablet , isExpanded , setIsExpanded , isTablet} = UseUserPannelStore()
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768)
+      setIsTablet(window.innerWidth <= 1200)
     }
 
-    handleResize() // Initial check
+    handleResize()
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [])
@@ -20,12 +20,12 @@ const SidebarWrapper = () => {
   return (
     <motion.div
       className="fixed top-0 right-0 bottom-0 z-50"
-      animate={{ width: isExpanded && !isMobile ? 384 : 80 }}
+      animate={{ width: isExpanded && !isTablet ? 384 : 80 }}
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-      onHoverStart={() => !isMobile && setIsExpanded(true)}
-      onHoverEnd={() => !isMobile && setIsExpanded(false)}
+      onHoverStart={() => !isTablet && setIsExpanded(true)}
+      onHoverEnd={() => !isTablet && setIsExpanded(false)}
     >
-      <Sidebar setIsMobile={setIsMobile} isExpanded={isExpanded} isMobile={isMobile} />
+      <Sidebar setIsTablet={setIsTablet} isExpanded={isExpanded} isTablet={isTablet} />
     </motion.div>
   )
 }
