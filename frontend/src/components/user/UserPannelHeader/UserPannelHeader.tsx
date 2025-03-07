@@ -22,7 +22,6 @@ const UserPannelHeader = () => {
       localStorage.getItem("theme") as string
     );
   }, []);
-  console.log(user);
 
   return (
     <div className="flex flex-col justify-center md:flex-row items-center md:justify-between">
