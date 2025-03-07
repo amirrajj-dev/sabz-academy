@@ -147,6 +147,7 @@ const ArticleForm = () => {
           <label className="label font-medium">انتخاب کاور عکس</label>
           <input
             type="file"
+            accept="image/png"
             className="file-input file-input-bordered w-full"
             onChange={(e) =>
               setCoverImage(e.target.files ? e.target.files[0] : null)
