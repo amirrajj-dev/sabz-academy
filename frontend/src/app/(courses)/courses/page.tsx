@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import SectionHeader from "@/components/shared/SectionHeader";
 import { motion } from "framer-motion";
 import {
@@ -38,11 +38,16 @@ const sortingOptions = [
   },
 ];
 
-const CoursesPage = () => {
+interface CoursesPageProps {
+  params : Promise<void>
+  searchParams :  Promise<{sort : string}>
+}
+
+const CoursesPage = ({params , searchParams} : CoursesPageProps) => {
   const [selectedSort, setSelectedSort] = useState("");
   const [expanded, setExpanded] = useState(false);
   const [sortedCourses, setSortedCourses] = useState<ICourse[]>([]);
-
+  const {sort : sortQuery} = use(searchParams)
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [isFree, setIsFree] = useState(false);
   const [isPreSale, setIsPreSale] = useState(false);

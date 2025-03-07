@@ -16,7 +16,7 @@ const LastArticles = () => {
         desc="مقاله های بروز برنامه نویسی و تکنولوژی"
         haveLink={true}
         linkText="همه مقالات"
-        linkUrl=""
+        linkUrl="/articles"
         squareColor="bg-orange-500"
       />
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 px-4 mt-8">
