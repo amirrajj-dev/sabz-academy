@@ -9,11 +9,12 @@ const EditCourseModal = ({ courseData, onSave , editId } : {courseData : Partial
   const [link, setLink] = useState(courseData?.shortName || "");
   const [price, setPrice] = useState(courseData?.price || "");
   const [description, setDescription] = useState(courseData?.description || "");
+  const [discount , setDisocunt] = useState(courseData?.discount || "")
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSave = () => {
     if (!title || !link || !price || !description) return;
-    onSave(editId , { ...courseData, name : title, shortName : link, price : parseInt(price as string), description });
+    onSave(editId , { ...courseData, name : title, shortName : link, price : parseInt(price as string), description , discount : parseFloat(discount as string) });
     setIsOpen(false);
   };
 
@@ -82,6 +83,15 @@ const EditCourseModal = ({ courseData, onSave , editId } : {courseData : Partial
                     className="input w-full border-none"
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <label className="label font-medium">تخفیف</label>
+                  <input
+                    type="number"
+                    className="input w-full border-none"
+                    value={discount}
+                    onChange={(e) => setDisocunt(e.target.value)}
                   />
                 </div>
 

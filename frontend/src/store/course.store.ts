@@ -132,7 +132,7 @@ export const useCourseStore = create<CourseStore>((set, get) => ({
     if (!id){
       throw new Error("No course id provided");
     }
-    const {name , shortName , description , price} = data
+    const {name , shortName , description , price , discount} = data
     if (!name?.trim() && shortName?.trim() && description?.trim() && !price){
       throw new Error("Please fill all fields");
     }
