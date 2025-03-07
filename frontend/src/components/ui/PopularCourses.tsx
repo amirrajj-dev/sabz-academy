@@ -2,13 +2,12 @@
 import React from 'react'
 import SectionHeader from '../shared/SectionHeader';
 import CourseCardSkeleton from '../skeletons/CourseCardSkeleton';
-import { courses } from '@/data/data';
 import CourseCard from '../shared/CourseCard';
 import { useCourseStore } from '@/store/course.store';
 
 const PopularCourses = () => {
   const {courses , fetchCourses , isLoading} = useCourseStore()
-  const popularCourses = courses.slice(0,8)
+  const popularCourses = courses.sort((a , b)=>b?.comments?.length - a.comments?.length).slice(0,8)
     return (
         <div className="mt-20">
           <SectionHeader
