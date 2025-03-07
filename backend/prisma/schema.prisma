@@ -129,3 +129,13 @@ model Article {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+model Discount {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  discount   Int
+  code       String
+  maxUse     Int
+  courseID   String   @db.ObjectId
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
