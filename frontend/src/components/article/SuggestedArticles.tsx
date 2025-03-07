@@ -36,7 +36,7 @@ const SuggestedArticles = () => {
                   className="w-full h-40 object-cover"
                 />
                 <div className="p-4">
-                  <h4 className="font-semibold text-base">{article.title}</h4>
+                  <h4 className="font-semibold text-base line-clamp-1">{article.title}</h4>
                   <div className="flex items-center text-sm text-gray-500 mt-2 gap-2">
                     <span>{moment(article.createdAt).format("jYYYY/jMM/jDD")}</span>
                     <FaCalendar />
