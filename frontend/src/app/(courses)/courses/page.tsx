@@ -1,11 +1,7 @@
 "use client";
 import React, { use, useEffect, useState } from "react";
 import SectionHeader from "@/components/shared/SectionHeader";
-import {
-  FaArrowDown,
-  FaArrowUp,
-  FaFire,
-} from "react-icons/fa";
+import { FaArrowDown, FaArrowUp, FaFire } from "react-icons/fa";
 import { useCourseStore } from "@/store/course.store";
 import { useCategoriesStore } from "@/store/category.store";
 import CourseCardSkeleton from "@/components/skeletons/CourseCardSkeleton";
@@ -34,35 +30,37 @@ const sortingOptions = [
 ];
 
 interface CoursesPageProps {
-  params : Promise<void>
-  searchParams :  Promise<{sort : string}>
+  params: Promise<void>;
+  searchParams: Promise<{ sort: string }>;
 }
 
-const CoursesPage = ({params , searchParams} : CoursesPageProps) => {
+const CoursesPage = ({ params, searchParams }: CoursesPageProps) => {
   const [selectedSort, setSelectedSort] = useState("");
   const [expanded, setExpanded] = useState(false);
   const [sortedCourses, setSortedCourses] = useState<ICourse[]>([]);
-  const {sort : sortQuery} = use(searchParams)
+  const [visibleCourses, setVisibleCourses] = useState(6); // Track visible courses
+  const { sort: sortQuery } = use(searchParams);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [isFree, setIsFree] = useState(false);
   const [isPreSale, setIsPreSale] = useState(false);
-  const [searhcQuery, setSearchQuery] = useState<string>("");
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   const { courses, fetchCourses, isLoading } = useCourseStore();
   const { categories, fetchCategories } = useCategoriesStore();
+
   useEffect(() => {
     fetchCourses();
     fetchCategories();
-    if (sortQuery && sortQuery === 'popular'){
-      setSelectedSort(sortQuery)
-    }else if (sortQuery && sortQuery === 'free'){
-      setIsFree(true)
-    }else if (sortQuery === 'expensive'){
-      setSelectedSort('priceDesc')
-    }else if(sortQuery === 'cheapest'){
-      setSelectedSort('priceAsc')
-    }else if(sortQuery === 'presale'){
-      setIsPreSale(true)
+    if (sortQuery && sortQuery === "popular") {
+      setSelectedSort(sortQuery);
+    } else if (sortQuery && sortQuery === "free") {
+      setIsFree(true);
+    } else if (sortQuery === "expensive") {
+      setSelectedSort("priceDesc");
+    } else if (sortQuery === "cheapest") {
+      setSelectedSort("priceAsc");
+    } else if (sortQuery === "presale") {
+      setIsPreSale(true);
     }
   }, []);
 
@@ -70,16 +68,23 @@ const CoursesPage = ({params , searchParams} : CoursesPageProps) => {
     if (courses.length > 0) {
       filterAndSortCourses();
     }
-  }, [
-    selectedSort,
-    courses,
-    isFree,
-    isPreSale,
-    selectedCategories,
-    searhcQuery,
-  ]);
+  }, [selectedSort, courses, isFree, isPreSale, selectedCategories, searchQuery]);
 
-  console.log(courses);
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + document.documentElement.scrollTop >=
+        document.documentElement.offsetHeight - 550
+      ) {
+        if (visibleCourses < sortedCourses.length) {
+          setVisibleCourses((prev) => prev + 6);
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [visibleCourses, sortedCourses]);
 
   const filterAndSortCourses = () => {
     let filteredCourses = [...courses];
@@ -98,6 +103,7 @@ const CoursesPage = ({params , searchParams} : CoursesPageProps) => {
         selectedCategories.includes(course.categoryID)
       );
     }
+
     if (selectedSort === "priceAsc") {
       filteredCourses.sort((a, b) => a.price - b.price);
     } else if (selectedSort === "priceDesc") {
@@ -105,9 +111,12 @@ const CoursesPage = ({params , searchParams} : CoursesPageProps) => {
     } else if (selectedSort === "popular") {
       filteredCourses.sort((a, b) => b?.comments?.length - a?.comments?.length);
     }
-    if (searhcQuery.length > 0) {
-      filteredCourses = filteredCourses.filter((course) =>
-        course.name.toLowerCase().includes(searhcQuery.toLowerCase())  || course.description.toLowerCase().includes(searhcQuery.toLowerCase())
+
+    if (searchQuery.length > 0) {
+      filteredCourses = filteredCourses.filter(
+        (course) =>
+          course.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          course.description.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
 
@@ -149,7 +158,7 @@ const CoursesPage = ({params , searchParams} : CoursesPageProps) => {
           setIsPreSale={setIsPreSale}
           selectedCategories={selectedCategories}
           handleCategoryChange={handleCategoryChange}
-          searchQuery={searhcQuery}
+          searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
         />
 
@@ -159,7 +168,11 @@ const CoursesPage = ({params , searchParams} : CoursesPageProps) => {
             setSelectedSort={setSelectedSort}
             sortingOptions={sortingOptions}
           />
-          <CourseGrid isLoading={isLoading} sortedCourses={sortedCourses} />
+          <CourseGrid
+            isLoading={isLoading}
+            sortedCourses={sortedCourses.slice(0, visibleCourses)}
+            hasMoreCourses={visibleCourses < sortedCourses.length} 
+          />
         </div>
       </div>
     </div>
