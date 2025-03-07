@@ -1,8 +1,11 @@
+import MyAccountHeader from '@/components/user/myAccountHeader/MyAccountHeader'
 import React from 'react'
 
 const UserPannel = () => {
   return (
-    <div>retr</div>
+    <div>
+      <MyAccountHeader/>
+    </div>
   )
 }
 
