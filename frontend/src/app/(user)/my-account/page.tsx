@@ -44,7 +44,7 @@ const UserPannel = () => {
         </div>
 
         <div className="flex-1 flex flex-col gap-6">
-          {/* Recent Tickets */}
+          
           <div className="bg-base-300 p-4 rounded-md shadow-md">
             <div className="flex flex-col sm:flex-row items-center justify-between w-full">
               <h2 className="text-xl font-dana-medium mb-4 sm:mb-0">تیکت های اخیر</h2>

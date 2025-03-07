@@ -4,13 +4,13 @@ import { motion } from 'framer-motion'
 import UserPannelHeader from './UserPannelHeader/UserPannelHeader'
 
 const MainContentWrapper = ({ children }: { children: React.ReactNode }) => {
-  const {isExpanded , isMobile} = UseUserPannelStore()
+  const {isExpanded , isTablet} = UseUserPannelStore()
     return (
     <>
     
     <motion.div 
         className="flex-shrink-0"
-        animate={{ width: isExpanded && !isMobile ? 384 : 80 }}
+        animate={{ width: isExpanded && !isTablet ? 384 : 80 }}
         transition={{ type: 'spring', stiffness: 300, damping: 20 }}
       />
     <motion.main
