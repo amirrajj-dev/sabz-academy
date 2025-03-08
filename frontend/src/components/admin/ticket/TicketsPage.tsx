@@ -2,16 +2,14 @@
 import React, { useEffect, useState } from "react";
 import { FaEye, FaReply } from "react-icons/fa";
 import { motion } from "framer-motion";
-import DeleteModal from "@/components/modals/shared/DeleteModal";
 import { useTicketStore } from "@/store/ticket.store";
 
 const TicketsPage = () => {
   const { tickets, fetchTickets, isLoading } = useTicketStore();
+
   useEffect(() => {
     fetchTickets();
   }, []);
-
-  console.log(tickets);
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
@@ -34,51 +32,97 @@ const TicketsPage = () => {
           </thead>
 
           <tbody>
-            {tickets.map((ticket, index) => (
-              <tr
-                key={ticket.id}
-                className={`border-b hover:bg-base-300 transition ${
-                  index % 2 === 0 ? "bg-base-200" : "bg-base-100"
-                }`}
-              >
-                <td className="p-4 font-medium text-base-content">
-                  {index + 1}
+            {isLoading ? (
+              Array.from({ length: 5 }).map((_, index) => (
+                <tr key={index} className="border-b">
+                  <td className="p-4">
+                    <div className="skeleton h-6 w-10 mx-auto bg-base-200"></div>
+                  </td>
+                  <td className="p-4">
+                    <div className="skeleton h-6 w-24 mx-auto bg-base-200"></div>
+                  </td>
+                  <td className="p-4">
+                    <div className="skeleton h-6 w-32 mx-auto bg-base-200"></div>
+                  </td>
+                  <td className="p-4">
+                    <div className="skeleton h-6 w-40 mx-auto bg-base-200"></div>
+                  </td>
+                  <td className="p-4">
+                    <div className="skeleton h-6 w-16 mx-auto bg-base-200"></div>
+                  </td>
+                  <td className="p-4">
+                    <div className="skeleton h-10 w-10 mx-auto bg-base-200 rounded-full"></div>
+                  </td>
+                  <td className="p-4">
+                    <div className="skeleton h-10 w-10 mx-auto bg-base-200 rounded-full"></div>
+                  </td>
+                  <td className="p-4">
+                    <div className="skeleton h-6 w-24 mx-auto bg-base-200"></div>
+                  </td>
+                </tr>
+              ))
+            ) : tickets.length === 0 ? (
+              <tr>
+                <td colSpan={8} className="p-6 text-center text-base-content">
+                  <div className="flex flex-col items-center justify-center gap-4">
+                    <span className="text-2xl">🎫</span>
+                    <p className="text-lg font-semibold">
+                      هیچ تیکتی یافت نشد!
+                    </p>
+                  </div>
                 </td>
-                <td className="p-4 font-semibold text-base-content">
-                  {ticket.user.name}
-                </td>
-                <td className="p-4 font-semibold text-base-content">
-                  {ticket.title}
-                </td>
-                <td className="p-4 text-base-content">{ticket.title}</td>
-                <td className="p-4 text-base-content">
-                  {ticket.priority === "high" ? (
-                    <span className="size-5 inline-block bg-red-500 rounded-full"></span>
-                  ) : ticket.priority === "low" ? (
-                    <span className="size-5 inline-block bg-indigo-500 rounded-full"></span>
-                  ) : (
-                    <span className="size-5 inline-block bg-emerald-500 rounded-full"></span>
-                  )}
-                </td>
-                <td className="p-4">
-                  <motion.button
-                    whileHover={{ scale: 1.1 }}
-                    className="btn btn-primary btn-sm"
-                  >
-                    <FaEye />
-                  </motion.button>
-                </td>
-                <td className="p-4">
-                  <motion.button
-                    whileHover={{ scale: 1.1 }}
-                    className="btn btn-success btn-sm"
-                  >
-                    <FaReply />
-                  </motion.button>
-                </td>
-                <td className="p-4 text-base-content">{ticket.status === 'open' ? 'پاسخ داده نشده' : "پاسخ داده شده"}</td>
               </tr>
-            ))}
+            ) : (
+              tickets.map((ticket, index) => (
+                <tr
+                  key={ticket.id}
+                  className={`border-b hover:bg-base-300 transition ${
+                    index % 2 === 0 ? "bg-base-200" : "bg-base-100"
+                  }`}
+                >
+                  <td className="p-4 font-medium text-base-content">
+                    {index + 1}
+                  </td>
+                  <td className="p-4 font-semibold text-base-content">
+                    {ticket.user.name}
+                  </td>
+                  <td className="p-4 font-semibold text-base-content">
+                    {ticket.title}
+                  </td>
+                  <td className="p-4 text-base-content">{ticket.title}</td>
+                  <td className="p-4 text-base-content">
+                    {ticket.priority === "high" ? (
+                      <span className="size-5 inline-block bg-red-500 rounded-full"></span>
+                    ) : ticket.priority === "low" ? (
+                      <span className="size-5 inline-block bg-indigo-500 rounded-full"></span>
+                    ) : (
+                      <span className="size-5 inline-block bg-emerald-500 rounded-full"></span>
+                    )}
+                  </td>
+                  <td className="p-4">
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      className="btn btn-primary btn-sm"
+                    >
+                      <FaEye />
+                    </motion.button>
+                  </td>
+                  <td className="p-4">
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      className="btn btn-success btn-sm"
+                    >
+                      <FaReply />
+                    </motion.button>
+                  </td>
+                  <td className="p-4 text-base-content">
+                    {ticket.status === "open"
+                      ? "پاسخ داده نشده"
+                      : "پاسخ داده شده"}
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
