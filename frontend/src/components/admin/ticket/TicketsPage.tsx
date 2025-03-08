@@ -1,10 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { FaEye, FaReply } from "react-icons/fa";
+import { FaCheck, FaEye, FaReply } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useTicketStore } from "@/store/ticket.store";
 import ReplyTicketModal from "@/components/modals/ticket/ReplyTicketModal";
 import SeeModal from "@/components/modals/shared/SeeModal";
+import { IoMdClose } from "react-icons/io";
 
 const TicketsPage = () => {
   const { tickets, fetchTickets, isLoading } = useTicketStore();
@@ -109,8 +110,8 @@ const TicketsPage = () => {
                   </td>
                   <td className="p-4 text-base-content">
                     {ticket.status === "open"
-                      ? "پاسخ داده نشده"
-                      : "پاسخ داده شده"}
+                      ? <IoMdClose className="text-error mx-auto text-xl" />
+                      : <FaCheck className="text-success mx-auto text-xl" />}
                   </td>
                 </tr>
               ))
