@@ -59,7 +59,6 @@ const CommentsTable = () => {
 
     const handleBan = async (id: string) => {
       const res = await banUser(id);
-      console.log(res);
       if (res.success) {
         await getAllComments()
         res.message === "User unbanned successfully"

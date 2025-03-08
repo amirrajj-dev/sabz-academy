@@ -16,7 +16,6 @@ const ReplyCommentModal = ({
   const [isOpen, setIsOpen] = useState(false);
 
   const handleReply = () => {
-    console.log("Reply sent:", reply);
     setReply("");
     onReply(commentId , {body : reply , courseID});
     setIsOpen(false);

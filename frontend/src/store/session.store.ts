@@ -25,7 +25,6 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
     try {
       set({ isLoading: true });
       const { title, time, courseId, video, free } = session;
-      console.log(title , time , courseId , video , free);
       if (!title || !time || !courseId || !video || !free) {
         throw new Error("Please fill all fields");
       }
@@ -34,7 +33,6 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
       formData.append("time", time);
       formData.append("free", free ? "1" : "0"); // Backend expects a number
       formData.append("file", video);
-      console.log(courseId);
       const res = await axiosnInstance.post(
         `/courses/${courseId}/sessions`,
         formData,

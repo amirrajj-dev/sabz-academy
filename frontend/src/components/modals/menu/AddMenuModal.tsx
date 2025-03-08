@@ -20,12 +20,6 @@ const AddMenuModal = () => {
       return;
     }
 
-    console.log({
-      menuTitle,
-      menuLink,
-      course,
-    });
-
     setMenuTitle("");
     setMenuLink("");
     setCourse("");

@@ -18,7 +18,6 @@ export async function middleware(request: NextRequest) {
         baseURL: "http://localhost:5000/api",
       });
       const user: IUser = res.data.user;
-      console.log('User:', user);
 
       if (request.nextUrl.pathname.startsWith("/sign") && user.name) {
         console.log("Redirecting to /");

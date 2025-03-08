@@ -74,7 +74,6 @@ export const useArticleStore = create<ArticlesStore>((set, get) => ({
     try {
       set({ isLoading: true });
       const res = await axiosnInstance.delete(`/articles/${id}`);
-      console.log(res);
       if (res.data.success) {
         set({
           articles: get().articles.filter((article) => article.id !== id),

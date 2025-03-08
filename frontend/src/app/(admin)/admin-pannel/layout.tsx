@@ -23,7 +23,7 @@ export default async function RootLayout({
       <h2 className="font-bold  text-3xl">{user?.username} عزیز؛ خوش اومدی 🙌</h2>
       <div className="grid sm:grid-cols-3 md:grid-cols-4 gap-4 mt-14">
         {adminPannelCardInfo.map(item=>(
-            <AdminPannelCard key={item.id} bgColor={item.bgColor} count={item.count} icon={item.icon} linkUrl={`/admin-pannel/${item.link}`} title={item.title}  />
+            <AdminPannelCard key={item!.id} bgColor={item!.bgColor} count={item!.count} icon={item!.icon} linkUrl={`/admin-pannel/${item!.link}`} title={item!.title}  />
         ))}
       </div>
       {children}
