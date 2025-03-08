@@ -22,7 +22,6 @@ const UserPannel = () => {
   }, []);
 
   const userTickets = tickets?.filter((ticket) => ticket.user.id === user?.id);
-  console.log(userTickets);
 
   return (
     <div className="p-4">

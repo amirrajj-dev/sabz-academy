@@ -34,7 +34,6 @@ const ReplyTicketModal = ({
 
   return (
     <>
-      {/* Button to open the modal */}
       <motion.button
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
@@ -60,7 +59,7 @@ const ReplyTicketModal = ({
               exit={{ scale: 0.8, opacity: 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
             >
-              {/* Modal Header */}
+
               <div className="flex justify-between items-center border-b pb-3">
                 <h2 className="text-xl font-bold text-base-content">
                   پاسخ به تیکت
@@ -73,7 +72,6 @@ const ReplyTicketModal = ({
                 </button>
               </div>
 
-              {/* Modal Body */}
               <div className="mt-4 space-y-4">
                 <div className="flex flex-col gap-2">
                   <label className="label">پاسخ شما</label>
@@ -86,8 +84,6 @@ const ReplyTicketModal = ({
                   ></textarea>
                 </div>
               </div>
-
-              {/* Modal Footer */}
               <div className="flex justify-end mt-6 gap-3">
                 <motion.button
                   whileHover={{ scale: 1.05 }}

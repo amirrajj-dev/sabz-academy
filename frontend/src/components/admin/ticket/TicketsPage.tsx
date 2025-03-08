@@ -5,7 +5,8 @@ import { motion } from "framer-motion";
 import { useTicketStore } from "@/store/ticket.store";
 import ReplyTicketModal from "@/components/modals/ticket/ReplyTicketModal";
 import SeeModal from "@/components/modals/shared/SeeModal";
-import { IoMdClose } from "react-icons/io";
+import { IoMdArrowUp, IoMdClose } from "react-icons/io";
+import Link from "next/link";
 
 const TicketsPage = () => {
   const { tickets, fetchTickets, isLoading } = useTicketStore();
@@ -31,6 +32,7 @@ const TicketsPage = () => {
               <th className="p-4">مشاهده</th>
               <th className="p-4">پاسخ</th>
               <th className="p-4">وضعیت پاسخ گویی</th>
+              <th className="p-4">جزعیات</th>
             </tr>
           </thead>
 
@@ -62,6 +64,9 @@ const TicketsPage = () => {
                   <td className="p-4">
                     <div className="skeleton h-6 w-24 mx-auto bg-base-200"></div>
                   </td>
+                  <td className="p-4">
+                    <div className="skeleton h-6 w-24 mx-auto bg-base-200"></div>
+                  </td>
                 </tr>
               ))
             ) : tickets.length === 0 ? (
@@ -69,9 +74,7 @@ const TicketsPage = () => {
                 <td colSpan={8} className="p-6 text-center text-base-content">
                   <div className="flex flex-col items-center justify-center gap-4">
                     <span className="text-2xl">🎫</span>
-                    <p className="text-lg font-semibold">
-                      هیچ تیکتی یافت نشد!
-                    </p>
+                    <p className="text-lg font-semibold">هیچ تیکتی یافت نشد!</p>
                   </div>
                 </td>
               </tr>
@@ -109,9 +112,18 @@ const TicketsPage = () => {
                     <ReplyTicketModal ticketId={ticket.id} />
                   </td>
                   <td className="p-4 text-base-content">
-                    {ticket.status === "open"
-                      ? <IoMdClose className="text-error mx-auto text-xl" />
-                      : <FaCheck className="text-success mx-auto text-xl" />}
+                    {ticket.status === "open" ? (
+                      <IoMdClose className="text-error mx-auto text-xl" />
+                    ) : (
+                      <FaCheck className="text-success mx-auto text-xl" />
+                    )}
+                  </td>
+                  <td className="p-4">
+                    <Link href={`/my-account/tickets/${ticket.id}`}>
+                      <button className="btn btn-sm btn-primary">
+                        <IoMdArrowUp className="-rotate-45 text-lg" />
+                      </button>
+                    </Link>
                   </td>
                 </tr>
               ))
