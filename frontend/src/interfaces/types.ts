@@ -104,3 +104,48 @@ export interface IDiscount {
   courseId : string
   createdAt: Date;
 }
+
+export interface ITicket {
+  id: string;
+  department: string;
+  type: 'issue' | 'request' | 'suggestion' | 'question';
+  title: string;
+  priority: 'low' | 'medium' | 'high'; 
+  content: string;
+  status: 'open' | 'in_progress' | 'closed'; 
+  userId: string;
+  user: IUser;
+  replies: IReply[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface IReply {
+  id: string;
+  content: string;
+  userId: string;
+  ticketId: string;
+  user: IUser;
+  ticket: ITicket;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export enum TicketType {
+  ISSUE = 'issue',
+  REQUEST = 'request',
+  SUGGESTION = 'suggestion',
+  QUESTION = 'question'
+}
+
+export enum TicketStatus {
+  OPEN = 'open',
+  IN_PROGRESS = 'in_progress',
+  CLOSED = 'closed'
+}
+
+export enum TicketPriority {
+  LOW = 'low',
+  MEDIUM = 'medium',
+  HIGH = 'high'
+}
