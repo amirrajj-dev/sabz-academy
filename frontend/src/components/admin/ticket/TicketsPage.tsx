@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { FaEye, FaReply } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useTicketStore } from "@/store/ticket.store";
+import ReplyTicketModal from "@/components/modals/ticket/ReplyTicketModal";
 
 const TicketsPage = () => {
   const { tickets, fetchTickets, isLoading } = useTicketStore();
@@ -108,12 +109,7 @@ const TicketsPage = () => {
                     </motion.button>
                   </td>
                   <td className="p-4">
-                    <motion.button
-                      whileHover={{ scale: 1.1 }}
-                      className="btn btn-success btn-sm"
-                    >
-                      <FaReply />
-                    </motion.button>
+                    <ReplyTicketModal ticketId={ticket.id} />
                   </td>
                   <td className="p-4 text-base-content">
                     {ticket.status === "open"

@@ -37,7 +37,7 @@ const AddTicketForm = () => {
       !formData.priority ||
       !formData.content
     ) {
-      toast("لطفا تمام فیلدها را پر کنید" , toastOptions);
+      toast.info("لطفا تمام فیلدها را پر کنید" , toastOptions);
       return;
     }
     const result = await createTicket({
@@ -49,7 +49,7 @@ const AddTicketForm = () => {
     });
 
     if (result.success) {
-      toast("تیکت با موفقیت ایجاد شد" , toastOptions);
+      toast.success("تیکت با موفقیت ایجاد شد" , toastOptions);
       setFormData({
         department: "",
         type: "",
@@ -58,7 +58,7 @@ const AddTicketForm = () => {
         content: "",
       });
     } else {
-      toast("خطا در ایجاد تیکت" , toastOptions);
+      toast.error("خطا در ایجاد تیکت" , toastOptions);
     }
   };
 

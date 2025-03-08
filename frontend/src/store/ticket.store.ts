@@ -8,7 +8,7 @@ interface TicketState {
   error: string | null;
   fetchTickets: () => Promise<{message : string , success : boolean}>;
   createTicket: (ticket: Omit<ITicket, 'id' | 'createdAt' | 'updatedAt' | 'user' | 'replies' | 'status' | "userId">) => Promise<{message : string , success : boolean}>;
-  replyTicket: (ticketId: string, reply: Omit<IReply, 'id' | 'createdAt' | 'updatedAt' | 'user' | 'ticket'>) => Promise<{message : string , success : boolean}>;
+  replyTicket: (ticketId: string, reply: Omit<IReply, 'id' | 'createdAt' | 'updatedAt' | 'user' | 'ticket' | "userId">) => Promise<{message : string , success : boolean}>;
 }
 
 export const useTicketStore = create<TicketState>((set, get) => ({
@@ -69,7 +69,7 @@ export const useTicketStore = create<TicketState>((set, get) => ({
         set({ isLoading: true });
       const res = await axiosnInstance.post(`/tickets/${ticketId}` , reply);
       if (res.data.success){
-        set({ tickets: get().tickets.map(ticket=>ticket.id === ticketId ? {...ticket , replies : [...ticket.replies , res.data.data]} : ticket), isLoading: false });
+        set({ tickets: get().tickets.map(ticket=>ticket.id === ticketId ? {...ticket , status : "in_progress" , replies : [...ticket.replies , res.data.data]} : ticket), isLoading: false });
         return {
           success : true,
           message : "replied to ticket sccesfully"
