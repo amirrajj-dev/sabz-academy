@@ -1,5 +1,4 @@
-import AdminPannelCard from "@/components/shared/AdminPannelCard";
-import { adminPannelCardInfo } from "@/data/data";
+import AdminPannelMap from "@/components/admin/AdminPannelMap";
 import { getUser } from "@/helpers/getCurrentUser";
 import { IUser } from "@/interfaces/types";
 import type { Metadata } from "next";
@@ -21,11 +20,7 @@ export default async function RootLayout({
   return (
     <div className="max-w-4xl p-6 mx-auto">
       <h2 className="font-bold  text-3xl">{user?.username} عزیز؛ خوش اومدی 🙌</h2>
-      <div className="grid sm:grid-cols-3 md:grid-cols-4 gap-4 mt-14">
-        {adminPannelCardInfo.map(item=>(
-            <AdminPannelCard key={item!.id} bgColor={item!.bgColor} count={item!.count} icon={item!.icon} linkUrl={item?.title === 'خانه' ? '/' : `/admin-pannel/${item!.link}`} title={item!.title}  />
-        ))}
-      </div>
+      <AdminPannelMap/>
       {children}
     </div>
   );

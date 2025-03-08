@@ -1,20 +1,11 @@
 import {
-  FaUser,
-  FaWallet,
   FaTachometerAlt,
   FaBook,
   FaTicketAlt,
   FaCog,
   FaSignOutAlt,
-  FaUserShield,
-  FaHome,
-  FaUsers,
-  FaComment,
-  FaComments,
-  FaFolderOpen,
+  FaUserShield
 } from "react-icons/fa";
-import { SlCalender } from "react-icons/sl";
-import { FaClock, FaChartLine, FaCertificate, FaClipboardList } from "react-icons/fa";
 import { HiOutlineCodeBracket } from "react-icons/hi2";
 import { LuShieldCheck, LuPuzzle } from "react-icons/lu";
 import { AiOutlinePython } from "react-icons/ai";
@@ -22,11 +13,6 @@ import { LuClipboardCheck } from "react-icons/lu";
 import { IoBarChartOutline, IoMenu } from "react-icons/io5";
 import { IoBookOutline } from "react-icons/io5";
 import { LiaComments } from "react-icons/lia";
-import { count } from "console";
-import { MdArticle, MdCampaign, MdCategory, MdDiscount, MdMessage } from "react-icons/md";
-import { title } from "process";
-import { RiGraduationCapFill } from "react-icons/ri";
-import { IoMdFolder } from "react-icons/io";
 
 export const userMenuItems = [
   { label: "پیشخوان", icon: <FaTachometerAlt />, showFor: "all" , href : "/my-account" },
@@ -117,17 +103,3 @@ export const services = [
     color: "bg-error",
   },
 ];
-
-
-export const adminPannelCardInfo = [
-  {id : 1 , title : "خانه"  , count : "صفحه اصلی" , icon : <FaHome/> , bgColor : 'bg-indigo-500' , link : "/"},
-  {id : 2 , title : "دسته بندی ها"  , count : "4" , icon : <MdCategory/> , bgColor : 'bg-emerald-500' , link : "categories"},
-  {id : 3 , title : "کاربران" , count : "20" , icon : <FaUsers/> , bgColor : 'bg-zinc-500' , link : "users"},
-  {id : 4 , title : "مقاله ها"  , count : "5" , icon : <MdArticle/> , bgColor : 'bg-rose-500' , link : "articles"},
-  {id : 5 , title : "جلسات" , count : "20" , icon : <RiGraduationCapFill/> , bgColor : 'bg-amber-500' , link : "sessions"},,
-  {id : 6 , title : "کامنت ها" , count : "20" , icon : <FaComments/> , bgColor : 'bg-blue-500' , link : "comments"},
-  {id : 7 , title : "دوره ها" , count : "3" , icon : <IoMdFolder/> , bgColor : 'bg-slate-500' , link : "courses"},
-  {id : 8 , title : "تخفیف ها" , count : "6" , icon : <MdDiscount/> , bgColor : 'bg-warning' , link : "discounts"},
-  {id : 9 , title : "تیکت ها" , count : "4" , icon : <FaTicketAlt/> , bgColor : 'bg-violet-500' , link : "tickets"},
-  {id : 10 , title : "برگزاری کمپین" , count : "7" , icon : <MdCampaign/> , bgColor : 'bg-lime-500' , link : "campaigan"}
-]
