@@ -21,9 +21,8 @@ export const useDiscountsStore = create<DiscountsStore>((set , get)=>({
                 throw new Error('All fields are required')
             }
             const response = await axiosnInstance.post('/discounts' , data)
-            console.log(response);
             if (response.data.success){
-                set({isLoading: false , discounts : [...response.data.data , ...response.data.data] })
+                set({isLoading: false , discounts : [...get().discounts ,response.data.data] })
                 return {
                     message : response.data.message || 'discount created succesfully' ,
                     success : true
@@ -32,7 +31,6 @@ export const useDiscountsStore = create<DiscountsStore>((set , get)=>({
                 throw new Error(response.data.message)
             }
         } catch (error : any) {
-            console.log(error);
             return {
                 message: error.response?.data?.message || error.message,
                 success: false
