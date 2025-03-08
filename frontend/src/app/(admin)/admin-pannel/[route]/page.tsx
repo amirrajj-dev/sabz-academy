@@ -4,10 +4,8 @@ import UsersPage from "@/components/admin/user/UsersPage";
 import CategoriesPage from "@/components/admin/category/CategoriesPage";
 import SessionsPage from "@/components/admin/session/SessionsPage";
 import ArticlesPage from "@/components/admin/article/ArticlesPage";
-import MessagesPage from "@/components/admin/message/MessagesPage";
 import CoursesPage from "@/components/admin/course/CoursesPage";
 import CommentsPage from "@/components/admin/comment/CommentsPage";
-import MenuesPage from "@/components/admin/menu/MenuesPage";
 import CampaigansPage from "@/components/admin/campaigan/CampaigansPage";
 import TicketsPage from "@/components/admin/ticket/TicketsPage";
 import DiscountsPage from "@/components/admin/discount/DiscountsPage";
@@ -19,7 +17,6 @@ const Page = async ({ params }: { params: { route: string } }) => {
     "categories",
     "sessions",
     "articles",
-    "messages",
     "courses",
     "comments",
     "campaigan",
@@ -41,8 +38,6 @@ const Page = async ({ params }: { params: { route: string } }) => {
         return <SessionsPage />;
       case "articles":
         return <ArticlesPage />;
-      case "messages":
-        return <MessagesPage />;
       case "courses":
         return <CoursesPage />;
       case "comments":
