@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { FaEye, FaTrash } from "react-icons/fa";
 
-const SeeCommentModal = ({ comment }: {comment : string}) => {
+const SeeModal = ({ content }: {content : string}) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
    <>
@@ -42,7 +42,7 @@ const SeeCommentModal = ({ comment }: {comment : string}) => {
                 <label className="label">متن پیام</label>
                 <textarea
                   className="textarea w-full"
-                  value={comment}
+                  value={content}
                   disabled
                 ></textarea>
               </div>
@@ -66,4 +66,4 @@ const SeeCommentModal = ({ comment }: {comment : string}) => {
   );
 };
 
-export default SeeCommentModal;
+export default SeeModal;

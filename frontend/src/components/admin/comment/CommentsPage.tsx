@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { FaStar, FaEdit, FaCheck } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import DeleteModal from "@/components/modals/shared/DeleteModal";
-import SeeCommentModal from "@/components/modals/comment/SeeCommentModal";
 import ReplyCommentModal from "@/components/modals/comment/ReplyComment";
 import BanModal from "@/components/modals/shared/BanModal";
 import { useCommentsStore } from "@/store/comment.store";
@@ -12,6 +11,7 @@ import { toast } from "react-toastify";
 import { toastOptions } from "@/helpers/toastOptions";
 import { useUserStore } from "@/store/user.store";
 import { RiAdminLine } from "react-icons/ri";
+import SeeModal from "@/components/modals/shared/SeeModal";
 
 const CommentsTable = () => {
   const { comments, getAllComments, acceptComment, isLoading , rejectComment , deleteComment , answerComment , setComments } = useCommentsStore();
@@ -119,7 +119,7 @@ const CommentsTable = () => {
                     <FaStar key={i} className="text-yellow-500" />
                   ))}
                 </td>
-                <td className="p-4"><SeeCommentModal comment={comment.body} /></td>
+                <td className="p-4"><SeeModal content={comment.body} /></td>
                 <td className="p-4">{comment?.mainCommentID ? <motion.button
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.95 }}

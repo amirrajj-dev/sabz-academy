@@ -4,6 +4,7 @@ import { FaEye, FaReply } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useTicketStore } from "@/store/ticket.store";
 import ReplyTicketModal from "@/components/modals/ticket/ReplyTicketModal";
+import SeeModal from "@/components/modals/shared/SeeModal";
 
 const TicketsPage = () => {
   const { tickets, fetchTickets, isLoading } = useTicketStore();
@@ -101,12 +102,7 @@ const TicketsPage = () => {
                     )}
                   </td>
                   <td className="p-4">
-                    <motion.button
-                      whileHover={{ scale: 1.1 }}
-                      className="btn btn-primary btn-sm"
-                    >
-                      <FaEye />
-                    </motion.button>
+                    <SeeModal content={ticket.content} />
                   </td>
                   <td className="p-4">
                     <ReplyTicketModal ticketId={ticket.id} />
