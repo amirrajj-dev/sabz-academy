@@ -1,8 +1,13 @@
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
 import { FaPlusCircle, FaTicketAlt } from "react-icons/fa";
 import { IoMailOpenSharp, IoTicket } from "react-icons/io5";
 import UserPannelCard from "../shared/UserPannelCard";
 import Link from "next/link";
+import { useAuthStore } from "@/store/auth.store";
+import { useTicketStore } from "@/store/ticket.store";
+import TicketCardSkeleton from "@/components/skeletons/TicketCardSkeleton";
+import TicketCard from "@/components/ui/TicketCard";
 
 const UserTicketsPage = () => {
   const cardsData = [
@@ -28,6 +33,18 @@ const UserTicketsPage = () => {
       icon: <IoTicket />,
     },
   ];
+  const { user, getMe } = useAuthStore();
+  const {
+    tickets,
+    fetchTickets,
+    isLoading: isLoadingTickets,
+  } = useTicketStore();
+  useEffect(() => {
+    fetchTickets();
+    getMe();
+  }, []);
+
+  const userTickets = tickets?.filter((ticket) => ticket.user.id === user?.id);
   return (
     <div className="flex flex-col gap-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4">
@@ -56,7 +73,17 @@ const UserTicketsPage = () => {
         </div>
         <div className="divider divide-base-100 my-4" />
         <div className="flex w-full flex-col items-center gap-4">
-          تا به الان تیکتی ارسال نکرده اید
+          {isLoadingTickets ? (
+            Array(3)
+              .fill(0)
+              .map((_, index) => <TicketCardSkeleton key={index + 1} />)
+          ) : userTickets.length > 0 ? (
+            userTickets
+              .slice(0, 3)
+              .map((ticket) => <TicketCard key={ticket?.id} ticket={ticket} />)
+          ) : (
+            <p>تا به الان تیکتی ارسال نکرده اید</p>
+          )}
         </div>
       </div>
     </div>
