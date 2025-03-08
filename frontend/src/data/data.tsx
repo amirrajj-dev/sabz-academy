@@ -35,7 +35,7 @@ export const userMenuItems = [
   { label: "جزئیات حساب", icon: <FaCog />, showFor: "all" , href : "/my-account/edit-account" },
   { label: "divider", showFor: "all"  , href : ""},
   { label: "پنل ادمین", icon: <FaUserShield />, showFor: "admin" , href : "/admin-pannel" },
-  { label: "پنل کاربر", icon: <FaUserShield />, showFor: "admin" , href : "/my-account" },
+  { label: "پنل کاربر", icon: <FaUserShield />, showFor: "all" , href : "/my-account" },
   { label: "خروج", icon: <FaSignOutAlt />, showFor: "all" , href : "/" },
 ];
 
