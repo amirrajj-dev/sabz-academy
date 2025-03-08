@@ -25,7 +25,8 @@ model User {
   courses  Course[]  @relation("UserToCourse")
   comments Comment[]
   articles Article[] @relation("UserArticles")
-
+  tickets  Ticket[]
+  replies Reply[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -138,4 +139,49 @@ model Discount {
   courseID   String   @db.ObjectId
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model Ticket {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  department  String   
+  type        TicketType   
+  title       String 
+  priority    TicketPriority 
+  content     String 
+  status      TicketStatus   @default(open) 
+  userId      String   @db.ObjectId 
+  replies     Reply[]  
+  user        User     @relation(fields: [userId], references: [id]) 
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Reply {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  content   String
+  userId    String   @db.ObjectId
+  ticketId  String   @db.ObjectId
+  ticket    Ticket   @relation(fields: [ticketId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum TicketStatus {
+  open
+  in_progress
+  closed
+}
+
+enum TicketPriority {
+  low
+  medium
+  high
+}
+
+enum TicketType {
+  issue
+  request
+  suggestion
+  question
 }
