@@ -29,6 +29,7 @@ const Page = () => {
   const { articles, fetchArticles, isLoading } = useArticleStore();
   const [selectedSort, setSelectedSort] = useState("newest");
   const [searchQuery, setSearchQuery] = useState("");
+  const [visibleArticles, setVisibleArticles] = useState(3);
 
   useEffect(() => {
     fetchArticles();
@@ -50,6 +51,22 @@ const Page = () => {
         );
       }
     });
+
+    useEffect(() => {
+        const handleScroll = () => {
+          if (
+            window.innerHeight + document.documentElement.scrollTop >=
+            document.documentElement.offsetHeight - 550
+          ) {
+            if (visibleArticles < filteredArticles.length) {
+              setVisibleArticles((prev) => prev + 6);
+            }
+          }
+        };
+    
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+      }, [visibleArticles, filteredArticles]);
 
   return (
     <div className="max-w-7xl mx-auto my-20 flex flex-col gap-6 px-4">
@@ -91,7 +108,7 @@ const Page = () => {
                 <ArticleCardSkeleton key={index} />
               ))
             ) : filteredArticles.length > 0 ? (
-              filteredArticles.map((article) => (
+              filteredArticles.slice(0 , visibleArticles).map((article) => (
                 <ArticleCard key={article.id} article={article} />
               ))
             ) : (
