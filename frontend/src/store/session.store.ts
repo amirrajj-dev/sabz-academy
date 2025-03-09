@@ -25,7 +25,7 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
     try {
       set({ isLoading: true });
       const { title, time, courseId, video, free } = session;
-      if (!title || !time || !courseId || !video || !free) {
+      if (!title || !time || !courseId || !video) {
         throw new Error("Please fill all fields");
       }
       const formData = new FormData();

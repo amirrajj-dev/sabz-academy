@@ -139,6 +139,7 @@ const AddSessionModal = () => {
                   </label>
                   <input
                     type="file"
+                    accept=".mp4"
                     className="file-input file-input-bordered w-full"
                     onChange={(e) => setVideo(e.target.files?.[0] || null)}
                   />

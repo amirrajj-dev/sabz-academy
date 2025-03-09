@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
-import { FaGraduationCap } from "react-icons/fa";
+import { FaGraduationCap, FaLock } from "react-icons/fa";
 import { useSessionStore } from "@/store/session.store";
 import { useCourseStore } from "@/store/course.store";
 import ReactPlayer from "react-player";
@@ -29,7 +29,6 @@ const CourseSessions = () => {
   const toggleAccordion = (index: number) => {
     setActiveIndex(activeIndex === index ? null : index);
   };
-
   return (
     <div className="mt-10 gap-6">
       <div className="w-full space-y-4 p-6 bg-base-300 shadow-lg rounded-2xl">
@@ -66,10 +65,10 @@ const CourseSessions = () => {
             >
               <button
                 className="w-full flex justify-between items-center px-5 py-4 text-lg font-semibold bg-base-200 transition-all"
-                onClick={() => toggleAccordion(index)}
+                onClick={() =>session.free ? toggleAccordion(index) : null}
               >
                 <span className="text-sm sm:text-base">{session.title}</span>
-                {activeIndex === index ? <IoIosArrowUp /> : <IoIosArrowDown />}
+                {session.free === 1 ? activeIndex === index ? <IoIosArrowUp /> : <IoIosArrowDown /> : <FaLock/>}
               </button>
               <AnimatePresence>
                 {activeIndex === index && (
