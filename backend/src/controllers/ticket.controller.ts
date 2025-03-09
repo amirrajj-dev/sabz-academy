@@ -138,3 +138,48 @@ export const replyTicket = async (
     next(error);
   }
 };
+
+export const deleteTicket = async (req : Request , res : Response , next : NextFunction)=>{
+  try {
+    const user = req.user
+    if (!user){
+      return res.status(401).json({
+        success: false,
+        message: "Your not athorized",
+      })
+    }
+    const id = req.params.id
+    if (!id){
+      return res.status(400).json({
+        success: false,
+        message: "id is required",
+      })
+    }
+    const ticket = await prisma.ticket.findUnique({ where: { id } });
+    if (!ticket) {
+      return res.status(404).json({
+        success: false,
+        message: "ticket not found",
+      })
+    }
+    if (ticket.userId !== user.id) {
+      return res.status(403).json({
+        success: false,
+        message: "You are not authorized to delete this ticket",
+      })
+    }
+    await prisma.reply.deleteMany({
+      where: {
+        ticketId: id
+      }
+    })
+    await prisma.ticket.delete({ where: { id } });
+    res.status(200).json({
+      success: true,
+      message: "ticket deleted successfully",
+    })
+
+  } catch (error) {
+    next(error)
+  }
+}
