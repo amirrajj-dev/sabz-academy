@@ -33,6 +33,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
         throw new Error("failed to delete user");
       }
     } catch (error: any) {
+      console.log(error);
       return {
         success: false,
         message: error.message || error.response.data.message,

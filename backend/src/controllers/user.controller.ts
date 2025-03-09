@@ -17,7 +17,7 @@ export const getAllUsers = async (
         role: true,
         createdAt: true,
         phone: true,
-        isBanned : true
+        isBanned: true,
       },
     });
     return res.status(200).json({
@@ -109,47 +109,59 @@ export const deleteUser = async (
 ) => {
   try {
     const userId = req.params.id;
-    if (!userId) {
-      return res.status(400).json({
-        message: "userId is required",
-        success: false,
-      });
-    }
-    const user = await prisma.user.findUnique({
-      where : {id : userId}
-    })
-    if (!user) {
-      return res.status(404).json({
-        message : 'user not found',
-        success : false
-      })
-    }
-    if (user.role === 'ADMIN'){
-      return res.status(400).json({
-        message : 'Admins cannot be deleted',
-        success : false
-      })
-    }
-    await prisma.user.delete({
-      where : {
-        id : user.id
-      }
-    })
-    return res.status(200).json({
-      message : "User deleted successfully",
-      success : true
-    })
+    if (!userId) return res.status(400).json({ message: "User ID required", success: false });
+
+    const user = await prisma.user.findUnique({ where: { id: userId }});
+    if (!user) return res.status(404).json({ message: "User not found", success: false });
+    if (user.role === "ADMIN") return res.status(400).json({ message: "Admins cannot be deleted", success: false });
+
+    await deleteUserComments(userId);
+
+    await Promise.all([
+      prisma.ticket.deleteMany({ where: { userId }}),
+      prisma.reply.deleteMany({ where: { userId }}),
+      prisma.article.deleteMany({ where: { creatorID: userId }})
+    ]);
+
+    await prisma.user.delete({ where: { id: userId }});
+
+    return res.status(200).json({ message: "User deleted successfully", success: true });
   } catch (error) {
     next(error);
   }
 };
+
+const deleteUserComments = async (userId: string) => {
+  const userComments = await prisma.comment.findMany({
+    where: { creatorID: userId },
+    select: { id: true }
+  });
+  const commentIds = userComments.map(c => c.id);
+
+  await prisma.comment.updateMany({
+    where: {
+      OR: [
+        { id: { in: commentIds } }, 
+        { mainCommentID: { in: commentIds } } 
+      ]
+    },
+    data: {
+      mainCommentID: null
+    }
+  });
+
+  await prisma.comment.deleteMany({
+    where: { creatorID: userId }
+  });
+};
+
 export const banUser = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const userID = req.params.id
+    const userID = req.params.id;
     if (!userID) {
       return res.status(400).json({
         message: "userId is required",
@@ -157,43 +169,43 @@ export const banUser = async (
       });
     }
     const user = await prisma.user.findUnique({
-      where : {id : userID}
-    })
+      where: { id: userID },
+    });
     if (!user) {
       return res.status(404).json({
-        message : 'user not found',
-        success : false
-      })
+        message: "user not found",
+        success: false,
+      });
     }
-    if (user.role === 'ADMIN'){
+    if (user.role === "ADMIN") {
       return res.status(400).json({
-        message : 'Admins cannot be banned',
-        success : false
-      })
+        message: "Admins cannot be banned",
+        success: false,
+      });
     }
 
     if (user.isBanned) {
       //un ban user
       await prisma.user.update({
-        where : {id : userID},
-        data : {isBanned : false}
-      })
+        where: { id: userID },
+        data: { isBanned: false },
+      });
       return res.status(200).json({
-        message : "User unbanned successfully",
-        success : true
-      })
+        message: "User unbanned successfully",
+        success: true,
+      });
     }
 
     await prisma.user.update({
-      where : {id : userID},
-      data : {isBanned : true}
-    })
+      where: { id: userID },
+      data: { isBanned: true },
+    });
     return res.status(200).json({
-      message : "User banned successfully",
-      success : true
-    })
+      message: "User banned successfully",
+      success: true,
+    });
   } catch (error) {
-   next(error) 
+    next(error);
   }
 };
 export const getUserCourses = async (
@@ -204,7 +216,9 @@ export const getUserCourses = async (
   try {
     const user = req.user;
     if (!user) {
-      return res.status(401).json({ message: "User not authenticated", success: false });
+      return res
+        .status(401)
+        .json({ message: "User not authenticated", success: false });
     }
 
     const userWithCourses = await prisma.user.findUnique({
@@ -213,13 +227,15 @@ export const getUserCourses = async (
     });
 
     if (!userWithCourses) {
-      return res.status(404).json({ message: "User not found", success: false });
+      return res
+        .status(404)
+        .json({ message: "User not found", success: false });
     }
 
     return res.status(200).json({
       success: true,
       message: "Courses retrieved successfully",
-      data: userWithCourses.courses || []
+      data: userWithCourses.courses || [],
     });
   } catch (error) {
     console.error("Error fetching user courses:", error);
@@ -289,7 +305,6 @@ export const changeUserRole = async (
       success: true,
       data: updatedUser,
     });
-
   } catch (error) {
     next(error);
   }
