@@ -9,6 +9,7 @@ interface TicketState {
   fetchTickets: () => Promise<{message : string , success : boolean}>;
   createTicket: (ticket: Omit<ITicket, 'id' | 'createdAt' | 'updatedAt' | 'user' | 'replies' | 'status' | "userId">) => Promise<{message : string , success : boolean}>;
   replyTicket: (ticketId: string, reply: Omit<IReply, 'id' | 'createdAt' | 'updatedAt' | 'user' | 'ticket' | "userId">) => Promise<{message : string , success : boolean}>;
+  deleteTicket : (id : string)=>Promise<{message : string , success : boolean}>;
 }
 
 export const useTicketStore = create<TicketState>((set, get) => ({
@@ -85,4 +86,24 @@ export const useTicketStore = create<TicketState>((set, get) => ({
       }
     }
   },
+  deleteTicket : async (id : string)=>{
+    try {
+      set({isLoading : true})
+      const res = await axiosnInstance.delete(`/tickets/${id}`)
+      if (res.data.success){
+        set({ tickets: get().tickets.filter(ticket => ticket.id !== id), isLoading: false });
+        return {
+          success : true ,
+          message : "deleted ticket succesfully"
+        }
+      }else{
+        throw new Error(res.data.message || 'failed to delete ticket')
+      }
+    } catch (error : any) {
+      return {
+        success : false ,
+        message : error.response.data.message || error.message
+      }
+    }
+  }
 }));
