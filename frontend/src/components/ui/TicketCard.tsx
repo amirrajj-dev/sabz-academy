@@ -6,6 +6,7 @@ import {
   FaClock,
   FaCheckCircle,
   FaExclamationCircle,
+  FaTrash, // Add the trash icon
 } from "react-icons/fa";
 import { ITicket } from "@/interfaces/types";
 import Link from "next/link";
@@ -13,14 +14,29 @@ import { motion } from "framer-motion";
 
 interface TicketCardProps {
   ticket: ITicket;
+  onDelete: (ticketId: string) => void;
 }
 
-const TicketCard = ({ ticket }: TicketCardProps) => {
+const TicketCard = ({ ticket, onDelete }: TicketCardProps) => {
+  const handleDelete = () => {
+    if (confirm("آیا از حذف این تیکت اطمینان دارید؟")) {
+      onDelete(ticket.id);
+    }
+  };
+
   return (
     <motion.div
-      className="bg-gradient-to-br w-full from-base-100 to-base-200 rounded-xl shadow-2xl p-6 hover:shadow-3xl transition-all transform"
+      className="bg-gradient-to-br w-full from-base-100 to-base-200 rounded-xl shadow-2xl p-6 hover:shadow-3xl transition-all transform relative"
       whileTap={{ scale: 0.98 }}
     >
+      <button
+        onClick={handleDelete}
+        className="absolute top-20 left-4 p-2 btn btn-sm btn-error btn-circle btn-soft"
+        aria-label="حذف تیکت"
+      >
+        <FaTrash className="text-lg" />
+      </button>
+
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <span
