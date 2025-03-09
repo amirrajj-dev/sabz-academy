@@ -10,13 +10,11 @@ import { toastOptions } from '@/helpers/toastOptions';
 
 const SessionsPage = () => {
   const {sessions , getAllSessions , isLoading , deleteSession} = useSessionStore()
-  useEffect(()=>{
-    getAllSessions()
-  } , [])
 
   const handleDeleteSession = async (id : string) => {
     const res = await deleteSession(id)
     if(res.success){
+      await getAllSessions()
       toast.success('جلسه با موفقیت حذف شد', toastOptions)
     } else {
       toast.error('خطا در حذف جلسه', toastOptions)

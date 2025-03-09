@@ -11,7 +11,7 @@ import { toastOptions } from "@/helpers/toastOptions";
 const ChangeRoleModal = ({ user } : {user : IUser}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [newRole, setNewRole] = useState(user?.role || "");
-  const {changeRole} = useUserStore()
+  const {changeRole , fetchUsers} = useUserStore()
   
   const roles = ["ADMIN", "USER"];
   
@@ -23,6 +23,7 @@ const ChangeRoleModal = ({ user } : {user : IUser}) => {
     setIsOpen(false);
     const res = await changeRole(newRole , user.id)
     if(res.success) {
+      await fetchUsers()
       toast.success("نقش کاربر با موفقیت تغییر یافت", toastOptions)
     }else{
       toast.error("خطا در تغییر نقش کاربر", toastOptions)
@@ -77,7 +78,7 @@ const ChangeRoleModal = ({ user } : {user : IUser}) => {
                   <select
                     className="select w-full border-none"
                     value={newRole}
-                    onChange={(e) => setNewRole(e.target.value)}
+                    onChange={(e) => setNewRole(e.target.value as 'USER' | 'ADMIN')}
                   >
                     <option value="" disabled>انتخاب نقش</option>
                     {roles.map((role) => (

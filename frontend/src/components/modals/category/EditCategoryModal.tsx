@@ -14,7 +14,7 @@ const EditCategoryModal = ({
   const [title, setTitle] = useState(category.name);
   const [link, setLink] = useState(category.title);
   const [isOpen, setIsOpen] = useState(false);
-  const {updateCategory} = useCategoriesStore()
+  const {updateCategory , fetchCategories } = useCategoriesStore()
   const handleUpdate = async () => {
     if (!title.trim()) {
       return;
@@ -22,6 +22,7 @@ const EditCategoryModal = ({
     setIsOpen(false);
     const res = await updateCategory({id : category.id , title : link , name : title})
     if (res.success){
+      await fetchCategories()
       toast.success('دسته بندی با موفقیت ویرایش شد' , toastOptions)
     }else{
       toast.error('خطا در ویرایش دسته بندی' , toastOptions)

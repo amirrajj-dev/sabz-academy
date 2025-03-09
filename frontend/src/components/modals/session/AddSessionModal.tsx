@@ -16,10 +16,7 @@ const AddSessionModal = () => {
   const [isFree, setIsFree] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const {addSession , isLoading , getAllSessions} = useSessionStore()
-  const {courses , fetchCourses} = useCourseStore()
-  useEffect(() => {
-    fetchCourses()
-  }, [])
+  const {courses} = useCourseStore()
   const handleAddSession = async () => {
     if (!sessionTitle || !duration || !course || !video) {
       toast.info('لطفا تمام فیلدهارا پر کنید')
@@ -34,8 +31,6 @@ const AddSessionModal = () => {
         video : video,
         courseId: course
       });
-
-      console.log(response);
   
       if (response.success) {
         await getAllSessions()

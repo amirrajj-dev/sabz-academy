@@ -11,16 +11,13 @@ import { toast } from "react-toastify";
 const CategoriesPage = () => {
   const { isLoading, fetchCategories, categories } = useCategoriesStore();
 
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-
   const {deleteCategory} = useCategoriesStore()
 
   const handleDeleteCategory = async (categoryId : string)=>{
     if (!categoryId) return
     const res  = await deleteCategory(categoryId)
     if (res.success) {
+      await fetchCategories()
       toast.success("دسته‌بندی با موفقیت حذف شد", toastOptions);
     }else{
       toast.error("خطا در حذف دسته بندی", toastOptions);

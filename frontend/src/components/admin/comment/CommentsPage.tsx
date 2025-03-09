@@ -16,13 +16,11 @@ import SeeModal from "@/components/modals/shared/SeeModal";
 const CommentsTable = () => {
   const { comments, getAllComments, acceptComment, isLoading , rejectComment , deleteComment , answerComment , setComments } = useCommentsStore();
   const {banUser} = useUserStore()
-  useEffect(() => {
-    getAllComments();
-  }, []);
 
   const handleAcceptComment = async (id : string) => {
     const res = await acceptComment(id);
     if (res.success) {
+      await getAllComments()
       toast.success("پیام با موفقیت تایید شد", toastOptions);
     } else {
       toast.error("خطایی رخ داد", toastOptions);
@@ -32,6 +30,7 @@ const CommentsTable = () => {
   const handleRejectComment = async (id : string) => {
     const res = await rejectComment(id);
     if (res.success) {
+      await getAllComments()
       toast.success("پیام با موفقیت رد شد", toastOptions);
     } else {
       toast.error("خطایی رخ داد", toastOptions);
@@ -41,6 +40,7 @@ const CommentsTable = () => {
   const handleDeleteComment = async (id : string) => {
     const res = await deleteComment(id);
     if (res.success) {
+      await getAllComments()
       toast.success("پیام با موفقیت حذف شد", toastOptions);
     } else {
       toast.error("خطا در حذف پیام", toastOptions);
@@ -80,7 +80,6 @@ const CommentsTable = () => {
             <th className="p-4">امتیاز</th>
             <th className="p-4">مشاهده</th>
             <th className="p-4">پاسخ</th>
-            <th className="p-4">ویرایش</th>
             <th className="p-4">حذف</th>
             <th className="p-4">بن</th>
             <th className="p-4">تایید</th>
@@ -96,7 +95,6 @@ const CommentsTable = () => {
                 <td className="p-4 flex justify-center">
                   <div className="skeleton h-4 w-24"></div>
                 </td>
-                <td className="p-4"><div className="skeleton h-4 w-10"></div></td>
                 <td className="p-4"><div className="skeleton h-4 w-10"></div></td>
                 <td className="p-4"><div className="skeleton h-4 w-10"></div></td>
                 <td className="p-4"><div className="skeleton h-4 w-10"></div></td>
@@ -128,11 +126,7 @@ const CommentsTable = () => {
                       >
                         <RiAdminLine />
                       </motion.button>  : <ReplyCommentModal commentId={comment.id} courseID={comment.course.id} onReply={handleReplyComment} />}</td>
-                <td className="p-4">
-                  <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="btn btn-primary btn-sm">
-                    <FaEdit />
-                  </motion.button>
-                </td>
+                
                 <td className="p-4"><DeleteModal onDelete={handleDeleteComment} deleteId={comment.id} title="حذف کامنت" message="آیا از حذف کامنت اطمینان دارید؟" messageDesc="این اقدام قابل بازگشت نیست!" deleteBtnText="حذف کامنت" /></td>
                 <td className="p-4"><BanModal onBan={handleBan} user={comment.creator} /></td>
                 <td className="p-4">

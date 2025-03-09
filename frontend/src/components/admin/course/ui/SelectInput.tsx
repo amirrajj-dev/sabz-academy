@@ -3,9 +3,9 @@ interface SelectInputProps {
   label : string
   name : string
   value : string
-  onChange : (event: React.FormEvent<HTMLSelectElement>) => void
+  onChange : (event: React.ChangeEvent<HTMLSelectElement>) => void
   options : any[]
-  error : string
+  error? : string
 }
 
 const SelectInput = ({ label, name, value, onChange, options , error }: SelectInputProps) => (

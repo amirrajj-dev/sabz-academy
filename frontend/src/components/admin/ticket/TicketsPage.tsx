@@ -9,11 +9,7 @@ import { IoMdArrowUp, IoMdClose } from "react-icons/io";
 import Link from "next/link";
 
 const TicketsPage = () => {
-  const { tickets, fetchTickets, isLoading } = useTicketStore();
-
-  useEffect(() => {
-    fetchTickets();
-  }, []);
+  const { tickets , isLoading } = useTicketStore();
 
   return (
     <div className="p-6 max-w-5xl mx-auto">

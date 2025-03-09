@@ -16,7 +16,7 @@ interface EditorInputProps {
 const EditorInput = ({ label, data, onChange , error }: EditorInputProps) => (
   <div className="flex flex-col gap-2">
     <label className="label"><span className="font-medium">{label}</span></label>
-    <CKEditor editor={ClassicEditor} data={data} onChange={onChange} config={{ language: "fa" }} className="bg-base-300" />
+    <CKEditor editor={ClassicEditor} data={data} onChange={onChange} config={{ language: "fa" }} className="bg-base-300"  {...({} as any) } />
     <p className="text-red-500 text-sm">{error}</p>
   </div>
 );

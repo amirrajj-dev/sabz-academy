@@ -13,12 +13,10 @@ import EditArticleModal from '@/components/modals/article/EditArticleModal'
 const ArticleTable = () => {
   const { articles, fetchArticles, isLoading , deleteArticle , editArticle } = useArticleStore()
 
-  useEffect(() => {
-    fetchArticles()
-  }, [])
   const handleDeleteArticle = async (id: string) => {
     const res = await deleteArticle(id)
     if (res.success){
+      await fetchArticles()
       toast.success('مقاله با موفقیت حذف شد', toastOptions)
     }else{
       toast.error('خطا در حذف مقاله', toastOptions)
@@ -28,6 +26,7 @@ const ArticleTable = () => {
   const handleUpdateArticle = async (id: string , body : string , publish : string) => {
     const res = await editArticle(id , body , publish)
     if (res.success){
+      await fetchArticles()
       toast.success('مقاله با موفقیت ویرایش شد', toastOptions)
     }else{
       toast.error('خطا در ویرایش مقاله', toastOptions)

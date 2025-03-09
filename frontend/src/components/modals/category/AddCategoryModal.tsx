@@ -10,7 +10,7 @@ const AddCategoryModal = () => {
   const [title, setTitle] = useState("");
   const [link, setLink] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const {addCategory} = useCategoriesStore()
+  const {addCategory , fetchCategories} = useCategoriesStore()
 
   const handleAddCategory = async () => {
     if (!title || !link) {
@@ -20,8 +20,8 @@ const AddCategoryModal = () => {
     setLink("");
     setIsOpen(false);
     const res = await addCategory({name : title , title : link})
-    console.log(res);
     if (res.success){
+      await fetchCategories()
       toast.success('دسته بندی جدید با موفقیت اضافه شد' , toastOptions)
       return
     }

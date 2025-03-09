@@ -11,12 +11,10 @@ import { toastOptions } from "@/helpers/toastOptions";
 
 const UsersPage = () => {
   const { users, fetchUsers, isLoading, deleteUser, banUser } = useUserStore();
-  useEffect(() => {
-    fetchUsers();
-  }, []);
   const handleDelete = async (id: string) => {
     const res = await deleteUser(id);
     if (res.success) {
+      await fetchUsers()
       toast.success("کاربر با موفقیت حذف شد", toastOptions);
     } else {
       toast.error("خطا در حذف کاربر", toastOptions);
@@ -26,6 +24,7 @@ const UsersPage = () => {
   const handleBan = async (id: string) => {
     const res = await banUser(id);
     if (res.success) {
+      await fetchUsers()
       res.message === "User unbanned successfully"
         ? toast.success("کاربر با موفقیت از بن خارج شد", toastOptions)
         : toast.success("کاربر با موفقیت بن شد", toastOptions);

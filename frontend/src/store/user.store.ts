@@ -10,7 +10,7 @@ interface UserStore {
     role: "ADMIN" | "USER",
     id: string
   ) => Promise<{ message: string; success: boolean }>;
-  fetchUsers: () => void;
+  fetchUsers: () => Promise<{message : string; success : boolean}>;
   isLoading: boolean;
 }
 

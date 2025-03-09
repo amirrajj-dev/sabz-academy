@@ -8,13 +8,10 @@ import { toastOptions } from '@/helpers/toastOptions';
 const DiscountsTable = () => {
   const { discounts, fetchDiscounts, isLoading, deleteDiscount } = useDiscountsStore();
 
-  useEffect(() => {
-    fetchDiscounts();
-  }, []);
-
   const handleDeleteDiscount = async (id: string) => {
     const res = await deleteDiscount(id);
     if (res.success) {
+      await fetchDiscounts()
       toast.success('تخفیف با موفقیت حذف شد', toastOptions);
     } else {
       toast.error('خطایی در حذف تخفیف رخ داد', toastOptions);

@@ -11,17 +11,13 @@ interface Category {
 };
 
 const DiscountFrom = () => {
-  // States for form fields
   const [code, setCode] = useState<string>("");
   const [discount, setDiscount] = useState<string>("");
   const [maxUse, setMaxUse] = useState<string>("");
   const [courseId, setCourseId] = useState<string>("");
-  const {courses , fetchCourses} = useCourseStore()
-  const { createDiscount, isLoading } = useDiscountsStore();
-  useEffect(()=>{
-    fetchCourses()
-  } , [])
-  // Handle form submission
+  const {courses} = useCourseStore()
+  const { createDiscount, isLoading , fetchDiscounts } = useDiscountsStore();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!code || !discount || !maxUse || !courseId) {
@@ -49,6 +45,7 @@ const DiscountFrom = () => {
     });
 
     if (response.success) {
+      await fetchDiscounts()
       toast.success("تخفیف با موفقیت اضافه شد");
       setCode("");
       setDiscount("");

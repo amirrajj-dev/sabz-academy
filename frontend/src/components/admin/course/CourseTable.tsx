@@ -10,10 +10,7 @@ import EditCourseModal from "@/components/modals/course/EditCourseModal";
 import { ICourse } from "@/interfaces/types";
 
 const CourseTable = () => {
-  const { courses, fetchCourses, deleteCourse, editCourse, isLoading } = useCourseStore();
-  useEffect(() => {
-    fetchCourses();
-  }, []);
+  const { courses, fetchCourses, deleteCourse, editCourse, isLoading } = useCourseStore();;
 
   const handleDeleteCourse = async (id : string) => {
     if (!id) {
@@ -22,6 +19,7 @@ const CourseTable = () => {
     }
     const res = await deleteCourse(id);
     if (res.success) {
+      await fetchCourses()
       toast.success("دوره با موفقیت حذف شد", toastOptions);
     } else {
       toast.error("خطا در حذف دوره", toastOptions);
@@ -31,8 +29,8 @@ const CourseTable = () => {
   const handleEditCourse = async (id : string, data : Partial<ICourse>) => {
     const res = await editCourse(id, data);
     if (res.success) {
+      await fetchCourses();
       toast.success("دوره با موفقیت ویرایش شد", toastOptions);
-      fetchCourses();
     } else {
       toast.error("خطا در ویرایش دوره", toastOptions);
     }

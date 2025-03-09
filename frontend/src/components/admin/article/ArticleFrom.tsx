@@ -5,7 +5,7 @@ import { useCategoriesStore } from "@/store/category.store";
 import { useArticleStore } from "@/store/article.store";
 import { toast } from "react-toastify";
 import dynamic from "next/dynamic";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic"; // ✅ Correct import
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 const CKEditor = dynamic(
   () => import("@ckeditor/ckeditor5-react").then((mod) => mod.CKEditor),
@@ -27,11 +27,7 @@ const ArticleForm = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const { categories, fetchCategories } = useCategoriesStore();
-  const { addArticle, isLoading } = useArticleStore();
-
-  useEffect(() => {
-    fetchCategories();
-  }, []);
+  const { addArticle, isLoading , fetchArticles } = useArticleStore();
 
   const validateForm = () => {
     let newErrors: Record<string, string> = {};
@@ -71,6 +67,7 @@ const ArticleForm = () => {
     });
 
     if (response.success) {
+      await fetchArticles()
       toast.success('مقاله با موفقیت اضافه گردید');
       setTitle("");
       setLink("");
@@ -137,6 +134,7 @@ const ArticleForm = () => {
             onChange={(event, editor) => setAbstract(editor.getData())}
             config={{ language: "fa" }}
             className="bg-base-300"
+            {...({} as any)} // This tells TypeScript to ignore the type mismatch like wow wtf😑
           />
           {errors.abstract && (
             <p className="text-red-500 text-sm">{errors.abstract}</p>

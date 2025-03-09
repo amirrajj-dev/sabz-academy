@@ -83,9 +83,8 @@ const CourseForm = () => {
         isComplete: 0,
       }, formState.coverImage as File);
 
-      console.log(res);
-
       if (res.success) {
+        await fetchCourses()
         toast.success("دوره با موفقیت افزوده شد.", toastOptions);
         setFormState({
           title: "",

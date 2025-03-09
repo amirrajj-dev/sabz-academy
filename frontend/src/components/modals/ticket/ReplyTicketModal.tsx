@@ -13,7 +13,7 @@ const ReplyTicketModal = ({
 }) => {
   const [reply, setReply] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const { replyTicket, isLoading } = useTicketStore();
+  const { replyTicket, isLoading , fetchTickets } = useTicketStore();
 
   const handleReply = async () => {
     if (!reply) {
@@ -21,14 +21,15 @@ const ReplyTicketModal = ({
       return;
     }
 
-    const result = await replyTicket(ticketId, { content : reply ,  ticketId});
+    const res = await replyTicket(ticketId, { content : reply ,  ticketId});
 
-    if (result.success) {
+    if (res.success) {
+      await fetchTickets()
       setReply("");
       setIsOpen(false);
       toast.success("تیکت با موفقیت پاسخ داده شد", toastOptions);
     } else {
-      toast.error(result.message || "خطا در ارسال پاسخ");
+      toast.error(res.message || "خطا در ارسال پاسخ");
     }
   };
 

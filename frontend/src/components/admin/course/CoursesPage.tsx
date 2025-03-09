@@ -16,7 +16,6 @@ export interface Article {
 }
 
 const CoursesPage = () => {
-const articles : Article[] = [];
 
   return (
     <div className="p-6 max-w-5xl mx-auto bg-base-200">
