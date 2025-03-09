@@ -36,6 +36,7 @@ const Page = () => {
 
   const filteredArticles = articles
     .filter((article) =>
+      article.publish === 1 &&
       article.title.toLowerCase().includes(searchQuery.toLowerCase())
     )
     .sort((a, b) => {

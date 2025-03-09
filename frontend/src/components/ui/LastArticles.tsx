@@ -25,7 +25,7 @@ const LastArticles = () => {
             .fill(1)
             .map((_, index) => <ArticleCardSkeleton key={index + 1} />)
         ) : articles.length > 0 ? (
-          articles.slice(0,4).map((article) => (
+          articles.filter(article=>article.publish === 1).slice(0,4).map((article) => (
             <ArticleCard key={article.id} article={article} />
           ))
         ) : (
