@@ -45,7 +45,7 @@ const CourseCard = ({ course }: { course: ICourse }) => {
           </div>
 
           <div className="flex flex-col relative items-end space-y-1">
-            {course.discount === 100 ? (
+            {course.price === 0 ? ( // Check if the course is free
               <span className="text-sm font-semibold text-success">
                 رایگان!
               </span>
@@ -56,7 +56,6 @@ const CourseCard = ({ course }: { course: ICourse }) => {
                     course.discount > 0 ? "line-through text-base-content" : ""
                   }`}
                 >
-                  
                   {(
                     Math.ceil((course?.price as number) / 1000) * 1000
                   ).toLocaleString("fa-IR")}{" "}

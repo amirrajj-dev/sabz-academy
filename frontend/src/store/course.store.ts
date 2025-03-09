@@ -59,11 +59,10 @@ export const useCourseStore = create<CourseStore>((set, get) => ({
         shortName,
         body
       } = course;
-
       if (
         !name ||
         !description ||
-        !price ||
+        isNaN(price as number) ||
         !status ||
         !categoryID ||
         !shortName ||
@@ -97,6 +96,7 @@ export const useCourseStore = create<CourseStore>((set, get) => ({
         throw new Error(res.data.message || "Failed to add course");
       }
     } catch (error: any) {
+      console.log(error);
       return {
         message: error.response?.data?.message || error.message,
         success: false,
