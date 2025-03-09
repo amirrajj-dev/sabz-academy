@@ -4,17 +4,19 @@ import CourseCardSkeleton from "@/components/skeletons/CourseCardSkeleton";
 import TicketCardSkeleton from "@/components/skeletons/TicketCardSkeleton";
 import TicketCard from "@/components/ui/TicketCard";
 import MyAccountHeader from "@/components/user/myAccountHeader/MyAccountHeader";
+import { toastOptions } from "@/helpers/toastOptions";
 import { useAuthStore } from "@/store/auth.store";
 import { useCourseStore } from "@/store/course.store";
 import { useTicketStore } from "@/store/ticket.store";
 import Link from "next/link";
 import React, { useEffect } from "react";
 import { FaArrowLeft } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 const UserPannel = () => {
   const { courses, fetchCourses, isLoading } = useCourseStore();
   const { user, getMe } = useAuthStore();
-  const { tickets, fetchTickets , isLoading : isLoadingTickets } = useTicketStore();
+  const { tickets, fetchTickets , isLoading : isLoadingTickets , deleteTicket } = useTicketStore();
   useEffect(() => {
     fetchCourses();
     fetchTickets();
@@ -22,6 +24,14 @@ const UserPannel = () => {
   }, []);
 
   const userTickets = tickets?.filter((ticket) => ticket.user.id === user?.id);
+  const handleDeleteTicket = async (id : string)=>{
+    const res = await deleteTicket(id)
+    if(res.success){
+      toast.success('تیکت با موفقیت حذف شد' , toastOptions)
+    }else{
+      toast.error('خطایی در حذف تیکت رخ داد' , toastOptions)
+    }
+  }
 
   return (
     <div className="p-4">
@@ -71,7 +81,7 @@ const UserPannel = () => {
                 userTickets
                   .slice(0, 3)
                   .map((ticket) => (
-                    <TicketCard key={ticket.id} ticket={ticket} />
+                    <TicketCard key={ticket.id} ticket={ticket} onDelete={handleDeleteTicket} />
                   ))
               ) : (
                 <p>تا به الان تیکتی ارسال نکرده اید</p>

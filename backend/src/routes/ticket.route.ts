@@ -7,6 +7,6 @@ const router = express.Router()
 router.get('/' , getAllTickets)
 router.post('/' , protectRoute as express.RequestHandler  , createTicket as express.RequestHandler)
 router.post('/:id' , protectRoute as express.RequestHandler ,  replyTicket as express.RequestHandler)
-router.delete('/:id' , protectRouteAdmin as express.RequestHandler , deleteTicket as express.RequestHandler)
+router.delete('/:id' , protectRoute as express.RequestHandler , deleteTicket as express.RequestHandler)
 
 export default router;

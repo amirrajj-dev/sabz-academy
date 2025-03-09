@@ -8,6 +8,8 @@ import { useAuthStore } from "@/store/auth.store";
 import { useTicketStore } from "@/store/ticket.store";
 import TicketCardSkeleton from "@/components/skeletons/TicketCardSkeleton";
 import TicketCard from "@/components/ui/TicketCard";
+import { toast } from "react-toastify";
+import { toastOptions } from "@/helpers/toastOptions";
 
 const UserTicketsPage = () => {
   const cardsData = [
@@ -38,6 +40,7 @@ const UserTicketsPage = () => {
     tickets,
     fetchTickets,
     isLoading: isLoadingTickets,
+    deleteTicket
   } = useTicketStore();
   useEffect(() => {
     fetchTickets();
@@ -45,6 +48,14 @@ const UserTicketsPage = () => {
   }, []);
 
   const userTickets = tickets?.filter((ticket) => ticket.user.id === user?.id);
+    const handleDeleteTicket = async (id : string)=>{
+      const res = await deleteTicket(id)
+      if(res.success){
+        toast.success('تیکت با موفقیت حذف شد' , toastOptions)
+      }else{
+        toast.error('خطایی در حذف تیکت رخ داد' , toastOptions)
+      }
+    }
   return (
     <div className="flex flex-col gap-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4">
@@ -80,7 +91,7 @@ const UserTicketsPage = () => {
           ) : userTickets.length > 0 ? (
             userTickets
               .slice(0, 3)
-              .map((ticket) => <TicketCard key={ticket?.id} ticket={ticket} />)
+              .map((ticket) => <TicketCard onDelete={handleDeleteTicket} key={ticket?.id} ticket={ticket} />)
           ) : (
             <p>تا به الان تیکتی ارسال نکرده اید</p>
           )}
