@@ -41,21 +41,21 @@ const TicketCard = ({ ticket, onDelete }: TicketCardProps) => {
         <div className="flex items-center gap-2">
           <span
             className={`badge ${
-              ticket.priority === "high"
+              ticket?.priority === "high"
                 ? "badge-error"
                 : ticket.priority === "medium"
                 ? "badge-warning"
                 : "badge-success"
             } flex items-center gap-1`}
           >
-            {ticket.priority === "high" ? (
+            {ticket?.priority === "high" ? (
               <FaFire className="text-sm -translate-y-[2px]" />
             ) : ticket.priority === "medium" ? (
               <FaExclamationCircle className="text-sm -translate-y-[2px]" />
             ) : (
               <FaCheckCircle className="text-sm -translate-y-[2px]" />
             )}
-            {ticket.priority === "high"
+            {ticket?.priority === "high"
               ? "بالا"
               : ticket.priority === "medium"
               ? "متوسط"
@@ -71,7 +71,7 @@ const TicketCard = ({ ticket, onDelete }: TicketCardProps) => {
                 : "badge-success"
             } flex items-center gap-1`}
           >
-            {ticket.status === "open" ? (
+            {ticket?.status === "open" ? (
               <FaClock className="text-sm -translate-y-[2px]" />
             ) : ticket.status === "in_progress" ? (
               <FaExclamationCircle className="text-sm -translate-y-[2px]" />
@@ -93,9 +93,9 @@ const TicketCard = ({ ticket, onDelete }: TicketCardProps) => {
       </div>
 
       <h2 className="text-2xl font-bold text-base-content mb-3">
-        {ticket.title}
+        {ticket?.title}
       </h2>
-      <p className="text-base-content/80 mb-4 line-clamp-3">{ticket.content}</p>
+      <p className="text-base-content/80 mb-4 line-clamp-3">{ticket?.content}</p>
 
       <div className="flex items-center justify-between text-sm text-base-content/70">
         <div className="flex items-center gap-2">
@@ -104,7 +104,7 @@ const TicketCard = ({ ticket, onDelete }: TicketCardProps) => {
               {ticket.user.username[0].toUpperCase()}
             </div>
           </div>
-          <span>{ticket.user.name}</span>
+          <span>{ticket?.user.name}</span>
         </div>
 
         <div className="flex items-center gap-2">
@@ -114,7 +114,7 @@ const TicketCard = ({ ticket, onDelete }: TicketCardProps) => {
       </div>
       <div className="mt-6">
         <Link
-          href={`/my-account/tickets/${ticket.id}`}
+          href={`/my-account/tickets/${ticket?.id}`}
           className="btn btn-primary btn-sm w-full hover:bg-primary-focus transition-colors"
           aria-label={`مشاهده جزئیات تیکت ${ticket.title}`}
         >

@@ -59,7 +59,7 @@ const UserTicketsPage = () => {
   return (
     <div className="flex flex-col gap-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4">
-        {cardsData.map((card, index) => (
+        {cardsData?.map((card, index) => (
           <UserPannelCard
             key={index}
             title={card.title}
@@ -88,7 +88,7 @@ const UserTicketsPage = () => {
             Array(3)
               .fill(0)
               .map((_, index) => <TicketCardSkeleton key={index + 1} />)
-          ) : userTickets.length > 0 ? (
+          ) : userTickets?.length > 0 ? (
             userTickets
               .slice(0, 3)
               .map((ticket) => <TicketCard onDelete={handleDeleteTicket} key={ticket?.id} ticket={ticket} />)

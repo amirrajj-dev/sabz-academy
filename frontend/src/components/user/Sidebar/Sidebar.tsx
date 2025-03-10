@@ -5,6 +5,10 @@ import { userMenuItems } from "@/data/data";
 import Image from "next/image";
 import SabzText from "@/components/shared/SabzText";
 import Link from "next/link";
+import { useAuthStore } from "@/store/auth.store";
+import { toast } from "react-toastify";
+import { toastOptions } from "@/helpers/toastOptions";
+import { useRouter } from "next/navigation";
 
 interface SidebarProps {
   isExpanded: boolean;
@@ -27,6 +31,19 @@ const Sidebar = ({ isExpanded, isTablet, setIsTablet }: SidebarProps) => {
     hover: { scale: 1.1, originX: 0 },
     rest: { scale: 1 },
   };
+
+  const {logout} = useAuthStore()
+  const router = useRouter()
+
+  const handleLogOut = async ()=>{
+    if (confirm('آیا از خروج اطمینان دارید ؟')){
+      logout()
+      router.replace('/')
+      toast.success("خروج با موفقیت به انجام رسید" , toastOptions)
+    }else{
+      toast.error('خظا در خروج'  , toastOptions)
+    }
+  }
 
   return (
     <motion.div
@@ -77,6 +94,7 @@ const Sidebar = ({ isExpanded, isTablet, setIsTablet }: SidebarProps) => {
                 key={index}
                 className="relative group"
                 variants={hoverVariants}
+                onClick={item.label === 'خروج' ? handleLogOut : ()=>{}}
                 whileHover="hover"
                 animate="rest"
               >

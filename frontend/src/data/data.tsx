@@ -22,7 +22,7 @@ export const userMenuItems = [
   { label: "divider", showFor: "all"  , href : ""},
   { label: "پنل ادمین", icon: <FaUserShield />, showFor: "admin" , href : "/admin-pannel" },
   { label: "پنل کاربر", icon: <FaUserShield />, showFor: "all" , href : "/my-account" },
-  { label: "خروج", icon: <FaSignOutAlt />, showFor: "all" , href : "/" },
+  { label: "خروج", icon: <FaSignOutAlt />, showFor: "all" , href : "javascript:void(0)" },
 ];
 
 export const themeItems = [
