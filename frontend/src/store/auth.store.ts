@@ -8,6 +8,8 @@ interface AuthStore {
     user: IUser | null;
     signup : (user : Pick<IUser , 'name' | 'username' | 'phone' | 'email' | 'password'>) => Promise<{error? : string , success : boolean, message? : string}>
     login: (user : Pick<IUser , 'email' | 'password'>) => Promise<{message : string , success : boolean}>;
+    forgotPassword: (email : string) => Promise<{message : string , success : boolean , token? : string}>;
+    resetPassword: (password : string , token : string) => Promise<{message : string , success : boolean}>;
     logout: () => void;
     setUser: (user : IUser | null) => void;
     isAuthenticated : boolean
@@ -16,7 +18,7 @@ interface AuthStore {
     isLoading : boolean;
 }
 
-export const useAuthStore = create<AuthStore>((set) => ({
+export const useAuthStore = create<AuthStore>((set , get) => ({
     user: null,
     isAuthenticated: false,
     error: null,
@@ -120,6 +122,53 @@ export const useAuthStore = create<AuthStore>((set) => ({
             }
         } catch (error : any) {
             set({ error: error.response.data.message });
+        }finally{
+            set({ isLoading: false });
+        }
+    },
+    forgotPassword : async (email)=>{
+        try {
+            set({isLoading : true})
+            const res = await axiosnInstance.post('/auth/forgot-password', {email})
+            if (res.data.success){
+                set({ error: null, isLoading: false });
+                return{
+                    success : res.data.success,
+                    message : res.data.message
+                }
+            }else{
+                set({ error: res.data.message, isLoading: false });
+                throw new Error(res.data.message || 'sth goes wrong')
+            }
+        } catch (error : any) {
+            console.log(error);
+            return{
+                success : false,
+                message : error.response?.data.message  || error.message 
+            }
+        }finally{
+            set({ isLoading: false });
+        }
+    },
+    resetPassword : async (password , token)=>{
+        try {
+            set({isLoading : true})
+            const res = await axiosnInstance.post(`/auth/reset-password/${token}`, {password})
+            if (res.data.success){
+                set({ error: null, isLoading: false });
+                return{
+                    success : res.data.success,
+                    message : res.data.message
+                }
+            }else{
+                set({ error: res.data.message, isLoading: false });
+                throw new Error(res.data.message || 'sth goes wrong')
+            }
+        } catch (error : any) {
+            return {
+                success : false,
+                message : error.response.data.message  || error.message
+            }
         }finally{
             set({ isLoading: false });
         }
