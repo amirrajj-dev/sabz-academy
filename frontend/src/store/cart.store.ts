@@ -6,6 +6,7 @@ interface ICart {
   cover: string;
   shortName: string;
   price: number;
+  discount? : number
 }
 
 interface CartStore {

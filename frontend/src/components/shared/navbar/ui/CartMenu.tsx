@@ -83,9 +83,15 @@ const CartMenu = ({
                         <span className="max-w-40 max-h-10 line-clamp-2 text-sm font-dana-medium">
                           {item.title}
                         </span>
+                        {item?.discount && item.discount > 0 ? (
+                          <span className="text-sm text-emerald-500 font-dana-extra-light">
+                          {item.price * (100 - item.discount) / 100} تومان
+                        </span>
+                        ) : (
                         <span className="text-sm font-dana-extra-light">
                           {item.price.toLocaleString()} تومان
                         </span>
+                        )}
                       </div>
                     </Link>
                     <button
