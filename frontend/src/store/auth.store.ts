@@ -10,6 +10,7 @@ interface AuthStore {
     login: (user : Pick<IUser , 'email' | 'password'>) => Promise<{message : string , success : boolean}>;
     forgotPassword: (email : string) => Promise<{message : string , success : boolean , token? : string}>;
     resetPassword: (password : string , token : string) => Promise<{message : string , success : boolean}>;
+    changePassword: (oldPassword : string , newPassword : string) => Promise<{message : string , success : boolean}>;
     logout: () => void;
     setUser: (user : IUser | null) => void;
     isAuthenticated : boolean
@@ -171,6 +172,31 @@ export const useAuthStore = create<AuthStore>((set , get) => ({
             }
         }finally{
             set({ isLoading: false });
+        }
+    },
+    changePassword : async (oldPassword , newPassword)=>{
+        try {
+            set({isLoading : true})
+            if (oldPassword.trim().length > 0 && newPassword.trim().length > 0){
+                const res = await axiosnInstance.post('/auth/change-password', {oldPassword , newPassword})
+                if (res.data.success){
+                    set({ error: null, isLoading: false });
+                    return{
+                        success : true,
+                        message : res.data.message as string
+                    }
+                }else{
+                    throw new Error('sth goes wrong changing password')
+                }
+            }else{
+                throw new Error('sth goes wrong')
+            }
+
+        } catch (error : any) {
+            return {
+                success : false,
+                message : error.response?.data.message as string
+            }
         }
     }
 }))

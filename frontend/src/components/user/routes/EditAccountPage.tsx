@@ -1,14 +1,48 @@
 'use client'
+import { toastOptions } from "@/helpers/toastOptions";
 import { useAuthStore } from "@/store/auth.store";
 import Image from "next/image";
-import React, { useEffect } from "react";
-import { TbCameraPlus } from "react-icons/tb";
+import React, { useEffect, useState } from "react";
+import { FaSpinner } from "react-icons/fa";
+import { TbCameraPlus, TbEye, TbEyeOff } from "react-icons/tb";
+import { toast } from "react-toastify";
 
 const EditAccountPage = () => {
-  const {user , getMe} = useAuthStore()
-  useEffect(()=>{
-    getMe()
-  } , [])
+  const { user, getMe, changePassword , isLoading } = useAuthStore();
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [showOldPassword, setShowOldPassword] = useState(false); 
+  const [showNewPassword, setShowNewPassword] = useState(false);
+
+  useEffect(() => {
+    getMe();
+  }, []);
+
+  const handleChangePassword = async () => {
+    if (!oldPassword || !newPassword) {
+      toast.info("لطفاً هر دو فیلد را پر کنید." , toastOptions);
+      return;
+    }
+
+    if (newPassword.length < 8) {
+      toast.info("رمز عبور جدید باید حداقل 8 کاراکتر باشد." , toastOptions);
+      return;
+    }
+
+    try {
+      const res = await changePassword(oldPassword, newPassword);
+      if (res.success) {
+        toast.success("رمز عبور با موفقیت تغییر کرد.", toastOptions);
+        setOldPassword("");
+        setNewPassword("");
+      } else {
+
+      }
+    } catch (error) {
+      toast.error("خطایی در تغییر رمز عبور رخ داده است." , toastOptions);
+    }
+  };
+
   return (
     <div className="flex flex-col lg:flex-row items-start gap-6 mt-10 p-4">
       <div className="w-full lg:w-3/5 bg-base-300 p-6 rounded-md shadow-md">
@@ -79,24 +113,46 @@ const EditAccountPage = () => {
         <div className="space-y-4">
           <div className="flex flex-col gap-2">
             <label className="text-sm text-gray-400">رمز عبور فعلی</label>
-            <input
-              type="password"
-              placeholder="رمز فعلی را وارد کنید"
-              className="input border-none w-full"
-            />
+            <div className="relative">
+              <input
+                type={showOldPassword ? "text" : "password"}
+                placeholder="رمز فعلی را وارد کنید"
+                className="input border-none w-full" 
+                value={oldPassword}
+                onChange={(e) => setOldPassword(e.target.value)}
+              />
+              <button
+                className="absolute inset-y-0 left-0 flex items-center px-3 text-gray-400 hover:text-primary"
+                onClick={() => setShowOldPassword(!showOldPassword)}
+              >
+                {showOldPassword ? <TbEyeOff /> : <TbEye />}
+              </button>
+            </div>
             <a href="#" className="text-sm text-primary hover:underline">
               رمز عبور را فراموش کرده اید؟
             </a>
           </div>
           <div className="flex flex-col gap-2">
             <label className="text-sm text-gray-400">رمز عبور جدید</label>
-            <input
-              type="password"
-              placeholder="رمز جدید را وارد کنید"
-              className="input border-none w-full"
-            />
+            <div className="relative">
+              <input
+                type={showNewPassword ? "text" : "password"}
+                placeholder="رمز جدید را وارد کنید"
+                className="input border-none w-full"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+              />
+              <button
+                className="absolute inset-y-0 left-0 flex items-center px-3 text-gray-400 hover:text-primary"
+                onClick={() => setShowNewPassword(!showNewPassword)}
+              >
+                {showNewPassword ? <TbEyeOff /> : <TbEye />}
+              </button>
+            </div>
           </div>
-          <button className="btn btn-primary w-full mt-4">تغییر رمز</button>
+          <button className="btn btn-primary w-full mt-4" onClick={handleChangePassword}>
+            {isLoading ? <FaSpinner className="animate-spin transition-all duration-200" /> : "تغییر رمز"}
+          </button>
         </div>
       </div>
     </div>
