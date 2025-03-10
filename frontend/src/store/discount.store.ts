@@ -6,6 +6,8 @@ interface DiscountsStore{
     setDiscounts: (discounts: IDiscount[]) => void
     createDiscount : (data : Omit<IDiscount , 'id' | 'createdAt'>)=>Promise<{message : string , success :boolean}>
     deleteDiscount : (id : string)=>Promise<{message : string , success :boolean}>
+    createCampaigan : (discountAmount : string)=>Promise<{message : string , success :boolean}>
+    cancelCampaigan : ()=>Promise<{message : string , success :boolean}>
     fetchDiscounts : ()=>Promise<{success : boolean , message : string}>
     isLoading : boolean
 }
@@ -80,6 +82,51 @@ export const useDiscountsStore = create<DiscountsStore>((set , get)=>({
             return {
                 message: error.response?.data?.message || error.message,
                 success: false
+            }
+        }finally{
+            set({isLoading : false})
+        }
+     },
+     createCampaigan : async (discountAmount)=>{
+        try {
+            set({isLoading : true})
+            const response = await axiosnInstance.post('/discounts/apply-camp' , {discountAmount})
+            if (response.data.success){
+                set({isLoading : false})
+                return {
+                    message: response.data.message || 'campaigan created succesfully',
+                    success: true
+                }
+            }else{
+                throw new Error(response.data.message || 'failed to create campaigan')
+            }
+        } catch (error : any) {
+            console.log(error);
+            return {
+                message: error.response?.data?.message || error.message,
+                success: false
+            }
+        }finally{
+            set({isLoading : false})
+        }
+     },
+     cancelCampaigan : async ()=>{
+        try {
+            set({isLoading : true})
+            const response = await axiosnInstance.post('/discounts/cancel-camp')
+            if (response.data.success){
+                set({isLoading : false})
+                return {
+                    message: response.data.message || 'campaigan cancelled succesfully',
+                    success: true
+                }
+            }else{
+                throw new Error(response.data.message || 'failed to cancel campaigan')
+            }
+        } catch (error : any) {
+            return {
+                message: error.response?.data?.message || error.message,
+                success : false 
             }
         }finally{
             set({isLoading : false})
