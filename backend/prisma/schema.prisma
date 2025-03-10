@@ -27,6 +27,8 @@ model User {
   articles Article[] @relation("UserArticles")
   tickets  Ticket[]
   replies Reply[]
+  resetToken      String?
+  resetTokenExpiry DateTime? 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
