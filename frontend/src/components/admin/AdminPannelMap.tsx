@@ -110,10 +110,10 @@ const AdminPannelMap = () => {
     {
       id: 10,
       title: "برگزاری کمپین",
-      count: "7",
       icon: <MdCampaign />,
       bgColor: "bg-lime-500",
       link: "campaigan",
+      count : ''
     },
   ];
   return (

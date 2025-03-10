@@ -10,8 +10,9 @@ import { useCartStore } from "@/store/cart.store";
 const CourseHeader = () => {
   const { mainCourse, isLoading } = useCourseStore();
   const { addToCart } = useCartStore();
+
   const handleAddToCart = (
-    course: Pick<ICourse, "name" | "price" | "cover" | "shortName">
+    course: Pick<ICourse, "name" | "price" | "cover" | "shortName" | "discount">
   ) => {
     if (!course.cover) return toast.error("تصویری برای این دوره موجود نیست");
     addToCart({
@@ -19,7 +20,12 @@ const CourseHeader = () => {
       price: course.price,
       cover: course.cover,
       shortName: course.shortName,
+      discount: course.discount, 
     });
+  };
+
+  const calculateDiscountedPrice = (price: number, discount: number) => {
+    return (price * (100 - discount)) / 100;
   };
 
   return (
@@ -46,7 +52,7 @@ const CourseHeader = () => {
 
           <p className="mt-4 text-sm w-full sm:text-base md:text-lg line-clamp-3 font-dana-light text-base-content leading-7 sm:leading-8 max-w-2xl text-justify lg:text-right lg:w-full">
             {isLoading ? (
-              <span className="skeleton w-full h-24 sm:h-32 md:h-40  block"></span>
+              <span className="skeleton w-full h-24 sm:h-32 md:h-40 block"></span>
             ) : (
               mainCourse?.description
             )}
@@ -66,6 +72,7 @@ const CourseHeader = () => {
                     price: mainCourse?.price as number,
                     cover: mainCourse?.cover as string,
                     shortName: mainCourse?.shortName as string,
+                    discount: mainCourse?.discount as number,
                   })
                 }
               >
@@ -73,15 +80,41 @@ const CourseHeader = () => {
               </motion.button>
             )}
 
-            <span className="font-semibold text-lg sm:text-2xl text-base-content">
+            <div className="flex flex-col items-end gap-1">
               {isLoading ? (
                 <span className="skeleton w-24 sm:w-32 h-8 sm:h-10 block"></span>
               ) : (
-                `${(
-                  Math.ceil((mainCourse?.price as number) / 1000) * 1000
-                ).toLocaleString("fa-IR")} تومان`
+                <>
+                  {mainCourse && mainCourse.discount > 0 ? (
+                    <>
+                      <span className="text-sm line-through text-base-content/60">
+                        {(
+                          Math.ceil((mainCourse?.price as number) / 1000) * 1000
+                        ).toLocaleString("fa-IR")}{" "}
+                        تومان
+                      </span>
+                      <span className="font-semibold text-lg sm:text-2xl text-emerald-500">
+                        {calculateDiscountedPrice(
+                          mainCourse?.price as number,
+                          mainCourse?.discount as number
+                        ).toLocaleString("fa-IR")}{" "}
+                        تومان
+                      </span>
+                    </>
+                  ) : (
+                    <span className="font-semibold text-lg sm:text-2xl text-base-content">
+                      {mainCourse && mainCourse?.price > 0  ? (
+                         (
+                          Math.ceil((mainCourse?.price as number) / 1000) * 1000
+                        ).toLocaleString("fa-IR") + " " + "تومان"
+                      ) : (
+                        <span className="text-emerald-500">رایگان!</span>
+                      )}
+                    </span>
+                  )}
+                </>
               )}
-            </span>
+            </div>
           </div>
         </motion.div>
 
