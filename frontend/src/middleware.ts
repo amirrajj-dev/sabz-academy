@@ -19,7 +19,7 @@ export async function middleware(request: NextRequest) {
       });
       const user: IUser = res.data.user;
 
-      if (request.nextUrl.pathname.startsWith("/sign") && user.name) {
+      if ((request.nextUrl.pathname.startsWith("/sign") || request.nextUrl.pathname.startsWith("/forgot") || request.nextUrl.pathname.startsWith("/reset")) && user.name) {
         console.log("Redirecting to /");
         return NextResponse.redirect(new URL("/", request.url));
       }
@@ -37,8 +37,12 @@ export async function middleware(request: NextRequest) {
     }
   }else{
     if (request.nextUrl.pathname.startsWith("/admin")){
-        console.log("Redirecting to /");
-        return NextResponse.redirect(new URL("/", request.url));
+      console.log("Redirecting to /");
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+    if (request.nextUrl.pathname.startsWith("/my-account")){
+      console.log("Redirecting to /");
+      return NextResponse.redirect(new URL("/", request.url));
     }
   }
 
@@ -46,5 +50,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/signup", "/signin", "/admin-pannel"],
+  matcher: ["/signup", "/signin", "/admin-pannel" , '/forgot-password' , '/reset-password/:path*' , '/my-account/:path*'],
 };
