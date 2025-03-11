@@ -11,6 +11,7 @@ interface AuthStore {
     forgotPassword: (email : string) => Promise<{message : string , success : boolean , token? : string}>;
     resetPassword: (password : string , token : string) => Promise<{message : string , success : boolean}>;
     changePassword: (oldPassword : string , newPassword : string) => Promise<{message : string , success : boolean}>;
+    updateUser: (user: Pick<IUser , "username" | "email" | "phone">, file: File) => Promise<{message : string;success : boolean}>;
     logout: () => void;
     setUser: (user : IUser | null) => void;
     isAuthenticated : boolean
@@ -198,5 +199,41 @@ export const useAuthStore = create<AuthStore>((set , get) => ({
                 message : error.response?.data.message as string
             }
         }
-    }
+    },
+    updateUser : async (user , file)=>{
+        try {
+          set({isLoading : true})
+          const {username , email , phone} = user
+          if (!username?.trim() && !email?.trim() && !phone?.trim() && file.size === 0){
+            throw new Error('Please fill at least one field')
+          }
+          const formdata = new FormData()
+          formdata.append('username' , username)
+          formdata.append('email' , email)
+          formdata.append('phone' , phone)
+          if (file){
+            formdata.append('file' , file)
+          }
+          const res = await axiosnInstance.put("/users" , formdata  , {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          })
+          if (res.data.success) {
+            set({isLoading : false , user : res.data.data})
+            return {
+              success: true,
+              message: res.data.message || 'user updated succesfully',
+            }
+          }else{
+            throw new Error('failed to update user')
+          }
+        } catch (error : any) {
+            console.log(error);
+          return{
+            success : false ,
+            message : error.response.data.message || error.message
+          }
+        }
+      }
 }))
