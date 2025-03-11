@@ -53,7 +53,7 @@ const CoursesMenu = ({ menuItems, currentOption, setCurrentOption, handleSetCurr
             >
               {/* Submenu Item */}
               <Link
-                href={`/courses/${item.title}`}
+                href={`/courses?sort=${item.title}`}
                 className="block px-4 py-3 text-xs font-medium text-base-content hover:bg-primary hover:text-primary-content rounded-lg transition-colors"
               >
                 {item.name}
