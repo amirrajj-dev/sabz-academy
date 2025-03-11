@@ -6,7 +6,7 @@ import Image from "next/image";
 import React, { use, useEffect } from "react";
 import { FaCalendar, FaEye, FaUser } from "react-icons/fa";
 import dompurify from "dompurify";
-import SuggestedArticles from "@/components/article/SuggestedArticles";
+import SuggestedArticles from "@/components/article/ui/SuggestedArticles";
 
 interface MainArticleProps {
   params: Promise<{ articleName: string }>;
