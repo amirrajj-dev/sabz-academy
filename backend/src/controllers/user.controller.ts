@@ -1,6 +1,9 @@
 import type { NextFunction, Request, Response } from "express";
 import prisma from "../../utils/prisma";
 import bcrypt from "bcryptjs";
+import { uploadToCloudinary } from "../../utils/fileUpload";
+
+const emailReg = /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/;
 
 export const getAllUsers = async (
   req: Request,
@@ -35,9 +38,10 @@ export const updateUser = async (
   next: NextFunction
 ) => {
   try {
-    const { username, email, password, phone, name } = req.body;
+    const { username, email, phone } = req.body;
+    const file = req.file
 
-    if (!username && !email && !password && !phone && !name) {
+    if (!username && !email && !phone) {
       return res.status(400).json({
         message: "At least one field must be updated",
         success: false,
@@ -55,7 +59,13 @@ export const updateUser = async (
     let updateData: any = {};
 
     if (username) updateData.username = username;
-    if (email) {
+    if (email && !emailReg.test(email)){
+      return res.status(400).json({
+        message :'invalid email format',
+        success : false
+      })
+    }
+    if (email.trim()) {
       const existingUser = await prisma.user.findUnique({ where: { email } });
       if (existingUser && existingUser.id !== user.id) {
         return res.status(400).json({
@@ -66,16 +76,12 @@ export const updateUser = async (
       updateData.email = email;
     }
     if (phone) updateData.phone = phone;
-    if (name) updateData.name = name;
-    if (password) {
-      if (password.length < 6) {
-        return res.status(400).json({
-          message: "Password must be at least 6 characters long",
-          success: false,
-        });
-      }
-      updateData.password = await bcrypt.hash(password, 10);
+    
+    if (file && file.size > 0) {
+      let coverURL = await uploadToCloudinary(file);
+      updateData.profile = coverURL;
     }
+
 
     const updatedUser = await prisma.user.update({
       where: { id: user.id },
@@ -86,6 +92,7 @@ export const updateUser = async (
         name: true,
         email: true,
         phone: true,
+        profile : true,
         role: true,
         createdAt: true,
         updatedAt: true,
