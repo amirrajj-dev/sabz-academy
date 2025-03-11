@@ -104,4 +104,4 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   );
 };
 
-export default FilterSidebar;
+export default React.memo(FilterSidebar);

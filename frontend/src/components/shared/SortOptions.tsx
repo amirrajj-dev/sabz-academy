@@ -23,11 +23,11 @@ const SortOptions: React.FC<SortOptionsProps> = ({ sortingOptions, selectedSort,
     >
       <span className="text-base-content">مرتب سازی بر اساس:</span>
 
-      <div className="flex flex-wrap justify-center gap-3 w-full md:w-auto">
+      <div className="flex flex-wrap justify-center gap-3 mt-4 sm:mt-0 w-full md:w-auto">
         {sortingOptions.map(({ label, key, icon }) => (
           <button
             key={key}
-            className={`flex items-center gap-2 px-5 py-3 rounded-lg font-medium transition-all duration-300 shadow-md ${
+            className={`btn ${
               selectedSort === key ? "bg-primary text-primary-content scale-105" : "bg-base-100 hover:bg-primary/20"
             }`}
             onClick={() => setSelectedSort(key)}
@@ -41,4 +41,4 @@ const SortOptions: React.FC<SortOptionsProps> = ({ sortingOptions, selectedSort,
   );
 };
 
-export default SortOptions;
+export default React.memo(SortOptions);

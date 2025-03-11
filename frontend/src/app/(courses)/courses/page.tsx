@@ -1,5 +1,5 @@
 "use client";
-import React, { use, useEffect, useState } from "react";
+import React, { use, useCallback, useEffect, useMemo, useState } from "react";
 import SectionHeader from "@/components/shared/SectionHeader";
 import { FaArrowDown, FaArrowUp, FaFire } from "react-icons/fa";
 import { useCourseStore } from "@/store/course.store";
@@ -10,6 +10,7 @@ import FilterSidebar from "@/components/courses/FilterSideBar";
 import NoCoursesMessage from "@/components/courses/NoCoursesMessage";
 import CourseGrid from "@/components/courses/CourseGrid";
 import SortOptions from "@/components/shared/SortOptions";
+import { useDebounce } from "@/hooks/useDobounce";
 
 const sortingOptions = [
   {
@@ -37,99 +38,109 @@ interface CoursesPageProps {
 const CoursesPage = ({ params, searchParams }: CoursesPageProps) => {
   const [selectedSort, setSelectedSort] = useState("");
   const [expanded, setExpanded] = useState(false);
-  const [sortedCourses, setSortedCourses] = useState<ICourse[]>([]);
-  const [visibleCourses, setVisibleCourses] = useState(6); // Track visible courses
+  const [visibleCourses, setVisibleCourses] = useState(6);
   const { sort: sortQuery } = use(searchParams);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [isFree, setIsFree] = useState(false);
   const [isPreSale, setIsPreSale] = useState(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const debouncedSearchQuery = useDebounce(searchQuery, 300);
 
   const { courses, fetchCourses, isLoading } = useCourseStore();
   const { categories, fetchCategories } = useCategoriesStore();
 
+  const memoizedCategories = useMemo(() => categories, [categories]);
+
   useEffect(() => {
     fetchCourses();
     fetchCategories();
-    if (sortQuery && sortQuery === "popular") {
-      setSelectedSort(sortQuery);
-    } else if (sortQuery && sortQuery === "free") {
-      setIsFree(true);
-    } else if (sortQuery === "expensive") {
-      setSelectedSort("priceDesc");
-    } else if (sortQuery === "cheapest") {
-      setSelectedSort("priceAsc");
-    } else if (sortQuery === "presale") {
-      setIsPreSale(true);
-    }
   }, []);
 
   useEffect(() => {
-    if (courses.length > 0) {
-      filterAndSortCourses();
+    if (sortQuery) {
+      switch (sortQuery) {
+        case "popular":
+          setSelectedSort("popular");
+          break;
+        case "free":
+          setIsFree(true);
+          break;
+        case "expensive":
+          setSelectedSort("priceDesc");
+          break;
+        case "cheapest":
+          setSelectedSort("priceAsc");
+          break;
+        case "presale":
+          setIsPreSale(true);
+          break;
+        default:
+          const category = categories.find(c => c.title === sortQuery);
+          if (category) setSelectedCategories([category.id]);
+          break;
+      }
     }
-  }, [selectedSort, courses, isFree, isPreSale, selectedCategories, searchQuery]);
+  }, [sortQuery, categories]);
+
+  const sortedCourses = useMemo(() => {
+    let filteredCourses = [...courses];
+
+    filteredCourses = filteredCourses.filter(course => {
+      const matchesCategory = selectedCategories.length === 0 || 
+        selectedCategories.includes(course.categoryID);
+      const matchesPrice = !isFree || course.price === 0;
+      const matchesPresale = !isPreSale || course.status === "pre-sale";
+      
+      return matchesCategory && matchesPrice && matchesPresale;
+    });
+
+    if (debouncedSearchQuery) {
+      const lowerQuery = debouncedSearchQuery.toLowerCase();
+      filteredCourses = filteredCourses.filter(course => {
+        const category = categories.find(c => c.id === course.categoryID);
+        return (
+          course.name.toLowerCase().includes(lowerQuery) ||
+          course.description.toLowerCase().includes(lowerQuery) ||
+          category?.name.toLowerCase().includes(lowerQuery)
+        );
+      });
+    }
+
+    switch (selectedSort) {
+      case "priceAsc":
+        return [...filteredCourses].sort((a, b) => a.price - b.price);
+      case "priceDesc":
+        return [...filteredCourses].sort((a, b) => b.price - a.price);
+      case "popular":
+        return [...filteredCourses].sort(
+          (a, b) => (b.comments?.length || 0) - (a.comments?.length || 0)
+        );
+      default:
+        return filteredCourses;
+    }
+  }, [courses, selectedSort, isFree, isPreSale, selectedCategories, debouncedSearchQuery, categories]);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (
-        window.innerHeight + document.documentElement.scrollTop >=
-        document.documentElement.offsetHeight - 550
-      ) {
-        if (visibleCourses < sortedCourses.length) {
-          setVisibleCourses((prev) => prev + 6);
-        }
+      if (window.innerHeight + document.documentElement.scrollTop >=
+        document.documentElement.offsetHeight - 550) {
+        setVisibleCourses(prev => Math.min(prev + 6, sortedCourses.length));
       }
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [visibleCourses, sortedCourses]);
+  }, [sortedCourses.length]);
 
-  const filterAndSortCourses = () => {
-    let filteredCourses = [...courses];
-    if (isFree) {
-      filteredCourses = filteredCourses.filter((course) => course.price === 0);
-    }
-
-    if (isPreSale) {
-      filteredCourses = filteredCourses.filter(
-        (course) => course.status === "pre-sale"
-      );
-    }
-
-    if (selectedCategories.length > 0) {
-      filteredCourses = filteredCourses.filter((course) =>
-        selectedCategories.includes(course.categoryID)
-      );
-    }
-
-    if (selectedSort === "priceAsc") {
-      filteredCourses.sort((a, b) => a.price - b.price);
-    } else if (selectedSort === "priceDesc") {
-      filteredCourses.sort((a, b) => b.price - a.price);
-    } else if (selectedSort === "popular") {
-      filteredCourses.sort((a, b) => b?.comments?.length - a?.comments?.length);
-    }
-
-    if (searchQuery.length > 0) {
-      filteredCourses = filteredCourses.filter(
-        (course) =>
-          course.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          course.description.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
-
-    setSortedCourses(filteredCourses);
-  };
-
-  const handleCategoryChange = (categoryID: string) => {
-    setSelectedCategories((prev) =>
+  const handleCategoryChange = useCallback((categoryID: string) => {
+    setSelectedCategories(prev =>
       prev.includes(categoryID)
-        ? prev.filter((id) => id !== categoryID)
+        ? prev.filter(id => id !== categoryID)
         : [...prev, categoryID]
     );
-  };
+  }, []);
+
+  const memoizedSortingOptions = useMemo(() => sortingOptions, []);
 
   return (
     <div className="max-w-7xl mx-auto my-20 flex flex-col gap-6 px-4">
@@ -151,7 +162,7 @@ const CoursesPage = ({ params, searchParams }: CoursesPageProps) => {
         <FilterSidebar
           expanded={expanded}
           setExpanded={setExpanded}
-          categories={categories}
+          categories={memoizedCategories}
           isFree={isFree}
           isPreSale={isPreSale}
           setIsFree={setIsFree}
@@ -166,12 +177,12 @@ const CoursesPage = ({ params, searchParams }: CoursesPageProps) => {
           <SortOptions
             selectedSort={selectedSort}
             setSelectedSort={setSelectedSort}
-            sortingOptions={sortingOptions}
+            sortingOptions={memoizedSortingOptions}
           />
           <CourseGrid
             isLoading={isLoading}
             sortedCourses={sortedCourses.slice(0, visibleCourses)}
-            hasMoreCourses={visibleCourses < sortedCourses.length} 
+            hasMoreCourses={visibleCourses < sortedCourses.length}
           />
         </div>
       </div>
@@ -179,4 +190,4 @@ const CoursesPage = ({ params, searchParams }: CoursesPageProps) => {
   );
 };
 
-export default CoursesPage;
+export default React.memo(CoursesPage);
