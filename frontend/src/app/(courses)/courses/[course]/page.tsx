@@ -1,68 +1,50 @@
-"use client";
-import BreadCrumb from "@/components/shared/breadCrumb/BreadCrumb";
-import CourseDesc from "@/components/course/courseDescription/CourseDesc";
-import CourseLink from "@/components/course/courseDescription/CourseLink";
-import CourseMaster from "@/components/course/courseDescription/CourseMaster";
-import CourseDetails from "@/components/course/courseDetails/CourseDetails";
-import CourseHeader from "@/components/course/courseHeader/CourseHeader";
-import CourseSessions from "@/components/course/courseSessions/CourseSessions";
-import RelatedCourses from "@/components/course/relatedCourses/RelatedCourses";
-import CourseCommentSection from "@/components/course/courseCommentSesction/CourseCommentSection";
-import React, { useEffect, useMemo, useState } from "react";
-import { useCourseStore } from "@/store/course.store";
-import { useCommentsStore } from "@/store/comment.store";
-import { useAuthStore } from "@/store/auth.store";
-import { IUser } from "@/interfaces/types";
+import React from "react";
+import Course from "@/components/course/Course";
+import { ICourse } from "@/interfaces/types";
+import { getSingleCourse } from "@/helpers/getCourse";
+import { Metadata } from "next";
+
 
 interface MainCourseProps {
   params: Promise<{ course: string }>;
 }
 
+export const generateMetadata = async ({ params }: { params: { course: string } }): Promise<Metadata> => {
+  const course: ICourse = await getSingleCourse((await params).course);
+
+  return {
+    title: `${course.name} | سبزلرن`,
+    description: course.description || "دوره‌ای جامع و کاربردی در زمینه برنامه‌نویسی و فناوری اطلاعات.",
+    keywords: [course.name, course.category.name, "برنامه‌نویسی", "توسعه وب", "سبزلرن", "آموزش آنلاین"],
+    openGraph: {
+      title: `${course.name} | سبزلرن`,
+      description: course.description || "دوره‌ای جامع و کاربردی در زمینه برنامه‌نویسی و فناوری اطلاعات.",
+      url: `https://www.sabzlearn.ir/courses/${course.shortName}`,
+      siteName: "سبزلرن",
+      images: [
+        {
+          url: course.cover ? `https://www.sabzlearn.ir/images/${course.cover}` : "https://www.sabzlearn.ir/images/default-course-og.jpg",
+          width: 1200,
+          height: 630,
+          alt: course.name,
+        },
+      ],
+      locale: "fa_IR",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${course.name} | سبزلرن`,
+      description: course.description || "دوره‌ای جامع و کاربردی در زمینه برنامه‌نویسی و فناوری اطلاعات.",
+      images: [course.cover ? `https://www.sabzlearn.ir/images/${course.cover}` : "https://www.sabzlearn.ir/images/default-course-twitter.jpg"],
+    },
+  };
+};
+
 const MainCourse: React.FC<MainCourseProps> = ({ params }) => {
-  const { getSingleCourse, mainCourse, relatedCourses } = useCourseStore();
-  const {
-    comments,
-    getAllComments,
-    isLoading: commentsIsLoading,
-  } = useCommentsStore();
-  useEffect(() => {
-    const getCourseName = async () => {
-      const { course } = await params;
-      await getSingleCourse(course);
-    };
-    getCourseName();
-    getAllComments();
-  }, []);
-
-  return (
-    <div className="max-w-7xl mx-auto my-10 p-4">
-      <BreadCrumb
-        title={mainCourse?.name as string}
-        category={mainCourse?.category.name as string}
-        categoryLink={`/course-cat/${mainCourse?.category.title}`}
-        section="دوره ها"
-      />
-      <CourseHeader />
-      <CourseDetails />
-      <div className="mt-10 grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left Section */}
-        <div className="lg:col-span-2 space-y-6">
-          <CourseDesc />
-          <CourseSessions />
-          <RelatedCourses />
-          <CourseCommentSection courseId={mainCourse?.id as string} />
-        </div>
-
-        {/* Right Section */}
-        <div className="lg:col-span-1">
-          <div className="flex flex-col h-fit shadow-lg gap-6 bg-base-300 p-4 rounded-lg">
-            <CourseMaster />
-            <CourseLink />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+ return (
+  <Course params={params} />
+ )
 };
 
 export default MainCourse;
