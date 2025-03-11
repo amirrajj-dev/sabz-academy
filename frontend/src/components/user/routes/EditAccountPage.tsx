@@ -2,30 +2,85 @@
 import { toastOptions } from "@/helpers/toastOptions";
 import { useAuthStore } from "@/store/auth.store";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { TbCameraPlus, TbEye, TbEyeOff } from "react-icons/tb";
 import { toast } from "react-toastify";
+import { TfiBackLeft } from "react-icons/tfi";
+
+const emailReg = /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/;
 
 const EditAccountPage = () => {
-  const { user, getMe, changePassword , isLoading } = useAuthStore();
+  const { user, getMe, changePassword, isLoading, updateUser } = useAuthStore();
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const [showOldPassword, setShowOldPassword] = useState(false); 
+  const [showOldPassword, setShowOldPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
+
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [profileImage, setProfileImage] = useState<File | null>(null);
+  const [profilePreview, setProfilePreview] = useState("");
 
   useEffect(() => {
     getMe();
+  }, [getMe]);
+
+  useEffect(() => {
+    if (user) {
+      setUsername(user.username || "");
+      setEmail(user.email || "");
+      setPhone(user.phone || "");
+      setProfilePreview(user.profile || "");
+    }
+  }, [user]);
+
+  const handleProfileImageChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setProfileImage(file);
+      setProfilePreview(URL.createObjectURL(file));
+    }
   }, []);
 
-  const handleChangePassword = async () => {
+  const resetProfileImage = useCallback(() => {
+    setProfileImage(null);
+    setProfilePreview(user?.profile || "");
+  }, [user?.profile]);
+
+
+  const handleUpdateUser = useCallback(async () => {
+    if (!username && !email && !phone && !profileImage) {
+      toast.info("لطفاً حداقل یک فیلد را پر کنید.", toastOptions);
+      return;
+    }
+    if (email && !emailReg.test(email)) {
+      toast.info("لطفاً یک ایمیل معتبر وارد کنید.", toastOptions);
+      return;
+    }
+
+    try {
+      const res = await updateUser({ email, phone, username }, profileImage as File);
+      if (res.success) {
+        toast.success("پروفایل با موفقیت به‌روزرسانی شد.", toastOptions);
+        resetProfileImage();
+      } else {
+        toast.error(res.message || "خطایی در به‌روزرسانی پروفایل رخ داده است.", toastOptions);
+      }
+    } catch (error) {
+      toast.error("خطایی در به‌روزرسانی پروفایل رخ داده است.", toastOptions);
+    }
+  }, [email, phone, username, profileImage, updateUser, resetProfileImage]);
+
+  const handleChangePassword = useCallback(async () => {
     if (!oldPassword || !newPassword) {
-      toast.info("لطفاً هر دو فیلد را پر کنید." , toastOptions);
+      toast.info("لطفاً هر دو فیلد را پر کنید.", toastOptions);
       return;
     }
 
     if (newPassword.length < 8) {
-      toast.info("رمز عبور جدید باید حداقل 8 کاراکتر باشد." , toastOptions);
+      toast.info("رمز عبور جدید باید حداقل 8 کاراکتر باشد.", toastOptions);
       return;
     }
 
@@ -35,25 +90,29 @@ const EditAccountPage = () => {
         toast.success("رمز عبور با موفقیت تغییر کرد.", toastOptions);
         setOldPassword("");
         setNewPassword("");
-      } else {
-
       }
     } catch (error) {
-      toast.error("خطایی در تغییر رمز عبور رخ داده است." , toastOptions);
+      toast.error("خطایی در تغییر رمز عبور رخ داده است.", toastOptions);
     }
-  };
+  }, [oldPassword, newPassword, changePassword]);
+
+
+  const profileImageSrc = useMemo(() => {
+    return profilePreview || "https://secure.gravatar.com/avatar/59cdb83049569198d15c47f81f23da74?s=96&d=mm&r=g";
+  }, [profilePreview]);
+
+  console.log(user);
 
   return (
     <div className="flex flex-col lg:flex-row items-start gap-6 mt-10 p-4">
+      {/* User Details Section */}
       <div className="w-full lg:w-3/5 bg-base-300 p-6 rounded-md shadow-md">
         <h2 className="text-xl font-dana-demi mb-4">جزییات حساب کاربری</h2>
         <div className="divider divide-base-100 mb-6" />
         <div className="flex flex-col gap-6">
           <div className="relative w-fit mx-auto">
             <Image
-              src={
-                "https://secure.gravatar.com/avatar/59cdb83049569198d15c47f81f23da74?s=96&d=mm&r=g"
-              }
+              src={profileImageSrc}
               width={150}
               height={150}
               className="rounded-full"
@@ -66,12 +125,21 @@ const EditAccountPage = () => {
                 </button>
                 <input
                   type="file"
-                  accept="image/png"
+                  accept="image/*"
                   aria-label="hidden"
                   className="w-full h-full absolute bottom-0 right-0 opacity-0"
+                  onChange={handleProfileImageChange}
                 />
               </div>
             </div>
+            {profileImage && (
+              <button
+                className="btn btn-error btn-soft btn-dash btn-circle rotate-45 absolute top-0 -left-6"
+                onClick={resetProfileImage}
+              >
+                <TfiBackLeft />
+              </button>
+            )}
           </div>
 
           <div className="space-y-4">
@@ -81,7 +149,8 @@ const EditAccountPage = () => {
                 type="text"
                 className="input border-none w-full"
                 placeholder="شماره موبایل"
-                defaultValue={user?.phone}
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -90,7 +159,8 @@ const EditAccountPage = () => {
                 type="text"
                 className="input border-none w-full"
                 placeholder="نام کاربری"
-                defaultValue={user?.username}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -99,14 +169,22 @@ const EditAccountPage = () => {
                 type="email"
                 className="input border-none w-full"
                 placeholder="ایمیل"
-                defaultValue={user?.email}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-            <button className="btn btn-primary w-full mt-4">ثبت اطلاعات</button>
+            <button
+              className="btn btn-primary w-full mt-4"
+              onClick={handleUpdateUser}
+              disabled={isLoading}
+            >
+              {isLoading ? <FaSpinner className="animate-spin" /> : "ثبت اطلاعات"}
+            </button>
           </div>
         </div>
       </div>
 
+      {/* Change Password Section */}
       <div className="w-full lg:w-2/5 bg-base-300 p-6 rounded-md shadow-md">
         <h2 className="text-xl font-dana-demi mb-4">تغییر رمز عبور</h2>
         <div className="divider divide-base-100 mb-6" />
@@ -117,7 +195,7 @@ const EditAccountPage = () => {
               <input
                 type={showOldPassword ? "text" : "password"}
                 placeholder="رمز فعلی را وارد کنید"
-                className="input border-none w-full" 
+                className="input border-none w-full"
                 value={oldPassword}
                 onChange={(e) => setOldPassword(e.target.value)}
               />
@@ -128,9 +206,6 @@ const EditAccountPage = () => {
                 {showOldPassword ? <TbEyeOff /> : <TbEye />}
               </button>
             </div>
-            <a href="#" className="text-sm text-primary hover:underline">
-              رمز عبور را فراموش کرده اید؟
-            </a>
           </div>
           <div className="flex flex-col gap-2">
             <label className="text-sm text-gray-400">رمز عبور جدید</label>
@@ -150,8 +225,12 @@ const EditAccountPage = () => {
               </button>
             </div>
           </div>
-          <button className="btn btn-primary w-full mt-4" onClick={handleChangePassword}>
-            {isLoading ? <FaSpinner className="animate-spin transition-all duration-200" /> : "تغییر رمز"}
+          <button
+            className="btn btn-primary w-full mt-4"
+            onClick={handleChangePassword}
+            disabled={isLoading}
+          >
+            {isLoading ? <FaSpinner className="animate-spin" /> : "تغییر رمز"}
           </button>
         </div>
       </div>
@@ -159,4 +238,4 @@ const EditAccountPage = () => {
   );
 };
 
-export default EditAccountPage;
+export default React.memo(EditAccountPage);
