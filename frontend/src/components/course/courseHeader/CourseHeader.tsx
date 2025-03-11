@@ -29,7 +29,7 @@ const CourseHeader = () => {
   };
 
   return (
-    <div className="mt-10 flex justify-center px-4 sm:px-8">
+    <div className="mt-10 flex justify-center ">
       <motion.div
         className="flex flex-col-reverse bg-base-300 w-full max-w-6xl p-6 rounded-xl lg:rounded-none lg:p-0 lg:bg-transparent lg:flex-row items-center lg:items-start justify-between gap-10"
         initial={{ opacity: 0, y: 20 }}
