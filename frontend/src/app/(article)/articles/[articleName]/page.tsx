@@ -6,7 +6,7 @@ import Image from "next/image";
 import React, { use, useEffect } from "react";
 import { FaCalendar, FaEye, FaUser } from "react-icons/fa";
 import dompurify from "dompurify";
-import SuggestedArticles from "@/components/article/ui/SuggestedArticles";
+import SuggestedArticles from "@/components/articles/ui/SuggestedArticles";
 
 interface MainArticleProps {
   params: Promise<{ articleName: string }>;
@@ -14,17 +14,21 @@ interface MainArticleProps {
 
 const Page = ({ params }: MainArticleProps) => {
   const { articleName } = use(params);
-  const { getSingleArticle, mainArticle, isLoading , getSuggestedArticles } = useArticleStore();
+  const { getSingleArticle, mainArticle, isLoading, getSuggestedArticles } =
+    useArticleStore();
 
   useEffect(() => {
     getSingleArticle(articleName);
-    getSuggestedArticles(articleName)
+    getSuggestedArticles(articleName);
   }, [articleName]);
 
   const sanitizeHtml = dompurify.sanitize(mainArticle?.body ?? "");
   return (
     <div className="max-w-6xl p-4 mx-auto mt-10">
-      <BreadCrumb title={mainArticle?.title ?? "در حال بارگذاری..."} section="مقاله ها" />
+      <BreadCrumb
+        title={mainArticle?.title ?? "در حال بارگذاری..."}
+        section="مقاله ها"
+      />
 
       <div className="mt-10 bg-base-300 rounded-md shadow-md p-6">
         {isLoading ? (
@@ -101,7 +105,7 @@ const Page = ({ params }: MainArticleProps) => {
           )
         )}
       </div>
-        <SuggestedArticles/>
+      <SuggestedArticles />
     </div>
   );
 };
