@@ -23,7 +23,7 @@ const CartMenu = ({
 
   const totalPrice: number =
     cartItems.length > 0
-      ? cartItems.reduce((total, item) => total + item.price, 0)
+      ? cartItems.reduce((total, item) => total + (item.discount ? (item.price * (100 - item.discount)) / 100 : item.price), 0)
       : 0;
 
   return (
@@ -89,7 +89,7 @@ const CartMenu = ({
                         </span>
                         ) : (
                         <span className="text-sm font-dana-extra-light">
-                          {item.price.toLocaleString()} تومان
+                          {item.price > 0  ? item.price.toLocaleString() + " تومان" : 'رایگان!'} 
                         </span>
                         )}
                       </div>
