@@ -1,113 +1,48 @@
-"use client";
-import BreadCrumb from "@/components/shared/breadCrumb/BreadCrumb";
-import { useArticleStore } from "@/store/article.store";
-import moment from "moment-jalaali";
-import Image from "next/image";
-import React, { use, useEffect } from "react";
-import { FaCalendar, FaEye, FaUser } from "react-icons/fa";
-import dompurify from "dompurify";
-import SuggestedArticles from "@/components/articles/ui/SuggestedArticles";
-
+import Article from "@/components/article/Article";
+import { getSingleArticle } from "@/helpers/getArticle";
+import { IArticle } from "@/interfaces/types";
+import { Metadata } from "next";
 interface MainArticleProps {
   params: Promise<{ articleName: string }>;
 }
 
+export const generateMetadata = async ({ params }: { params: { articleName: string } }): Promise<Metadata> => {
+  const article: IArticle = await getSingleArticle(params.articleName);
+
+  return {
+    title: `${article.title} | سبزلرن`,
+    description: article.description || "مقاله‌ای جامع و کاربردی در زمینه برنامه‌نویسی و فناوری اطلاعات.",
+    keywords: [article.title, article.category.name, "برنامه‌نویسی", "توسعه وب", "سبزلرن", "آموزش آنلاین"],
+    openGraph: {
+      title: `${article.title} | سبزلرن`,
+      description: article.description || "مقاله‌ای جامع و کاربردی در زمینه برنامه‌نویسی و فناوری اطلاعات.",
+      url: `https://www.sabzlearn.ir/articles/${article.shortName}`,
+      siteName: "سبزلرن",
+      images: [
+        {
+          url: article.cover ? `https://www.sabzlearn.ir/images/${article.cover}` : "https://www.sabzlearn.ir/images/default-article-og.jpg",
+          width: 1200,
+          height: 630,
+          alt: article.title,
+        },
+      ],
+      locale: "fa_IR",
+      type: "article",
+      publishedTime: new Date(article.createdAt).toLocaleDateString(),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${article.title} | سبزلرن`,
+      description: article.description || "مقاله‌ای جامع و کاربردی در زمینه برنامه‌نویسی و فناوری اطلاعات.",
+      images: [article.cover ? `https://www.sabzlearn.ir/images/${article.cover}` : "https://www.sabzlearn.ir/images/default-article-twitter.jpg"],
+    },
+  };
+};
+
 const Page = ({ params }: MainArticleProps) => {
-  const { articleName } = use(params);
-  const { getSingleArticle, mainArticle, isLoading, getSuggestedArticles } =
-    useArticleStore();
-
-  useEffect(() => {
-    getSingleArticle(articleName);
-    getSuggestedArticles(articleName);
-  }, [articleName]);
-
-  const sanitizeHtml = dompurify.sanitize(mainArticle?.body ?? "");
   return (
-    <div className="max-w-6xl p-4 mx-auto mt-10">
-      <BreadCrumb
-        title={mainArticle?.title ?? "در حال بارگذاری..."}
-        section="مقاله ها"
-      />
-
-      <div className="mt-10 bg-base-300 rounded-md shadow-md p-6">
-        {isLoading ? (
-          <div className="flex flex-col gap-6">
-            <div className="skeleton bg-base-200 h-8 w-3/4 rounded"></div>
-            <div className="divider divide-base-content"></div>
-
-            <div className="flex items-center gap-5">
-              <div className="flex items-center gap-2">
-                <div className="skeleton bg-base-200 w-20 h-4 rounded"></div>
-                <FaUser className="text-neutral-content" />
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="skeleton bg-base-200 w-16 h-4 rounded"></div>
-                <FaCalendar className="text-neutral-content" />
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="skeleton bg-base-200 w-10 h-4 rounded"></div>
-                <FaEye className="text-neutral-content" />
-              </div>
-            </div>
-
-            <div className="skeleton bg-base-200 w-full h-64 rounded-md"></div>
-
-            <div className="flex flex-col gap-2 mt-6">
-              <div className="skeleton w-full h-6 bg-base-200"></div>
-              <div className="skeleton w-full h-6 bg-base-200"></div>
-              <div className="skeleton w-3/4 h-6 bg-base-200"></div>
-              <div className="skeleton w-2/3 h-6 bg-base-200"></div>
-              <div className="skeleton w-full h-6 bg-base-200"></div>
-              <div className="skeleton w-1/2 h-6 bg-base-200"></div>
-            </div>
-          </div>
-        ) : (
-          mainArticle && (
-            <div className="flex flex-col gap-6">
-              <h2 className="text-xl font-bold">{mainArticle?.title}</h2>
-              <div className="divider divide-base-content"></div>
-
-              <div className="flex items-center gap-5">
-                <div className="flex items-center gap-2">
-                  <span>{mainArticle?.creator?.name ?? "نامشخص"}</span>
-                  <FaUser />
-                </div>
-                <div className="flex items-center gap-2">
-                  <span>
-                    {mainArticle?.createdAt
-                      ? moment(mainArticle?.createdAt).format("jYYYY/jMM/jDD")
-                      : "تاریخ نامشخص"}
-                  </span>
-                  <FaCalendar />
-                </div>
-                <div className="flex items-center gap-2">
-                  <span>14</span>
-                  <FaEye />
-                </div>
-              </div>
-
-              <Image
-                src={String(mainArticle?.cover)}
-                alt={mainArticle?.title ?? "تصویر مقاله"}
-                className="rounded-lg w-full object-cover mb-4"
-                width={500}
-                height={400}
-              />
-              <div
-                className="text-base leading-8 font-dana-extra-light text-base-content 
-              [&_:is(h1,h2,h3,h4,h5,h6)]:my-6 [&_:is(h1,h2,h3,h4,h5,h6)]:text-xl [&_:is(h1,h2,h3,h4,h5,h6)]:font-dana-bold [&_:is(li)]:my-[4px] [&_:is(li)]:list-disc"
-                dangerouslySetInnerHTML={{
-                  __html: sanitizeHtml,
-                }}
-              />
-            </div>
-          )
-        )}
-      </div>
-      <SuggestedArticles />
-    </div>
-  );
+    <Article params={params} />
+  )
 };
 
 export default Page;
