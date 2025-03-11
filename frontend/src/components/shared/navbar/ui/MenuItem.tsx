@@ -1,16 +1,21 @@
+'use client'
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ICategory, ICourse } from "@/interfaces/types";
+import { usePathname , useSearchParams } from "next/navigation";
 
-const MenuItem = ({ item, isOpen, toggleOpen }: { item: ICategory, isOpen: boolean, toggleOpen: () => void }) => {
+const MenuItem = ({ item, isOpen, toggleOpen , setDrawerOpen }: { item: ICategory, isOpen: boolean, toggleOpen: () => void , setDrawerOpen: (value: boolean) => void; }) => {
+  const pathname = usePathname()
+  const searchParam = useSearchParams().get('sort')
+  const queryUrl = `${pathname}?sort=${searchParam}`
   return (
     <li className="w-full">
       <div
         className="w-full cursor-default px-4 py-2 bg-base-100 hover:bg-primary hover:text-white rounded-md flex justify-between items-center"
         onClick={toggleOpen}
       >
-        <Link href={'/'} className="cursor-pointer">{item.name}</Link>
+        <Link onClick={()=>setDrawerOpen(false)} href={`/courses?sort=${item.title}`} className={`cursor-pointer ${queryUrl === `/courses?sort=${item.title}` ? 'text-primary' : null}`}>{item.name}</Link>
         {isOpen ? <FiChevronUp className="cursor-pointer" /> : <FiChevronDown className="cursor-pointer" />}
       </div>
       <motion.ul
@@ -20,8 +25,8 @@ const MenuItem = ({ item, isOpen, toggleOpen }: { item: ICategory, isOpen: boole
         transition={{ type: "spring", stiffness: 200, damping: 30 }}
       >
         {item.courses.map((course, index) => (
-          <li key={course.id} className="hover:bg-primary hover:text-white rounded-md">
-            <Link href={`/courses/${course.shortName}`} className="block px-4 py-2">
+          <li key={course.id} className={`hover:bg-primary hover:text-white rounded-md`}>
+            <Link href={`/courses/${course.shortName}`} onClick={()=>setDrawerOpen(false)} className={`block px-4 py-2 ${`/courses/${course.shortName}` === pathname ? 'text-primary' : null}`}>
               {course.name}
             </Link>
           </li>

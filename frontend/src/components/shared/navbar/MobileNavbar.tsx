@@ -15,17 +15,6 @@ const MobileNavbar = () => {
   const [cartOpen, setCartOpen] = useState(false);
   const { categories } = useCategoriesStore();
 
-  const handleClickOutside = (e: MouseEvent) => {
-    if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
-      setDrawerOpen(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
   return (
     <div>
       {/* Top Navbar */}

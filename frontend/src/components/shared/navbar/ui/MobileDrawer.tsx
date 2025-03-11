@@ -19,16 +19,14 @@ const MobileDrawer = ({
   themeItems: any[];
 }) => {
     const [themeDropDownToggle, setThemeDropdownToggle] = useState(false);
-    const [theme , setTheme] = useState('light');
+    const [theme , setTheme] = useState('dark');
     const [openIndex, setOpenIndex] = useState<number | null>(null);
-
-    const toggleDrawer = () => {
-      setDrawerOpen(!drawerOpen);
-    };
 
     const handleClickOutside = (e: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
-        setDrawerOpen(false);
+        setTimeout(() => {
+          setDrawerOpen(false);
+        }, 700);
       }
     };
 
@@ -64,12 +62,13 @@ const MobileDrawer = ({
         className="fixed top-0 right-0 w-68 sm:w-80 h-full bg-base-100 shadow-xl rounded-tl-lg overflow-y-auto"
         initial={{ x: "100%" }}
         animate={{ x: drawerOpen ? 0 : "100%" }}
+        exit={{x : "100%"}}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
       >
         <UserSection />
         <ul className="menu p-4 space-y-3 w-full">
           {menuItems.map((item, index) => (
-            <MenuItem key={index} item={item} isOpen={openIndex === index} toggleOpen={() => toggleMenuItem(index)} />
+            <MenuItem key={index} item={item} isOpen={openIndex === index} toggleOpen={() => toggleMenuItem(index)} setDrawerOpen={setDrawerOpen} />
           ))}
         </ul>
         <div className="divider divide-base-300 p-2 pt-0"></div>
