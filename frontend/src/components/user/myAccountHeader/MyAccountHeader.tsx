@@ -9,28 +9,28 @@ const MyAccountHeader = () => {
       desc: "تومان",
       length: 0,
       bgColor: "bg-blue-500",
-      icon: <FaMoneyBillAlt />, // Icon for payments
+      icon: <FaMoneyBillAlt />
     },
     {
       title: "دوره های من",
       desc: "دوره",
       length: 0,
       bgColor: "bg-purple-500",
-      icon: <FaBook />, // Icon for courses
+      icon: <FaBook />
     },
     {
       title: "مجموع تیکت ها",
       desc: "تیکت",
       length: 0,
       bgColor: "bg-green-500",
-      icon: <FaTicketAlt />, // Icon for tickets
+      icon: <FaTicketAlt />
     },
     {
       title: "موجودی حساب",
       desc: "تومان",
       length: 0,
       bgColor: "bg-orange-500",
-      icon: <FaWallet />, // Icon for wallet
+      icon: <FaWallet />
     },
   ];
   return (

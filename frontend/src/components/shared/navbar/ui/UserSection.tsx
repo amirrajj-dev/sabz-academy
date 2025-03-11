@@ -11,7 +11,7 @@ const UserSection = () => {
   useEffect(() => {
     const formatDate = () => {
       const date = moment();
-      date.locale("fa", { useGregorianParser: true });
+      date.locale("fa");
       return date.format("dddd D MMMM jYYYY");
     };
     setCurrentDate(formatDate());

@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import MobileNavbar from "./MobileNavbar";
-import { menuItems, themeItems } from "@/data/data";
+import { themeItems } from "@/data/data";
 import UserMenu from "./ui/UserMenu";
 import CartMenu from "./ui/CartMenu";
 import ThemeMenu from "./ui/ThemeMenu";

@@ -1,7 +1,6 @@
 'use client'
 import React from "react";
 import SectionHeader from "../shared/SectionHeader";
-import { courses } from "@/data/data";
 import CourseCard from "../shared/CourseCard";
 import CourseCardSkeleton from "../skeletons/CourseCardSkeleton";
 import { useCourseStore } from "@/store/course.store";

@@ -5,7 +5,7 @@ import CartButton from "./ui/CartButton";
 import Logo from "./ui/Logo";
 import HamburgerMenu from "./ui/HamburgerMenu";
 import MobileDrawer from "./ui/MobileDrawer";
-import { mobileMenuItems, themeItems } from "@/data/data";
+import { themeItems } from "@/data/data";
 import { useCategoriesStore } from "@/store/category.store";
 import CartMenu from "./ui/CartMenu";
 

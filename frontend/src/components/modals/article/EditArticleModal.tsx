@@ -70,6 +70,7 @@ const EditArticleModal = ({ id , content , onSave } : {id : string , content : s
                       data={body}
                       onChange={(event, editor) => setBody(editor.getData())}
                       config={{ language: "fa" }}
+                      {...({} as any) }
                     />
                   </div>
                 </div>
