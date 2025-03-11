@@ -51,7 +51,7 @@ const UserMenu = ({
                   alt="user logo"
                   className="rounded-full"
                   src={
-                    "https://secure.gravatar.com/avatar/3f58c412b0a58283b996679c819684d0?s=96&d=mm&r=g"
+                    user?.profile || "https://secure.gravatar.com/avatar/3f58c412b0a58283b996679c819684d0?s=96&d=mm&r=g"
                   }
                 />
                 <div className="flex flex-col">

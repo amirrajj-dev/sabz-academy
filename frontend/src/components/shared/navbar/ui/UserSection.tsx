@@ -3,9 +3,10 @@ import { IoIosArrowBack } from "react-icons/io";
 import moment from "moment-jalaali";
 import { useState, useEffect } from "react";
 import { useAuthStore } from "@/store/auth.store";
+import Link from "next/link";
 
 const UserSection = () => {
-  const {user , isAuthenticated} = useAuthStore()
+  const { user, isAuthenticated } = useAuthStore();
   const [currentDate, setCurrentDate] = useState("");
 
   useEffect(() => {
@@ -22,7 +23,7 @@ const UserSection = () => {
       {isAuthenticated ? (
         <div className="flex items-center gap-4">
           <Image
-            src="https://secure.gravatar.com/avatar/ca7ef232e4e4e6888b99485dc6207ae5?s=96&d=mm&r=g"
+            src={user?.profile || "https://secure.gravatar.com/avatar/ca7ef232e4e4e6888b99485dc6207ae5?s=96&d=mm&r=g"}
             width={55}
             height={55}
             alt="profile"
@@ -36,7 +37,11 @@ const UserSection = () => {
       ) : (
         <button className="btn btn-primary w-full h-15">ورود یا ثبت نام</button>
       )}
-      <IoIosArrowBack />
+      {isAuthenticated && (
+      <Link href={"/my-account"}>
+        <IoIosArrowBack />
+      </Link>
+      )}
     </div>
   );
 };

@@ -25,14 +25,14 @@ const UserPannelHeader = () => {
 
   return (
     <div className="flex flex-col justify-center md:flex-row items-center md:justify-between">
-      <div className="text-xl md:text-2xl font-dana-demi mb-10">
+      <div className="text-xl translate-y-3 md:text-2xl font-dana-demi mb-10">
        {user?.username} عزیز؛ خوش اومدی 🙌
       </div>
       <div className="flex items-center justify-center gap-6">
         <Image
           className="rounded-full"
           src={
-            "https://secure.gravatar.com/avatar/3f58c412b0a58283b996679c819684d0?s=96&d=mm&r=g"
+            user?.profile || "https://secure.gravatar.com/avatar/3f58c412b0a58283b996679c819684d0?s=96&d=mm&r=g"
           }
           width={50}
           height={50}
