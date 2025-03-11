@@ -6,6 +6,7 @@ export interface IUser {
   name: string;
   isBanned: boolean;
   phone: string;
+  profile? : string
   role: 'ADMIN' | 'USER';
   courses: ICourse[];
   comments: IComment[];
