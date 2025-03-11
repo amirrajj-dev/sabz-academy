@@ -7,7 +7,7 @@ interface MainArticleProps {
 }
 
 export const generateMetadata = async ({ params }: { params: { articleName: string } }): Promise<Metadata> => {
-  const article: IArticle = await getSingleArticle(params.articleName);
+  const article: IArticle = await getSingleArticle((await params).articleName);
 
   return {
     title: `${article.title} | سبزلرن`,
