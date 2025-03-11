@@ -2,19 +2,6 @@ import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import prisma from "../../utils/prisma";
 
-interface ICourse {
-  id: string;
-  name: string;
-  description: string;
-  cover?: string;
-  support?: string;
-  shortName: string;
-  price: number;
-  isComplete: number;
-  status: string;
-  createdAt: Date;
-}
-
 declare global {
   namespace Express {
     export interface Request {
@@ -26,6 +13,7 @@ declare global {
         username: string;
         courses : any[];
         phone : string
+        profile? : string | null
         createdAt: Date;
       };
     }
@@ -38,7 +26,7 @@ export const protectRoute = async (
   next: NextFunction
 ) => {
   try {
-    const token = req.cookies["sabz-token"] || req.headers.authorization.slice(7).trim() ;
+    const token = req.cookies["sabz-token"] || req.headers.authorization!.slice(7).trim() ;
     if (!token) {
       return res.status(401).json({ message: "Not authorized, token missing", success: false });
     }
@@ -55,7 +43,7 @@ export const protectRoute = async (
 
     const user = await prisma.user.findUnique({
       where: { id: decoded.userId },
-      select: { id: true, name: true, role : true , email: true, username: true, createdAt: true , phone : true , courses : true },
+      select: { id: true, name: true, role : true , email: true, username: true, createdAt: true , phone : true , courses : true , profile : true},
     });
 
     if (!user) {
@@ -89,7 +77,7 @@ export const protectRouteAdmin = async (req : Request , res : Response , next : 
     
     const user = await prisma.user.findUnique({
       where: { id: userId },
-      select: { id: true, name: true, email: true, username: true, createdAt: true, role: true , phone: true , courses: true },
+      select: { id: true, name: true, email: true, username: true, createdAt: true, role: true , phone: true , courses: true , profile : true },
     });
     
     if (!user) {
