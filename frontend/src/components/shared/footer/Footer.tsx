@@ -22,10 +22,16 @@ const Footer = () => {
           <SabzText size="size-30" />
         </div>
         <div className="flex gap-4">
-          <Link href="https://www.instagram.com/sabzlearn" className="btn glass btn-circle text-xl">
+          <Link
+            href="https://www.instagram.com/sabzlearn"
+            className="btn glass btn-circle text-xl"
+          >
             <FaInstagram />
           </Link>
-          <Link href="https://t.me/sabzlearn" className="btn glass btn-circle text-xl">
+          <Link
+            href="https://t.me/sabzlearn"
+            className="btn glass btn-circle text-xl"
+          >
             <FaTelegram />
           </Link>
         </div>
@@ -68,10 +74,26 @@ const Footer = () => {
           <div className="flex flex-col gap-3">
             <h3 className="font-bold text-xl">دوره‌های پرطرفدار</h3>
             <ul className="space-y-2">
-              <li><Link href="#" className="text-base-content">آموزش پایتون</Link></li>
-              <li><Link href="#" className="text-base-content">دوره طراحی قالب حرفه‌ای</Link></li>
-              <li><Link href="#" className="text-base-content">آموزش BootStrap</Link></li>
-              <li><Link href="#" className="text-base-content">مستر فریلنس</Link></li>
+              <li>
+                <Link href="/courses/eslint" className="text-base-content">
+                  آموزش کاربردی Eslint
+                </Link>
+              </li>
+              <li>
+                <Link href="/courses/next-js" className="text-base-content">
+                  آموزش Next.js
+                </Link>
+              </li>
+              <li>
+                <Link href="/courses/bash-script" className="text-base-content">
+                  آموزش Bash Script
+                </Link>
+              </li>
+              <li>
+                <Link href="/courses/fastify" className="text-base-content">
+                  آموزش  Fastify
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -79,9 +101,21 @@ const Footer = () => {
           <div className="flex flex-col gap-3">
             <h3 className="font-bold text-xl">لینک‌های مفید</h3>
             <ul className="space-y-2">
-              <li><Link href="#" className="text-base-content">قوانین و مقررات</Link></li>
-              <li><Link href="#" className="text-base-content">ارسال تیکت</Link></li>
-              <li><Link href="#" className="text-base-content">همه دوره‌ها</Link></li>
+              <li>
+                <Link href="#" className="text-base-content">
+                  قوانین و مقررات
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-base-content">
+                  ارسال تیکت
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-base-content">
+                  همه دوره‌ها
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
