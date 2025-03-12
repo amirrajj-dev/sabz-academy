@@ -25,6 +25,7 @@ const Article = ({params} : {params: Promise<{ articleName: string }>}) => {
         sectionLink="/articles"
           title={mainArticle?.title ?? "در حال بارگذاری..."}
           section="مقاله ها"
+          categoryLink=""
         />
   
         <div className="mt-10 bg-base-300 rounded-md shadow-md p-6">

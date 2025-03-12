@@ -44,7 +44,7 @@ const BreadCrumb = ({
         <li className="flex items-center gap-1 sm:gap-2">
           <FaFolder className="text-sm sm:text-lg text-base-600" />
           <Link
-            href={sectionLink}
+            href={sectionLink as string}
             aria-label={`Browse ${section} courses`}
             className="transition font-medium text-base-700 focus:outline-none"
           >
