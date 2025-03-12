@@ -94,10 +94,10 @@ const CourseCommentSection = ({ courseId }: CourseCommentSectionProps) => {
             height={40}
             src="https://secure.gravatar.com/avatar/e7b9929942190634b0267c963d2513eb?s=96&d=mm&r=g"
             alt={comment.creator.name}
-            className="rounded-full"
+            className="rounded-full hidden sm:inline"
           />
           <div>
-            <h3 className="font-dana-demi text-base-content text-sm sm:text-base">
+            <h3 className="font-dana-demi text-base-content text-sm line-clamp-1 sm:line-clamp-none sm:text-base">
               {comment.creator.name} |
               <span className="mr-1">{comment.creator.role === "ADMIN" ? "ادمین" : "کاربر"}</span>
             </h3>
