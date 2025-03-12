@@ -6,9 +6,6 @@ import {
   FaSignOutAlt,
   FaUserShield
 } from "react-icons/fa";
-import { HiOutlineCodeBracket } from "react-icons/hi2";
-import { LuShieldCheck, LuPuzzle } from "react-icons/lu";
-import { AiOutlinePython } from "react-icons/ai";
 import { LuClipboardCheck } from "react-icons/lu";
 import { IoBarChartOutline, IoMenu } from "react-icons/io5";
 import { IoBookOutline } from "react-icons/io5";
@@ -36,41 +33,6 @@ export const themeItems = [
   { label: "آبی", value: "aqua" },
   { label: "رترو", value: "retro" },
   { label: "سینتویو", value: "synthwave" },
-];
-
-export const courseCategories = [
-  {
-    id: 1,
-    title: "فرانت اند",
-    icon: <HiOutlineCodeBracket />,
-    count: 10,
-    from: "from-yellow-400",
-    to: "to-yellow-600",
-  },
-  {
-    id: 2,
-    title: "امنیت",
-    icon: <LuShieldCheck />,
-    count: 5,
-    from: "from-green-500",
-    to: "to-green-700",
-  },
-  {
-    id: 3,
-    title: "پایتون",
-    icon: <AiOutlinePython />,
-    count: 20,
-    from: "from-blue-500",
-    to: "to-blue-700",
-  },
-  {
-    id: 4,
-    title: "مهارت های نرم",
-    icon: <LuPuzzle />,
-    count: 6,
-    from: "from-pink-500",
-    to: "to-purple-700",
-  },
 ];
 
 export const services = [

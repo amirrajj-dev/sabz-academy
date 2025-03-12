@@ -8,11 +8,12 @@ interface CourseCategoryProps {
   count: number;
   from: string;
   to: string;
+  link : string
 }
 
-const CourseCategory: React.FC<CourseCategoryProps> = ({ icon, text, count, from, to }) => {
+const CourseCategory: React.FC<CourseCategoryProps> = ({ icon, text, count, from, to , link }) => {
   return (
-    <Link href={'/'}
+    <Link href={link}
       className={`card w-full bg-gradient-to-r ${from} ${to} shadow-lg rounded-md px-6 py-10 text-white`}
     >
       <div className="flex items-center justify-center gap-4">
