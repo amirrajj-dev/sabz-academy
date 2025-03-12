@@ -141,4 +141,4 @@ const CourseHeader = () => {
   );
 };
 
-export default CourseHeader;
+export default React.memo(CourseHeader);

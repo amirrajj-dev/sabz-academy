@@ -1,5 +1,4 @@
 "use client";
-
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -7,7 +6,8 @@ import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { FaGraduationCap, FaLock } from "react-icons/fa";
 import { useSessionStore } from "@/store/session.store";
 import { useCourseStore } from "@/store/course.store";
-import ReactPlayer from "react-player";
+import dynamic from "next/dynamic";
+const ReactPlayer = dynamic(()=>import('react-player') , {ssr : false})
 
 interface Session {
   title: string;

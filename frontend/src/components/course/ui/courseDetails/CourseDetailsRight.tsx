@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import CourseDetailCard from "./CourseDetailCard";
 import { SlCalender } from "react-icons/sl";
 import { FaCertificate, FaChartLine, FaClipboardList, FaClock } from "react-icons/fa";
@@ -50,4 +50,4 @@ const CourseDetailsRight = () => {
   );
 };
 
-export default CourseDetailsRight;
+export default memo(CourseDetailsRight);
