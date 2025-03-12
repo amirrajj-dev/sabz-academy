@@ -64,7 +64,6 @@ const EditAccountPage = () => {
       const res = await updateUser({ email, phone, username }, profileImage as File);
       if (res.success) {
         toast.success("پروفایل با موفقیت به‌روزرسانی شد.", toastOptions);
-        resetProfileImage();
       } else {
         toast.error(res.message || "خطایی در به‌روزرسانی پروفایل رخ داده است.", toastOptions);
       }
