@@ -40,8 +40,6 @@ const Sidebar = ({ isExpanded, isTablet, setIsTablet }: SidebarProps) => {
       logout()
       router.replace('/')
       toast.success("خروج با موفقیت به انجام رسید" , toastOptions)
-    }else{
-      toast.error('خظا در خروج'  , toastOptions)
     }
   }
 
