@@ -22,6 +22,7 @@ const ArticleCard = ({ article } : {article : IArticle}) => {
           layout="fill"
           objectFit="cover"
           className="rounded-xl transition-all duration-300 group-hover:brightness-110"
+          priority
         />
       </div>
 

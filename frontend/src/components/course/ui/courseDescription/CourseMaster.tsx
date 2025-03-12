@@ -2,13 +2,15 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCourseStore } from "@/store/course.store";
+import { useAuthStore } from "@/store/auth.store";
 
 const CourseMaster = () => {
   const {mainCourse} = useCourseStore()
+  const {user} = useAuthStore()
   return (
     <div className="flex flex-col items-center gap-3 bg-base-100 p-4 rounded-lg shadow-md w-full">
       <Image
-        src="https://secure.gravatar.com/avatar/0cccb973498c58ccaba87ac7ad608f70?s=96&d=mm&r=g"
+        src={user?.profile || "https://secure.gravatar.com/avatar/0cccb973498c58ccaba87ac7ad608f70?s=96&d=mm&r=g"}
         alt={`Master  ${mainCourse?.creator?.name} Profile`}
         width={80}
         height={80}

@@ -22,6 +22,7 @@ const CourseCard = ({ course }: { course: ICourse }) => {
           width={500}
           height={128}
           layout="intrinsic"
+          priority
         />
       </Link>
       <div className="card-body p-4">
