@@ -1,8 +1,11 @@
-import React from "react";
+
+import React, { useEffect } from "react";
 import UserPannelCard from "../shared/UserPannelCard";
 import { FaMoneyBillAlt, FaBook, FaTicketAlt, FaWallet } from "react-icons/fa";
+import { useAuthStore } from "@/store/auth.store";
 
-const MyAccountHeader = () => {
+const MyAccountHeader = ({ticketsAmount} : {ticketsAmount : number}) => {
+
   const cardsData = [
     {
       title: "مجموع پرداخت ها",
@@ -21,7 +24,7 @@ const MyAccountHeader = () => {
     {
       title: "مجموع تیکت ها",
       desc: "تیکت",
-      length: 0,
+      length: ticketsAmount,
       bgColor: "bg-green-500",
       icon: <FaTicketAlt />
     },

@@ -12,29 +12,7 @@ import { toast } from "react-toastify";
 import { toastOptions } from "@/helpers/toastOptions";
 
 const UserTicketsPage = () => {
-  const cardsData = [
-    {
-      title: "همه ی تیکت ها",
-      desc: "تیکت",
-      length: 0,
-      bgColor: "bg-green-500",
-      icon: <FaTicketAlt />,
-    },
-    {
-      title: "تیکت های باز",
-      desc: "تیکت",
-      length: 0,
-      bgColor: "bg-blue-500",
-      icon: <IoMailOpenSharp />,
-    },
-    {
-      title: "بسته شده",
-      desc: "تیکت",
-      length: 0,
-      bgColor: "bg-purple-500",
-      icon: <IoTicket />,
-    },
-  ];
+ 
   const { user, getMe } = useAuthStore();
   const {
     tickets,
@@ -48,6 +26,29 @@ const UserTicketsPage = () => {
   }, []);
 
   const userTickets = tickets?.filter((ticket) => ticket.user.id === user?.id);
+  const cardsData = [
+    {
+      title: "همه ی تیکت ها",
+      desc: "تیکت",
+      length: userTickets.length,
+      bgColor: "bg-green-500",
+      icon: <FaTicketAlt />,
+    },
+    {
+      title: "تیکت های باز",
+      desc: "تیکت",
+      length: userTickets.filter(t=>t.status === 'open').length,
+      bgColor: "bg-blue-500",
+      icon: <IoMailOpenSharp />,
+    },
+    {
+      title: "بسته شده",
+      desc: "تیکت",
+      length: userTickets.filter(t=>t.status === 'closed').length,
+      bgColor: "bg-purple-500",
+      icon: <IoTicket />,
+    },
+  ];
     const handleDeleteTicket = async (id : string)=>{
       const res = await deleteTicket(id)
       if(res.success){

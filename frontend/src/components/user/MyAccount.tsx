@@ -35,7 +35,7 @@ const MyAccount = () => {
 
   return (
     <div className="p-4">
-      <MyAccountHeader />
+      <MyAccountHeader ticketsAmount={userTickets.length} />
       <div className="flex flex-col lg:flex-row gap-6 mt-6">
         <div className="flex-1">
           <div className="flex flex-col sm:flex-row items-center justify-between bg-base-300 w-full p-4 rounded-md shadow-md mb-4">
