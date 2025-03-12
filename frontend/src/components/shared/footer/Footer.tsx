@@ -10,7 +10,7 @@ import { MdOutlineLocalPhone } from "react-icons/md";
 const Footer = () => {
   return (
     <div className="bg-base-300 mt-20 p-6 sm:p-10">
-      {/* Logo & Social Icons */}
+
       <div className="flex flex-col sm:flex-row items-center justify-between mb-6 gap-4 sm:gap-0">
         <div className="flex items-center gap-4">
           <Image
@@ -37,7 +37,6 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Contact Info */}
       <div className="flex flex-col sm:flex-row items-center sm:justify-center gap-4 sm:gap-6 text-sm">
         <Link href="#" className="flex items-center gap-2">
           <MdOutlineLocalPhone />
@@ -55,9 +54,8 @@ const Footer = () => {
 
       <div className="divider"></div>
 
-      {/* Footer Content */}
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8 text-center sm:text-right">
-        {/* About Section */}
+
         <div className="flex flex-col gap-3">
           <h3 className="font-bold text-xl">درباره سبزلرن</h3>
           <p className="text-sm leading-relaxed">
@@ -68,9 +66,7 @@ const Footer = () => {
           </p>
         </div>
 
-        {/* Course & Links - Responsive Layout */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-10">
-          {/* Popular Courses */}
           <div className="flex flex-col gap-3">
             <h3 className="font-bold text-xl">دوره‌های پرطرفدار</h3>
             <ul className="space-y-2">
@@ -97,12 +93,11 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Helpful Links */}
           <div className="flex flex-col gap-3">
             <h3 className="font-bold text-xl">لینک‌های مفید</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="#" className="text-base-content">
+                <Link href="/terms-conditions" className="text-base-content">
                   قوانین و مقررات
                 </Link>
               </li>
@@ -120,7 +115,6 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Certification Logo */}
         <div className="flex justify-center lg:justify-end">
           <Image
             src="https://sabzlearn.ir/wp-content/themes/sabzlearn-theme/images/enamad.png"
@@ -132,7 +126,6 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Bottom Section */}
       <div className="flex flex-col sm:flex-row justify-between items-center text-center sm:text-right mt-8 text-sm">
         <span>کلیه حقوق مادی و معنوی سایت برای سبزلرن محفوظ است.</span>
         <span>ساخته شده با ❤️ در سبزلرن</span>

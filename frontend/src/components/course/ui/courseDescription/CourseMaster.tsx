@@ -19,7 +19,7 @@ const CourseMaster = () => {
 
       <span className="text-lg font-semibold text-base-content">{mainCourse?.creator?.name}</span>
 
-      <Link href={''} className="btn btn-success btn-sm w-full">مشاهده پروفایل</Link>
+      <Link href={'javascript:void(0)'} className="btn btn-success btn-sm w-full">مشاهده پروفایل</Link>
     </div>
   );
 };
