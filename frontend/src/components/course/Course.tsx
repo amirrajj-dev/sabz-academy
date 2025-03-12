@@ -33,6 +33,7 @@ const Course = ({ params }: { params: Promise<{course : string}>}) => {
         category={mainCourse?.category.name}
         categoryLink={`/courses?sort=${mainCourse?.category.title}`}
         section="دوره ها"
+        sectionLink='/courses'
       />
       <CourseHeader />
       <CourseDetails />

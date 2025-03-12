@@ -8,8 +8,9 @@ import { useCourseStore } from "@/store/course.store";
 interface BreadCrumbProps {
   title: string;
   category?: string;
-  categoryLink?: string;
+  categoryLink: string;
   section: string;
+  sectionLink? : string
 }
 
 const BreadCrumb = ({
@@ -17,6 +18,7 @@ const BreadCrumb = ({
   category,
   categoryLink,
   section,
+  sectionLink
 }: BreadCrumbProps) => {
   const { isLoading } = useCourseStore();
 
@@ -42,7 +44,7 @@ const BreadCrumb = ({
         <li className="flex items-center gap-1 sm:gap-2">
           <FaFolder className="text-sm sm:text-lg text-base-600" />
           <Link
-            href="/courses"
+            href={sectionLink}
             aria-label={`Browse ${section} courses`}
             className="transition font-medium text-base-700 focus:outline-none"
           >

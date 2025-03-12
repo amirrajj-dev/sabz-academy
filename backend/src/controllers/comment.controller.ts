@@ -25,6 +25,9 @@ export const getAllComments = async (req : Request , res : Response , next : Nex
                         name : true,
                     }
                 }
+            },
+            orderBy : {
+                createdAt : 'desc'
             }
         })
         return res.status(200).json({ message: "Comments fetched successfully", success: true, comments })

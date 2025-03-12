@@ -22,6 +22,7 @@ const Article = ({params} : {params: Promise<{ articleName: string }>}) => {
     return (
       <div className="max-w-6xl p-4 mx-auto mt-10">
         <BreadCrumb
+        sectionLink="/articles"
           title={mainArticle?.title ?? "در حال بارگذاری..."}
           section="مقاله ها"
         />
