@@ -77,11 +77,11 @@ const MyAccount = () => {
             <div className="flex w-full flex-col items-center gap-4">
             {isLoadingTickets ? Array(3).fill(0).map((_ , index)=>(
                 <TicketCardSkeleton key={index + 1} />
-              )) : userTickets.length > 0 ? (
+              )) : userTickets?.length > 0 ? (
                 userTickets
                   .slice(0, 3)
                   .map((ticket) => (
-                    <TicketCard key={ticket.id} ticket={ticket} onDelete={handleDeleteTicket} />
+                    <TicketCard key={ticket?.id} ticket={ticket} onDelete={handleDeleteTicket} />
                   ))
               ) : (
                 <p>تا به الان تیکتی ارسال نکرده اید</p>

@@ -1,3 +1,4 @@
+'use client'
 import React from 'react';
 import { AiFillDollarCircle } from 'react-icons/ai';
 import { FaMoneyCheck } from 'react-icons/fa';
