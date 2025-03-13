@@ -92,7 +92,7 @@ const CourseCommentSection = ({ courseId }: CourseCommentSectionProps) => {
           <Image
             width={40}
             height={40}
-            src="https://secure.gravatar.com/avatar/e7b9929942190634b0267c963d2513eb?s=96&d=mm&r=g"
+            src={comment.creator.profile || "https://secure.gravatar.com/avatar/e7b9929942190634b0267c963d2513eb?s=96&d=mm&r=g"}
             alt={comment.creator.name}
             className="rounded-full hidden sm:inline"
           />
@@ -125,7 +125,6 @@ const CourseCommentSection = ({ courseId }: CourseCommentSectionProps) => {
       </div>
     ));
   };
-  
 
   return (
     <div className="bg-base-300 p-6 rounded-lg shadow-lg">
