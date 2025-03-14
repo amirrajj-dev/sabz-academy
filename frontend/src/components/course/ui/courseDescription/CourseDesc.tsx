@@ -1,22 +1,28 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CourseMaster from "./CourseMaster";
 import CourseLink from "./CourseLink";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { IoDocumentText } from "react-icons/io5";
 import { useCourseStore } from "@/store/course.store";
-import dompurify from "dompurify";
+import DOMPurify from "dompurify";
 
 const CourseDesc = () => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [sanitizeHtml, setSanitizeHtml] = useState("");
   const { mainCourse, isLoading } = useCourseStore();
 
-  const sanitizeHtml = dompurify.sanitize(mainCourse?.body as string, {
-    ALLOWED_TAGS: ["p", "ul", "li", "h1", "h2", "h3", "h4", "h5", "h6", "strong", "em", "a"],
-    ALLOWED_ATTR: ["href", "target"],
-    FORBID_TAGS: ["img", "figure"],
-  });
+  useEffect(() => {
+    if (typeof window !== "undefined" && mainCourse?.body) {
+      const cleanHtml = DOMPurify.sanitize(mainCourse.body, {
+        ALLOWED_TAGS: ["p", "ul", "li", "h1", "h2", "h3", "h4", "h5", "h6", "strong", "em", "a"],
+        ALLOWED_ATTR: ["href", "target"],
+        FORBID_TAGS: ["img", "figure"],
+      });
+      setSanitizeHtml(cleanHtml);
+    }
+  }, [mainCourse?.body]);
 
   return (
     <div className="flex flex-1 bg-base-300 shadow-lg p-4 rounded-lg">

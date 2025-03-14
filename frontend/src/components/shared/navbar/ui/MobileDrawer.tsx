@@ -4,6 +4,7 @@ import MenuItem from "./MenuItem";
 import ThemeSwitcher from "./themeSwitcher";
 import { useEffect, useState } from "react";
 import { ICategory } from "@/interfaces/types";
+import Link from "next/link";
 
 const MobileDrawer = ({
   drawerOpen,
@@ -70,6 +71,8 @@ const MobileDrawer = ({
           {menuItems.map((item, index) => (
             <MenuItem key={index} item={item} isOpen={openIndex === index} toggleOpen={() => toggleMenuItem(index)} setDrawerOpen={setDrawerOpen} />
           ))}
+          <Link href={'/courses'} className="w-full cursor-pointer px-4 py-2 bg-base-100 hover:bg-primary hover:text-white rounded-md flex justify-between items-center">دوره ها</Link>
+          <Link href={'/articles'} className="w-full cursor-pointer px-4 py-2 bg-base-100 hover:bg-primary hover:text-white rounded-md flex justify-between items-center">مقالات</Link>
         </ul>
         <div className="divider divide-base-300 p-2 pt-0"></div>
         <ThemeSwitcher themeItems={themeItems} handleThemeToggle={handleThemeToggle} handleThemeChange={handleThemeChange} themeDropDownOpen={themeDropDownToggle} />

@@ -11,6 +11,7 @@ import RelatedCourses from '@/components/course/ui/relatedCourses/RelatedCourses
 import CourseCommentSection from '@/components/course/ui/courseCommentSesction/CourseCommentSection';
 import CourseMaster from '@/components/course/ui/courseDescription/CourseMaster';
 import CourseLink from '@/components/course/ui/courseDescription/CourseLink';
+import { redirect } from 'next/navigation';
 
 const Course = ({ params }: { params: Promise<{course : string}>}) => {
   const { getSingleCourse, mainCourse, fetchRelatedCourses , resetMainCourse } = useCourseStore();
@@ -20,7 +21,11 @@ const Course = ({ params }: { params: Promise<{course : string}>}) => {
   useEffect(() => {
     resetMainCourse()
     const fetchData = async () => {
-      await getSingleCourse(course);
+      const res = await getSingleCourse(course);
+      console.log(res);
+      if (!res.success){
+        redirect('/')
+      }
       await fetchRelatedCourses(course);
       await getAllComments();
     };

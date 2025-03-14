@@ -3,6 +3,7 @@ import Course from "@/components/course/Course";
 import { ICourse } from "@/interfaces/types";
 import { getSingleCourse } from "@/helpers/getCourse";
 import { Metadata } from "next";
+import { redirect } from "next/navigation";
 
 
 interface MainCourseProps {
@@ -11,7 +12,7 @@ interface MainCourseProps {
 
 export const generateMetadata = async ({ params }: { params: Promise<{ course: string }> }): Promise<Metadata> => {
   const course: ICourse = await getSingleCourse((await params).course);
-
+  if (!course) redirect('/')
   return {
     title: `${course.name} | سبزلرن`,
     description: course.description || "دوره‌ای جامع و کاربردی در زمینه برنامه‌نویسی و فناوری اطلاعات.",
