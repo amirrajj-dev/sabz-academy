@@ -9,7 +9,7 @@ interface MainCourseProps {
   params: Promise<{ course: string }>;
 }
 
-export const generateMetadata = async ({ params }: { params: { course: string } }): Promise<Metadata> => {
+export const generateMetadata = async ({ params }: { params: Promise<{ course: string }> }): Promise<Metadata> => {
   const course: ICourse = await getSingleCourse((await params).course);
 
   return {

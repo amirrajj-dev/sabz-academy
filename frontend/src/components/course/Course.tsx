@@ -13,11 +13,12 @@ import CourseMaster from '@/components/course/ui/courseDescription/CourseMaster'
 import CourseLink from '@/components/course/ui/courseDescription/CourseLink';
 
 const Course = ({ params }: { params: Promise<{course : string}>}) => {
-  const { getSingleCourse, mainCourse, fetchRelatedCourses } = useCourseStore();
+  const { getSingleCourse, mainCourse, fetchRelatedCourses , resetMainCourse } = useCourseStore();
   const { getAllComments } = useCommentsStore();
   const { course } = use(params);
 
   useEffect(() => {
+    resetMainCourse()
     const fetchData = async () => {
       await getSingleCourse(course);
       await fetchRelatedCourses(course);

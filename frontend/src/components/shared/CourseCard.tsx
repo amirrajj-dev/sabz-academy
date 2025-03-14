@@ -7,6 +7,9 @@ import Link from "next/link";
 import { ICourse } from "@/interfaces/types";
 
 const CourseCard = ({ course }: { course: ICourse }) => {
+  const img = course.cover && course.cover.slice(course.cover.lastIndexOf('/upload')).slice(8)
+  const optimizedImageUrl = `https://res.cloudinary.com/dnrws0axe/image/upload/w_500,h_300,q_auto,f_auto/${img}`;
+
   return (
     <motion.div
       className="card w-full relative bg-base-200 shadow-lg rounded-2xl hover:shadow-xl transition-all duration-300 border hover:scale-105 border-gray-700"
@@ -16,7 +19,7 @@ const CourseCard = ({ course }: { course: ICourse }) => {
     >
       <Link href={`/courses/${course.shortName}`}>
         <Image
-          src={course.cover as string}
+          src={optimizedImageUrl || course.cover as string}
           alt={course.name}
           className="rounded-t-2xl object-cover w-full h-32"
           width={500}

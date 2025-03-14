@@ -6,6 +6,7 @@ interface CourseStore {
   courses: ICourse[];
   mainCourse: ICourse | null;
   relatedCourses : ICourse[];
+  resetMainCourse : ()=>void;
   fetchCourses: () => Promise<{ message: string; success: boolean }>;
   fetchRelatedCourses : (id : string) => Promise<{ message: string; success: boolean}>;
   setCourses: (courses: ICourse[]) => void;
@@ -189,5 +190,8 @@ export const useCourseStore = create<CourseStore>((set, get) => ({
     }finally{
       set({ isLoading : false })
     }
+  },
+  resetMainCourse : ()=>{
+    if (get().mainCourse) set({ mainCourse : null })
   }
 }));

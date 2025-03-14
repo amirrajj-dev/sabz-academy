@@ -12,7 +12,7 @@ interface MyAccountSubProps {
 export const generateMetadata = async ({
   params,
 }: {
-  params: { route: string };
+  params: Promise<{ route: string }>;
 }): Promise<Metadata> => {
   const { route } = (await params);
   const validRoutes = ["courses", "tickets", "edit-account"];

@@ -21,10 +21,16 @@ const validRoutes = [
   "campaigan",
   "tickets",
   "discounts",
-];
+] as const;
 
-export const generateMetadata = async ({ params }: { params: { route: string } }): Promise<Metadata> => {
-  const route = (await params).route.toLocaleLowerCase();
+type ValidRoute = typeof validRoutes[number];
+
+interface PageProps {
+  params: Promise<{ route: string }>;
+}
+
+export const generateMetadata = async ({ params }: PageProps): Promise<Metadata> => {
+  const route = (await params).route.toLowerCase() as ValidRoute;
 
   if (!validRoutes.includes(route)) {
     return {
@@ -33,7 +39,7 @@ export const generateMetadata = async ({ params }: { params: { route: string } }
     };
   }
 
-  const routeMetadata: { [key: string]: Metadata } = {
+  const routeMetadata: Record<ValidRoute, Metadata> = {
     users: {
       title: "مدیریت کاربران | سبزلرن",
       description: "مدیریت کاربران در پنل مدیریت سبزلرن.",
@@ -72,7 +78,6 @@ export const generateMetadata = async ({ params }: { params: { route: string } }
     },
   };
 
-
   return {
     ...routeMetadata[route],
     openGraph: {
@@ -100,8 +105,8 @@ export const generateMetadata = async ({ params }: { params: { route: string } }
   };
 };
 
-const Page = async ({ params }: { params: { route: string } }) => {
-  const route = (await params).route.toLocaleLowerCase();
+const Page = async ({ params }: PageProps) => {
+  const route = (await params).route.toLowerCase() as ValidRoute;
 
   if (!validRoutes.includes(route)) {
     notFound();
