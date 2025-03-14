@@ -15,7 +15,7 @@ import { toast } from "react-toastify";
 import { toastOptions } from "@/helpers/toastOptions";
 import { useRouter } from "next/navigation";
 
-const ResetPasword = (token : {token :string}) => {
+const ResetPasword = (token: { token: string }) => {
   const {
     register,
     handleSubmit,
@@ -30,11 +30,11 @@ const ResetPasword = (token : {token :string}) => {
   const { isLoading, resetPassword } = useAuthStore();
 
   const onSubmit = async (data: resetPasswordSchemaType) => {
-    const res = await resetPassword(data.password , token.token)
-    if(res.success){
-      router.replace('/signin')
+    const res = await resetPassword(data.password, token.token);
+    if (res.success) {
+      router.replace("/signin");
       toast.success("پسورد با موفقیت بازیابی شد", toastOptions);
-    }else{
+    } else {
       toast.error("خطا در بازیابی پسورد", toastOptions);
     }
   };
@@ -45,21 +45,22 @@ const ResetPasword = (token : {token :string}) => {
 
   return (
     <div className="flex flex-col w-full items-center justify-center font-dana-regular">
-      <motion.div
-        className="flex items-center justify-center gap-4 mb-6"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.3, duration: 0.5 }}
-      >
-        <Image
-          src="/logo/logo.webp"
-          alt="SabzLearn Logo"
-          width={80}
-          height={80}
-        />
-        <SabzText size="size-30" />
-      </motion.div>
-
+      <Link href={"/"}>
+        <motion.div
+          className="flex items-center justify-center gap-4 mb-6"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+        >
+          <Image
+            src="/logo/logo.webp"
+            alt="SabzLearn Logo"
+            width={80}
+            height={80}
+          />
+          <SabzText size="size-30" />
+        </motion.div>
+      </Link>
 
       <motion.div
         className="w-full max-w-sm mx-auto p-6 bg-base-300 backdrop-blur-lg shadow-lg rounded-2xl border border-white/20"
@@ -77,29 +78,31 @@ const ResetPasword = (token : {token :string}) => {
         </motion.h2>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-      <motion.div
-        className="relative"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.9, duration: 0.5 }}
-      >
-        <input
-          type={showPassword ? "text" : "password"}
-          {...register("password")}
-          className="w-full input border-none pl-10 bg-white/10 text-base-content placeholder-base-content rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-green-400 transition"
-          placeholder="رمز عبور"
-        />
-        <button
-          type="button"
-          onClick={() => setShowPassword(!showPassword)}
-          className="absolute left-3 top-3 text-base-content opacity-75"
-        >
-          {showPassword ? <FaEyeSlash /> : <FaEye />}
-        </button>
-        {errors.password && (
-          <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>
-        )}
-      </motion.div>
+          <motion.div
+            className="relative"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.9, duration: 0.5 }}
+          >
+            <input
+              type={showPassword ? "text" : "password"}
+              {...register("password")}
+              className="w-full input border-none pl-10 bg-white/10 text-base-content placeholder-base-content rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-green-400 transition"
+              placeholder="رمز عبور"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute left-3 top-3 text-base-content opacity-75"
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </button>
+            {errors.password && (
+              <p className="text-red-500 text-xs mt-1">
+                {errors.password.message}
+              </p>
+            )}
+          </motion.div>
           <motion.button
             type="submit"
             whileHover={{

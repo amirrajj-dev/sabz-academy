@@ -57,20 +57,22 @@ const SignUp = () => {
 
   return (
     <div className="flex flex-col w-full items-center justify-center font-dana-regular">
-      <motion.div
-        className="flex items-center justify-center gap-4"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.3, duration: 0.5 }}
-      >
-        <Image
-          src="/logo/logo.webp"
-          alt="SabzLearn Logo"
-          width={80}
-          height={80}
-        />
-        <SabzText size={"size-30"} />
-      </motion.div>
+      <Link href={"/"}>
+        <motion.div
+          className="flex items-center justify-center gap-4 mb-6"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+        >
+          <Image
+            src="/logo/logo.webp"
+            alt="SabzLearn Logo"
+            width={80}
+            height={80}
+          />
+          <SabzText size="size-30" />
+        </motion.div>
+      </Link>
       <motion.div
         className="w-full max-w-sm mx-auto p-6 bg-base-300 backdrop-blur-lg shadow-lg rounded-2xl border border-white/20"
         initial={{ opacity: 0, y: -50 }}
@@ -153,7 +155,11 @@ const SignUp = () => {
             transition={{ delay: 1.1, duration: 0.4 }}
             disabled={isLoading}
           >
-            {isLoading ? <AiOutlineLoading3Quarters className="animate-spin" /> : 'ثبت نام'}
+            {isLoading ? (
+              <AiOutlineLoading3Quarters className="animate-spin" />
+            ) : (
+              "ثبت نام"
+            )}
           </motion.button>
         </form>
 

@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import SabzText from "@/components/shared/SabzText";
 import Link from "next/link";
-import { ForgotPasswordSchemaType , schema } from "@/utils/forgotPasswordSchema";
+import { ForgotPasswordSchemaType, schema } from "@/utils/forgotPasswordSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useAuthStore } from "@/store/auth.store";
@@ -24,18 +24,18 @@ const ForgotPassword = () => {
     resolver: zodResolver(schema),
   });
 
-  const router = useRouter()
+  const router = useRouter();
 
   const { isLoading, forgotPassword } = useAuthStore();
 
-  const onSubmit = async (data : ForgotPasswordSchemaType) => {
-   const res = await forgotPassword(data.email)
-   console.log(res);
-   if(res.success) {
-    toast.success("لینک بازیابی پسورد برای شما ارسال شد", toastOptions)
-   }else{
-    toast.error(res.message, toastOptions)
-   }
+  const onSubmit = async (data: ForgotPasswordSchemaType) => {
+    const res = await forgotPassword(data.email);
+    console.log(res);
+    if (res.success) {
+      toast.success("لینک بازیابی پسورد برای شما ارسال شد", toastOptions);
+    } else {
+      toast.error(res.message, toastOptions);
+    }
   };
 
   useEffect(() => {
@@ -44,20 +44,22 @@ const ForgotPassword = () => {
 
   return (
     <div className="flex flex-col w-full items-center justify-center font-dana-regular">
-      <motion.div
-        className="flex items-center justify-center gap-4 mb-6"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.3, duration: 0.5 }}
-      >
-        <Image
-          src="/logo/logo.webp"
-          alt="SabzLearn Logo"
-          width={80}
-          height={80}
-        />
-        <SabzText size="size-30" />
-      </motion.div>
+      <Link href={"/"}>
+        <motion.div
+          className="flex items-center justify-center gap-4 mb-6"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+        >
+          <Image
+            src="/logo/logo.webp"
+            alt="SabzLearn Logo"
+            width={80}
+            height={80}
+          />
+          <SabzText size="size-30" />
+        </motion.div>
+      </Link>
 
       <motion.div
         className="w-full max-w-sm mx-auto p-6 bg-base-300 backdrop-blur-lg shadow-lg rounded-2xl border border-white/20"

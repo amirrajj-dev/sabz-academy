@@ -25,24 +25,24 @@ const SignIn = () => {
     resolver: zodResolver(schema),
   });
 
-  const router = useRouter()
+  const router = useRouter();
 
   const { isLoading, error, login } = useAuthStore();
 
-  const onSubmit = async (data : SignInschemaType) => {
-      const res = await login(data);
-      if (res.success){
-        toast.success("خوش برگشتی :)"  , toastOptions);
-        router.replace("/")
-        return
-      }
-      if (res.message === 'Invalid password'){
-        toast.error("رمز عبور اشتباه است", toastOptions)
-      }
-      if (res.message === 'User is banned'){
-        toast.error("شما اجازه لاگین ندارید", toastOptions)
-        return
-      }
+  const onSubmit = async (data: SignInschemaType) => {
+    const res = await login(data);
+    if (res.success) {
+      toast.success("خوش برگشتی :)", toastOptions);
+      router.replace("/");
+      return;
+    }
+    if (res.message === "Invalid password") {
+      toast.error("رمز عبور اشتباه است", toastOptions);
+    }
+    if (res.message === "User is banned") {
+      toast.error("شما اجازه لاگین ندارید", toastOptions);
+      return;
+    }
   };
 
   useEffect(() => {
@@ -51,20 +51,22 @@ const SignIn = () => {
 
   return (
     <div className="flex flex-col w-full items-center justify-center font-dana-regular">
-      <motion.div
-        className="flex items-center justify-center gap-4 mb-6"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.3, duration: 0.5 }}
-      >
-        <Image
-          src="/logo/logo.webp"
-          alt="SabzLearn Logo"
-          width={80}
-          height={80}
-        />
-        <SabzText size="size-30" />
-      </motion.div>
+      <Link href={"/"}>
+        <motion.div
+          className="flex items-center justify-center gap-4 mb-6"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+        >
+          <Image
+            src="/logo/logo.webp"
+            alt="SabzLearn Logo"
+            width={80}
+            height={80}
+          />
+          <SabzText size="size-30" />
+        </motion.div>
+      </Link>
 
       <motion.div
         className="w-full max-w-sm mx-auto p-6 bg-base-300 backdrop-blur-lg shadow-lg rounded-2xl border border-white/20"

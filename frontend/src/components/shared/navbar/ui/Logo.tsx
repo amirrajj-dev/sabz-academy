@@ -1,10 +1,11 @@
 import Image from "next/image";
+import Link from "next/link";
 
 const Logo = () => {
   return (
-    <div className="flex justify-center w-full">
+    <Link href={'/'} className="flex justify-center w-full">
       <Image src="/logo/logo.webp" width={75} height={75} alt="sabzlearn logo" />
-    </div>
+    </Link>
   );
 };
 
