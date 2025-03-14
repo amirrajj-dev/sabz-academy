@@ -2,12 +2,14 @@ import Article from "@/components/article/Article";
 import { getSingleArticle } from "@/helpers/getArticle";
 import { IArticle } from "@/interfaces/types";
 import { Metadata } from "next";
+import { redirect } from "next/navigation";
 interface MainArticleProps {
   params: Promise<{ articleName: string }>;
 }
 
 export const generateMetadata = async ({ params }: { params: Promise<{ articleName: string }> }): Promise<Metadata> => {
   const article: IArticle = await getSingleArticle((await params).articleName);
+  if (!article) redirect('/')
 
   return {
     title: `${article.title} | سبزلرن`,
